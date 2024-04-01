@@ -1,0 +1,160 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
+/*   Updated: 2024/04/01 11:31:47 by tebandam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <stdio.h>
+# include <signal.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+
+typedef struct s_vars{
+	char	*input;
+}	t_vars;
+
+typedef struct s_env{
+	char			*var;
+	char			*var_name;
+	char			*full_path;
+	struct s_env	*next;
+}	t_env;
+
+typedef struct s_argument_to_expand
+{
+	char					*content;
+	s_argument_to_expand	*next;
+}		t_argument_to_expand;
+
+typedef struct s_redirection_to_expand
+{
+	char *arg;
+
+	enum
+	{
+		REDIRECTION_OUTFILE,
+		REDIRECTION_INFILE,
+		REDIRECTION_APPEND,
+		// REDIRECTION_HEREDOC
+	} type;
+	s_redirection_to_expand *next;
+} t_redirection_to_expand;
+
+typedef struct s_command{
+
+	t_argument_to_expand *arguments;
+	t_redirection_to_expand *redirections;
+
+	s_command *next;
+} t_command_to_expand;
+
+typedef struct
+{
+	bool did_succeed;
+
+	t_command_to_expand *commands;
+
+} t_command_line_parsing_result;
+
+typedef struct
+{
+	bool did_succeed;
+
+	t_command_to_expand command;
+
+	const char *remaining_line;
+
+} t_command_parsing_result;
+
+typedef struct
+{
+	bool did_succeed;
+
+	t_redirection_to_expand redirection;
+
+	const char *remaining_line;
+
+} t_redirection_parsing_result;
+
+typedef struct
+{
+	bool did_succeed;
+
+	t_argument_to_expand argument;
+
+	const char *remaining_line;
+
+} t_argument_parsing_result;
+
+/*
+* Utilitaries
+*/
+
+void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_putstr_fd(char *s, int fd);
+char	*copy(char *s);
+char	**ft_split(char const *s, char c);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_strlen(char const *str);
+
+/*
+* Environment
+*/
+
+void	init_env(t_env **env, char **envp);
+
+/*
+* Signal
+*/
+
+void	ft_ctrl_c(int signo);
+
+/*
+* Prompt
+*/
+
+int		ft_readline(t_env **env, t_parse **parse, t_vars *vars);
+
+/*
+* Command manager
+*/
+
+void	cmd_selector(t_vars *vars, char **env, int ac, char **av);
+
+/*
+* Builtins
+*/
+
+void	print_env(t_env *envp);
+
+/*
+* Chain list
+*/
+
+t_env	*ft_lstnew_env(void);
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+void	ft_lstclear_env(t_env **lst);
+t_env	*lst_search_env(char *s, t_env *env);
+
+/*
+* Free / Error
+*/
+
+void	ft_free(char **tab);
+void	free_readline(t_vars *vars);
+int		check_free_readline(t_vars *vars);
+
+#endif
+
