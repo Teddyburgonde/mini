@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/02 16:46:58 by tebandam         ###   ########.fr       */
+/*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
+/*   Updated: 2024/04/02 17:37:25 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	main(int ac, char **av, char *envp[])
+const char *skip_spaces(const char *str)
 {
-	t_env	*env;
-	t_vars	*vars;
+	int	i;
 
-	env = NULL;
-	vars = NULL;
-	(void)av;
-	if (ac != 1)
+	i = 0;
+	while (str[i])
 	{
-		ft_putstr_fd("Error: Too much arguments\n", 2);
-		return (1);
+		if ((str[i] == NEW_LINE || str[i] == TAB) || str[i] == SPACE)
+			i++;
+		else
+			break;
 	}
-	init_env(&env, envp);
-	if (env == NULL)
-		return (1);
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, (__sighandler_t)1);
-	if (ft_readline(&env, vars) == 1)
-	{
-		ft_lstclear_env(&env);
-		return (1);
-	}
-	ft_lstclear_env(&env);
-	return (0);
+	return (&str[i]);
+}
+
+const char	*skip_one_character(const char *str)
+{
+	return (&str[1]);
 }

@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/03/24 16:21:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/02 16:45:38 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_readline(t_env **env, t_parse **parse, t_vars *vars)
+int	ft_readline(t_env **env, t_vars *vars)
 {
+	t_command_line_parsing_result parsing_result;
+	
 	vars = malloc(sizeof(t_vars));
 	if (check_free_readline(vars) == 1)
 		return (1);
@@ -26,7 +28,11 @@ int	ft_readline(t_env **env, t_parse **parse, t_vars *vars)
 			break ;
 		}
 		add_history(vars->input);
-		parsing(vars, parse, env);
+		parsing_result = ft_parse_command_line(command_line);
+		if (!parsing_result.did_succeed)
+		{
+			// handle error
+		}
 		// if (parse->next == NULL)
 			// cmd_selector(vars, &env, ac, av);
 		// else

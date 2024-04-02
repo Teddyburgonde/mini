@@ -6,12 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/01 11:31:47 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:54:35 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define SPACE 32
 # include <stdio.h>
 # include <signal.h>
 # include <stdlib.h>
@@ -20,6 +21,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# define TAB '\t'
+# define NEW_LINE '\n'
+# define TRUE 1
+# define FALSE 0
+
+
 
 typedef struct s_vars{
 	char	*input;
@@ -62,7 +69,7 @@ typedef struct s_command{
 
 typedef struct
 {
-	bool did_succeed;
+	int did_succeed;
 
 	t_command_to_expand *commands;
 
@@ -70,7 +77,7 @@ typedef struct
 
 typedef struct
 {
-	bool did_succeed;
+	int did_succeed;
 
 	t_command_to_expand command;
 
@@ -80,7 +87,7 @@ typedef struct
 
 typedef struct
 {
-	bool did_succeed;
+	int did_succeed;
 
 	t_redirection_to_expand redirection;
 
@@ -90,7 +97,7 @@ typedef struct
 
 typedef struct
 {
-	bool did_succeed;
+	int did_succeed;
 
 	t_argument_to_expand argument;
 
@@ -125,7 +132,15 @@ void	ft_ctrl_c(int signo);
 * Prompt
 */
 
-int		ft_readline(t_env **env, t_parse **parse, t_vars *vars);
+int		ft_readline(t_env **env, t_vars *vars);
+
+
+/*
+* Parsing
+*/
+
+const char	*skip_spaces(const char *str);
+const char	*skip_one_character(const char *str);
 
 /*
 * Command manager
