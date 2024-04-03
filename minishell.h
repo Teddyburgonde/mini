@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/02 16:54:35 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:47:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_env{
 typedef struct s_argument_to_expand
 {
 	char					*content;
-	s_argument_to_expand	*next;
+	t_argument_to_expand	*next;
 }		t_argument_to_expand;
 
 typedef struct s_redirection_to_expand
@@ -56,7 +56,7 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_APPEND,
 		// REDIRECTION_HEREDOC
 	} type;
-	s_redirection_to_expand *next;
+	t_redirection_to_expand *next;
 } t_redirection_to_expand;
 
 typedef struct s_command{
@@ -64,7 +64,7 @@ typedef struct s_command{
 	t_argument_to_expand *arguments;
 	t_redirection_to_expand *redirections;
 
-	s_command *next;
+	t_command_to_expand *next;
 } t_command_to_expand;
 
 typedef struct
@@ -110,11 +110,15 @@ typedef struct
 */
 
 void	*ft_calloc(size_t nmemb, size_t size);
+int		ft_strchr(char *s, int c);
 void	ft_putstr_fd(char *s, int fd);
 char	*copy(char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strlen(char const *str);
+char	*ft_strjoin(char const *s1, char *s2);
+char	*ft_strjoin_arg(char *s1, char *s2);
+char	*ft_strjoin_until(char *s1, char *s2, char c);
 
 /*
 * Environment
@@ -134,13 +138,14 @@ void	ft_ctrl_c(int signo);
 
 int		ft_readline(t_env **env, t_vars *vars);
 
-
 /*
 * Parsing
 */
 
 const char	*skip_spaces(const char *str);
 const char	*skip_one_character(const char *str);
+const char	*skip_quote(
+		const char *str, char c, t_argument_parsing_result *result);
 
 /*
 * Command manager

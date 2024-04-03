@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/02 16:50:18 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/03 13:13:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,69 @@ t_argument_parsing_result parse_argument(char* command_line)
 {
 	char						*remaining_line;
 	t_argument_parsing_result	result;
+	char						*arg;
 
-	char *arg = NULL;
-
+	arg = NULL;
 	remaining_line = skip_spaces(command_line);
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'
 		&& remaining_line[0] != '>' && remaining_line[0] != ' '
-		&& remaining_line[0] != '\0')
+		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
+		&& remaining_line[0] != '\t')
 	{
 		if (remaining_line[0] == '\'')
 		{
-			// rejoindre la quote suivante sinon erreur
-			// puis copier 
+			remaining_line = skip_one_character(remaining_line);
+			result.argument.content = ft_strjoin_until(
+					result.argument.content, remaining_line, '\'');
+			skip_quote(remaining_line, '\'', &result);
+			if (result.did_succeed == FALSE)
+				return (result);
 		}
-		else if (remaining_line[0] == '\"')
+		else if (remaining_line[0] == '"')
 		{
-			// rejoindre la quote suivante sinon erreur
-			// puis copier
+			remaining_line = skip_one_character(remaining_line);
+			result.argument.content = ft_strjoin_until(
+					result.argument.content, remaining_line, '"');
+			skip_quote(remaining_line, '"', &result);
+			if (result.did_succeed == FALSE)
+				return (result);
 		}
 		else
 		{
-			//charactere normal
-			// considerer strjoin ou memcpy
+			result.argument.content = ft_strjoin_arg(
+					result.argument.content, remaining_line);
 		}
 	}
 	return (result);
 }
 
-// manque parse redirection qui depend de parse command
+t_redirection_parsing_result	parse_redirection(const char *str)
+{
+	t_redirection_parsing_result	redirection_result;
 
-
+	skip_one_character(str);
+	skip_spaces(str);
+	// lst_new
+	// Manage errors
+	if (str[0] == '"')
+	{
+		str = skip_one_character(str);
+		redirection_result.redirection.arg = ft_strjoin_until(
+				redirection_result.redirection.arg, str, '"');
+	}
+	else if (str[0] == '\'')
+	{
+		str = skip_one_character(str);
+		redirection_result.redirection.arg = ft_strjoin_until(
+				redirection_result.redirection.arg, str, '\'');
+	}
+	else
+	{
+		redirection_result.redirection.arg = ft_strjoin_arg(
+				redirection_result.redirection.arg, str);
+	}
+	return (redirection_result);
+}
 
 t_command_parsing_result parse_command(const char *command_line)
 {
@@ -63,21 +96,19 @@ t_command_parsing_result parse_command(const char *command_line)
 
 	while (ft_strlen(remaining_line) > 0 && remaining_line[0] != '|')
 	{
-
-
 		if (remaining_line[0] == '>' || remaining_line[0] == '<')
 		{
 			redirection_result = parse_redirection(remaining_line);
 			if (!redirection_result.did_succeed)
 			{
 				result.did_succeed = FALSE;
-				return result;
+				return (result);
 			}
 			ft_redirection_to_expand_addback(&result.command.redirections, redirection_result.redirection);
 		}
 		else
 		{
-			argument_result =	parse_argument(remaining_line);
+			argument_result = parse_argument(remaining_line);
 			if (!argument_result.did_succeed)
 			{
 				result.did_succeed = FALSE;
@@ -91,22 +122,19 @@ t_command_parsing_result parse_command(const char *command_line)
 	return (result);
 }
 
-
 t_command_line_parsing_result ft_parse_command_line(const char *command_line)
 {
-
 	const char						*remaining_line;
 	t_command_line_parsing_result	result;
-	t_command_parsing_result 		command_parsing_result;
+	t_command_parsing_result		command_parsing_result;
 
 	result.commands = NULL;
 	remaining_line = skip_spaces(command_line);
 	if (ft_strlen(remaining_line) == 0)
 	{
 		result.did_succeed = TRUE;
-		return result;
+		return (result);
 	}
-
 	while (ft_strlen(remaining_line) > 0)
 	{
 		command_parsing_result = parse_command(remaining_line);
