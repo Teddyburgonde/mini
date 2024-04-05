@@ -8,7 +8,8 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
             src/utils/ft_putstr_fd.c \
-            src/utils/lst_utils_env.c \
+            src/utils/lst_addback_utils.c \
+			src/utils/lst_new_utils.c \
 			src/utils/lst_utils_parse.c \
             src/utils/ft_strcmp.c \
 			src/utils/ft_split.c \

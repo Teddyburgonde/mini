@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/03 13:13:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:56:07 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,27 @@ t_redirection_parsing_result	parse_redirection(const char *str)
 	skip_spaces(str);
 	// lst_new
 	// Manage errors
-	if (str[0] == '"')
-	{
-		str = skip_one_character(str);
-		redirection_result.redirection.arg = ft_strjoin_until(
-				redirection_result.redirection.arg, str, '"');
-	}
-	else if (str[0] == '\'')
-	{
-		str = skip_one_character(str);
-		redirection_result.redirection.arg = ft_strjoin_until(
-				redirection_result.redirection.arg, str, '\'');
-	}
-	else
-	{
-		redirection_result.redirection.arg = ft_strjoin_arg(
-				redirection_result.redirection.arg, str);
+	while (remaining_line[0] != '|' && remaining_line[0] != '<'
+		&& remaining_line[0] != '>' && remaining_line[0] != ' '
+		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
+		&& remaining_line[0] != '\t')
+		if (str[0] == '"')
+		{
+			str = skip_one_character(str);
+			redirection_result.redirection.arg = ft_strjoin_until(
+					redirection_result.redirection.arg, str, '"');
+		}
+		else if (str[0] == '\'')
+		{
+			str = skip_one_character(str);
+			redirection_result.redirection.arg = ft_strjoin_until(
+					redirection_result.redirection.arg, str, '\'');
+		}
+		else
+		{
+			redirection_result.redirection.arg = ft_strjoin_arg(
+					redirection_result.redirection.arg, str);
+		}
 	}
 	return (redirection_result);
 }

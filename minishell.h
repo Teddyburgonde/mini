@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/03 12:47:44 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/05 11:47:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_env{
 
 typedef struct s_argument_to_expand
 {
-	char					*content;
-	t_argument_to_expand	*next;
+	char						*content;
+	struct t_argument_to_expand	*next;
 }		t_argument_to_expand;
 
 typedef struct s_redirection_to_expand
@@ -56,7 +56,7 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_APPEND,
 		// REDIRECTION_HEREDOC
 	} type;
-	t_redirection_to_expand *next;
+	struct t_redirection_to_expand *next;
 } t_redirection_to_expand;
 
 typedef struct s_command{
@@ -64,7 +64,7 @@ typedef struct s_command{
 	t_argument_to_expand *arguments;
 	t_redirection_to_expand *redirections;
 
-	t_command_to_expand *next;
+	struct t_command_to_expand *next;
 } t_command_to_expand;
 
 typedef struct
@@ -145,7 +145,8 @@ int		ft_readline(t_env **env, t_vars *vars);
 const char	*skip_spaces(const char *str);
 const char	*skip_one_character(const char *str);
 const char	*skip_quote(
-		const char *str, char c, t_argument_parsing_result *result);
+const char *str, char c, t_argument_parsing_result *result);
+t_command_line_parsing_result ft_parse_command_line(const char *command_line);
 
 /*
 * Command manager
@@ -163,10 +164,16 @@ void	print_env(t_env *envp);
 * Chain list
 */
 
-t_env	*ft_lstnew_env(void);
-void	ft_lstadd_back_env(t_env **lst, t_env *new);
-void	ft_lstclear_env(t_env **lst);
-t_env	*lst_search_env(char *s, t_env *env);
+t_env						*ft_lstnew_env(void);
+void						ft_lstadd_back_env(t_env **lst, t_env *new);
+void						ft_lstclear_env(t_env **lst);
+t_env						*lst_search_env(char *s, t_env *env);
+t_command_to_expand			lst_new_command_parsing_result(void);
+t_redirection_to_expand		lst_new_redirection_parsing_result(void);
+t_argument_to_expand		lst_new_argument_parsing_result(void);
+t_command_to_expand			ft_command_to_expand_addback(void);
+t_redirection_to_expand		ft_redirection_to_expand_addback(void);
+t_argument_to_expand		ft_argument_to_expand_addback(void);
 
 /*
 * Free / Error
