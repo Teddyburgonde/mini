@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/05 14:49:10 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_env{
 typedef struct s_argument_to_expand
 {
 	char						*content;
-	struct t_argument_to_expand	*next;
+	struct s_argument_to_expand	*next;
 }		t_argument_to_expand;
 
 typedef struct s_redirection_to_expand
@@ -56,15 +56,18 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_APPEND,
 		// REDIRECTION_HEREDOC
 	} type;
-	struct t_redirection_to_expand *next;
+	char							*content;
+	struct s_redirection_to_expand *next;
 } t_redirection_to_expand;
 
+typedef struct s_command t_command;
 typedef struct s_command{
 
 	t_argument_to_expand *arguments;
 	t_redirection_to_expand *redirections;
 
-	struct t_command_to_expand *next;
+	char	*content;
+	struct s_command *next;
 } t_command_to_expand;
 
 typedef struct
@@ -94,6 +97,7 @@ typedef struct
 	const char *remaining_line;
 
 } t_redirection_parsing_result;
+
 
 typedef struct
 {
@@ -168,13 +172,11 @@ t_env						*ft_lstnew_env(void);
 void						ft_lstadd_back_env(t_env **lst, t_env *new);
 void						ft_lstclear_env(t_env **lst);
 t_env						*lst_search_env(char *s, t_env *env);
-t_command_to_expand			lst_new_command_parsing_result(void);
-t_redirection_to_expand		lst_new_redirection_parsing_result(void);
-t_argument_to_expand		lst_new_argument_parsing_result(void);
-t_command_to_expand			ft_command_to_expand_addback(void);
-t_redirection_to_expand		ft_redirection_to_expand_addback(void);
-t_argument_to_expand		ft_argument_to_expand_addback(void);
-
+t_redirection_to_expand		*lst_new_redirection_parsing_result(void);
+t_command_to_expand	*lst_new_command_parsing_result(void);
+void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
+void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new);
+void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);
 /*
 * Free / Error
 */

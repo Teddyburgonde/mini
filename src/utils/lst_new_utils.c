@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_new_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:08:24 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/05 14:31:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ t_env	*ft_lstnew_env(void)
 	list->next = NULL;
 	return (list);
 }
-
-t_argument_to_expand	lst_new_argument_parsing_result(void)
+// j'ai modidié
+t_argument_to_expand	*lst_new_argument_parsing_result(void)
 {
 	t_argument_to_expand	*tmp;
 
@@ -38,7 +38,7 @@ t_argument_to_expand	lst_new_argument_parsing_result(void)
 	return (tmp);
 }
 
-t_redirection_to_expand	lst_new_redire_parsing_result(void)
+t_redirection_to_expand	*lst_new_redire_parsing_result(void)
 {
 	t_redirection_to_expand	*tmp;
 
@@ -50,7 +50,7 @@ t_redirection_to_expand	lst_new_redire_parsing_result(void)
 	return (tmp);
 }
 
-t_command_to_expand	lst_new_argument_parsing_result(void)
+t_command_to_expand	*lst_new_command_parsing_result(void)
 {
 	t_command_to_expand	*tmp;
 

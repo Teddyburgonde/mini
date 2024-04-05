@@ -1,30 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*   lst_utils_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/18 11:35:06 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/05 14:48:16 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-t_env	*ft_lstnew_env(void)
-{
-	t_env	*list;
-
-	list = malloc(sizeof(t_env));
-	if (!list)
-	{
-		write (2, "Initialize environment variable has an error.\n", 46);
-		exit(1);
-	}
-	list->next = NULL;
-	return (list);
-}
 
 void	ft_lstclear_env(t_env **lst)
 {
@@ -41,23 +27,6 @@ void	ft_lstclear_env(t_env **lst)
 		free(tmp->var);
 		free(tmp);
 	}
-}
-
-void	ft_lstadd_back_env(t_env **lst, t_env *new)
-{
-	t_env	*tmp;
-
-	if (!new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
-	while (tmp && tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
 }
 
 t_env	*lst_search_env(char *s, t_env *env)
