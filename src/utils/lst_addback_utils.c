@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 13:40:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:20:39 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
 	{
-		ptr_last_element = ptr_last_element->next;
+		ptr_last_element = (t_command_to_expand *)ptr_last_element->next;
 	}
-	ptr_last_element->next = new;
+	ptr_last_element->next = (t_command_to_expand *)new;
 }

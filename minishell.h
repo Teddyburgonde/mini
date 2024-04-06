@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/06 15:08:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_argument_to_expand
 typedef struct s_redirection_to_expand
 {
 	char *arg;
-
+	char						*content;
 	enum
 	{
 		REDIRECTION_OUTFILE,
@@ -59,11 +59,11 @@ typedef struct s_redirection_to_expand
 	struct s_redirection_to_expand *next;
 } t_redirection_to_expand;
 
-typedef struct s_command{
+typedef struct s_command_to_expand{
 
 	t_argument_to_expand *arguments;
 	t_redirection_to_expand *redirections;
-
+	char						*content;
 	struct s_command_to_expand *next;
 } t_command_to_expand;
 
@@ -81,7 +81,7 @@ typedef struct
 
 	t_command_to_expand command;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_command_parsing_result;
 
@@ -91,7 +91,7 @@ typedef struct
 
 	t_redirection_to_expand redirection;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_redirection_parsing_result;
 
@@ -101,7 +101,7 @@ typedef struct
 
 	t_argument_to_expand argument;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_argument_parsing_result;
 
@@ -142,11 +142,12 @@ int		ft_readline(t_env **env, t_vars *vars);
 * Parsing
 */
 
-const char	*skip_spaces(const char *str);
-const char	*skip_one_character(const char *str);
-const char	*skip_quote(
-const char *str, char c, t_argument_parsing_result *result);
-t_command_line_parsing_result ft_parse_command_line(const char *command_line);
+int	ft_find_fist_word(char *str);
+char	*skip_spaces(char *str);
+char	*skip_one_character(char *str);
+char	*skip_quote(
+char *str, char c, t_argument_parsing_result *result);
+t_command_line_parsing_result ft_parse_command_line(char *command_line);
 
 /*
 * Command manager
@@ -164,24 +165,23 @@ void	print_env(t_env *envp);
 * Chain list
 */
 
+t_command_to_expand	*lst_new_command_parsing_result(void);
+t_argument_to_expand	*lst_new_argument_parsing_result(void);
 t_env						*ft_lstnew_env(void);
 void						ft_lstadd_back_env(t_env **lst, t_env *new);
 void						ft_lstclear_env(t_env **lst);
 t_env						*lst_search_env(char *s, t_env *env);
-t_command_to_expand			lst_new_command_parsing_result(void);
 t_redirection_to_expand		lst_new_redirection_parsing_result(void);
-t_argument_to_expand		lst_new_argument_parsing_result(void);
-t_command_to_expand			ft_command_to_expand_addback(void);
-t_redirection_to_expand		ft_redirection_to_expand_addback(void);
-t_argument_to_expand		ft_argument_to_expand_addback(void);
-
+void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
+//t_command_to_expand			ft_command_to_expand_addback(void);
+//t_redirection_to_expand		ft_redirection_to_expand_addback(void);
+void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);
 /*
 * Free / Error
 */
-
+void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new);
 void	ft_free(char **tab);
 void	free_readline(t_vars *vars);
 int		check_free_readline(t_vars *vars);
 
 #endif
-
