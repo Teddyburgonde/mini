@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/09 12:01:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@
 # include <sys/wait.h>
 # define TAB '\t'
 # define NEW_LINE '\n'
-# define TRUE 1
-# define FALSE 0
 
 
+typedef enum  {
+	TRUE = 1,
+	FALSE = 0
+} t_bool;
 
 typedef struct s_vars{
 	char	*input;
@@ -54,10 +56,14 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_OUTFILE,
 		REDIRECTION_INFILE,
 		REDIRECTION_APPEND,
-		// REDIRECTION_HEREDOC
+		REDIRECTION_HEREDOC
 	} type;
 	struct s_redirection_to_expand *next;
 } t_redirection_to_expand;
+
+
+
+// arg1 < re'dir2' arg2 arg3 < redir1
 
 typedef struct s_command{
 
@@ -182,6 +188,27 @@ t_argument_to_expand		ft_argument_to_expand_addback(void);
 void	ft_free(char **tab);
 void	free_readline(t_vars *vars);
 int		check_free_readline(t_vars *vars);
+
+
+
+// TODO
+
+// t_argument_to_expand *original_arguments;
+// t_argument_to_expand *arguments_with_parameters_expanded =NULL;
+// t_argument_to_expand *arguments_with_quotes_expanded =NULL;
+
+// while ()
+
+
+// a appeller pour chaque argument (ou argument de redirection)
+// t_argument_to_expand* ft_expand_parameters(t_argument_to_expand argument) {
+
+// }
+
+// t_argument_to_expand* ft_expand_quotes(t_argument_to_expand argument) {
+
+// }
+
 
 #endif
 
