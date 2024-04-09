@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lst_addback_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/06 14:20:39 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/05 11:47:19 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_lstadd_back_env(t_env **lst,  t_env *new)
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
 	t_env	*tmp;
 
@@ -29,11 +29,10 @@ void	ft_lstadd_back_env(t_env **lst,  t_env *new)
 	tmp->next = new;
 }
 
-// j'ai modifié cette fonction 
-void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new)
+t_argument_to_expand	ft_argument_to_expand_addback(void)
 {
 	t_argument_to_expand	*ptr_last_element;
-	
+
 	if (!new)
 		return ;
 	if (!*lst)
@@ -49,7 +48,7 @@ void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_exp
 	ptr_last_element->next = new;
 }
 
-void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new)
+t_redirection_to_expand	ft_redirection_to_expand_addback(void)
 {
 	t_redirection_to_expand	*ptr_last_element;
 
@@ -67,8 +66,8 @@ void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirecti
 	}
 	ptr_last_element->next = new;
 }
-// j'ai modifier
-void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new)
+
+t_command_to_expand	ft_command_to_expand_addback(void)
 {
 	t_command_to_expand	*ptr_last_element;
 
@@ -82,7 +81,7 @@ void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
 	{
-		ptr_last_element = (t_command_to_expand *)ptr_last_element->next;
+		ptr_last_element = ptr_last_element->next;
 	}
-	ptr_last_element->next = (t_command_to_expand *)new;
+	ptr_last_element->next = new;
 }

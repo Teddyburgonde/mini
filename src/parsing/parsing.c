@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/06 12:28:24 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:58:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_argument_parsing_result parse_argument(char* command_line)
 			skip_quote(remaining_line, '\'', &result);
 			if (result.did_succeed == FALSE)
 				return (result);
+			break ;
 		}
 		else if (remaining_line[0] == '"')
 		{
@@ -42,59 +43,61 @@ t_argument_parsing_result parse_argument(char* command_line)
 			skip_quote(remaining_line, '"', &result);
 			if (result.did_succeed == FALSE)
 				return (result);
+			break ;
 		}
 		else
 		{
 			result.argument.content = ft_strjoin_arg(
 					result.argument.content, remaining_line);
+			break ;
 		}
 	}
 	return (result);
 }
 
-t_redirection_parsing_result	parse_redirection(char *str)
+t_redirection_parsing_result	parse_redirection(const char *str)
 {
 	t_redirection_parsing_result	redirection_result;
-	char							*remaining_line;
-	
-	// skip_one_character(str); ????????????????????????????????????????????
-	// skip_spaces(str);
-	// j'ai modifié ceci 06/04/2024 11h30
-	remaining_line = skip_spaces(str);
+
+	skip_one_character(str);
+	skip_spaces(str);
+	redirection_result = lst_new_redirection_parsing_result();
 	// lst_new
 	// Manage errors
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'
 		&& remaining_line[0] != '>' && remaining_line[0] != ' '
 		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
 		&& remaining_line[0] != '\t')
-		{
 		if (str[0] == '"')
 		{
 			str = skip_one_character(str);
 			redirection_result.redirection.arg = ft_strjoin_until(
 					redirection_result.redirection.arg, str, '"');
+			break ;
 		}
 		else if (str[0] == '\'')
 		{
 			str = skip_one_character(str);
 			redirection_result.redirection.arg = ft_strjoin_until(
 					redirection_result.redirection.arg, str, '\'');
+			break ;
 		}
 		else
 		{
 			redirection_result.redirection.arg = ft_strjoin_arg(
 					redirection_result.redirection.arg, str);
+			break ;
 		}
 	}
 	return (redirection_result);
 }
 
-t_command_parsing_result parse_command(char *command_line)
+t_command_parsing_result parse_command(const char *command_line)
 {
 	t_command_parsing_result		result;
 	t_redirection_parsing_result	redirection_result;
 	t_argument_parsing_result		argument_result;
-	char						*remaining_line;
+	const char						*remaining_line;
 
 	remaining_line = skip_spaces(command_line);
 	if (ft_strlen(remaining_line) == 0)
@@ -113,7 +116,7 @@ t_command_parsing_result parse_command(char *command_line)
 				result.did_succeed = FALSE;
 				return (result);
 			}
-			ft_redirection_to_expand_addback(&result.command.redirections, &redirection_result.redirection);
+			ft_redirection_to_expand_addback(&result.command.redirections, redirection_result.redirection);
 		}
 		else
 		{
@@ -131,9 +134,9 @@ t_command_parsing_result parse_command(char *command_line)
 	return (result);
 }
 
-t_command_line_parsing_result ft_parse_command_line(char *command_line)
+t_command_line_parsing_result ft_parse_command_line(const char *command_line)
 {
-	char						*remaining_line;
+	const char						*remaining_line;
 	t_command_line_parsing_result	result;
 	t_command_parsing_result		command_parsing_result;
 
@@ -152,7 +155,7 @@ t_command_line_parsing_result ft_parse_command_line(char *command_line)
 			result.did_succeed = FALSE;
 			return (result);
 		}
-		ft_command_to_expand_addback(&result.commands, &command_parsing_result.command);
+		ft_command_to_expand_add_back(&result.commands, &command_parsing_result.command);
 
 		remaining_line = command_parsing_result.remaining_line;
 		remaining_line = skip_spaces(remaining_line);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/06 15:06:27 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:57:43 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char *skip_spaces(char *str)
+const char *skip_spaces(const char *str)
 {
 	int	i;
 
@@ -27,12 +27,12 @@ char *skip_spaces(char *str)
 	return (&str[i]);
 }
 
-char	*skip_one_character(char *str)
+const char	*skip_one_character(const char *str)
 {
 	return (&str[1]);
 }
 
-int	ft_find_fist_word(char *str)
+static int	ft_find_fist_word(char *str)
 {
 	int	i;
 
@@ -45,70 +45,69 @@ int	ft_find_fist_word(char *str)
 	return (i + 1);
 }
 
-// char	*ft_strjoin_arg(char *s1, char *s2)
-// {
-// 	char	*tab;
-// 	int		i;
-// 	int		j;
+char	*ft_strjoin_arg(char *s1, char *s2)
+{
+	char	*tab;
+	int		i;
+	int		j;
 
-// 	if (!s1 && !s2)
-// 		return (0);
-// 	tab = malloc((2 + ft_strlen(s1) + ft_find_fist_word(s2)) * sizeof(char));
-// 	if (tab == 0)
-// 		return (0);
-// 	i = 0;
-// 	while (s1 && s1[i])
-// 	{
-// 		tab[i] = s1[i];
-// 		i++;
-// 	}
-// 	j = 0;
-// 	while (s2 && s2[j] != SPACE && s2[j] != NEW_LINE && s2[j] != TAB
-// 		&& s2[j] != '"' && s2[j] != '\'')
-// 	{
-// 		tab[i] = s2[j];
-// 		j++;
-// 		i++;
-// 	}
-// 	tab[i] = SPACE;
-// 	tab[i + 1] = 0;
-// 	if (s1)
-// 		free(s1);
-// 	return (tab);
-// }
+	if (!s1 && !s2)
+		return (0);
+	tab = malloc((1 + ft_strlen(s1) + ft_find_fist_word(s2)) * sizeof(char));
+	if (tab == 0)
+		return (0);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && s2[j] != SPACE && s2[j] != NEW_LINE && s2[j] != TAB
+		&& s2[j] != '"' && s2[j] != '\'')
+	{
+		tab[i] = s2[j];
+		j++;
+		i++;
+	}
+	tab[i] = 0;
+	if (s1)
+		free(s1);
+	return (tab);
+}
 
-// char	*ft_strjoin_until(char *s1, char *s2, char c)
-// {
-// 	char	*tab;
-// 	int		i;
-// 	int		j;
+char	*ft_strjoin_until(char *s1, char *s2, char c)
+{
+	char	*tab;
+	int		i;
+	int		j;
 
-// 	if (!s1 && !s2)
-// 		return (0);
-// 	tab = malloc((2 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
-// 	if (tab == 0)
-// 		return (0);
-// 	i = 0;
-// 	while (s1 && s1[i])
-// 	{
-// 		tab[i] = s1[i];
-// 		i++;
-// 	}
-// 	j = 0;
-// 	while (s2 && s2[j] != c)
-// 	{
-// 		tab[i] = s2[j];
-// 		j++;
-// 		i++;
-// 	}
-// 	tab[i] = SPACE;
-// 	tab[i + 1] = 0;
-// 	if (s1)
-// 		free(s1);
-// 	return (tab);
-// }
+	if (!s1 && !s2)
+		return (0);
+	tab = malloc((1 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
+	if (tab == 0)
+		return (0);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && s2[j] != c)
+	{
+		tab[i] = s2[j];
+		j++;
+		i++;
+	}
+	tab[i] = 0;
+	if (s1)
+		free(s1);
+	return (tab);
+}
 
-char	*skip_quote(char *str, char c, t_argument_parsing_result *result)
+const char	*skip_quote(
+		const char *str, char c, t_argument_parsing_result *result)
 {
 	int	i;
 
