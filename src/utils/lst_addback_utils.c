@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_addback_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:19 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/11 19:30:07 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	tmp->next = new;
 }
 
-t_argument_to_expand	ft_argument_to_expand_addback(void)
+void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new)
 {
 	t_argument_to_expand	*ptr_last_element;
 
@@ -48,7 +48,7 @@ t_argument_to_expand	ft_argument_to_expand_addback(void)
 	ptr_last_element->next = new;
 }
 
-t_redirection_to_expand	ft_redirection_to_expand_addback(void)
+void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new)
 {
 	t_redirection_to_expand	*ptr_last_element;
 
@@ -67,7 +67,7 @@ t_redirection_to_expand	ft_redirection_to_expand_addback(void)
 	ptr_last_element->next = new;
 }
 
-t_command_to_expand	ft_command_to_expand_addback(void)
+void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new)
 {
 	t_command_to_expand	*ptr_last_element;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/09 12:01:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/11 19:32:13 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_redirection_to_expand
 
 // arg1 < re'dir2' arg2 arg3 < redir1
 
-typedef struct s_command{
+typedef struct s_command_to_expand {
 
 	t_argument_to_expand *arguments;
 	t_redirection_to_expand *redirections;
@@ -171,15 +171,15 @@ void	print_env(t_env *envp);
 */
 
 t_env						*ft_lstnew_env(void);
-void						ft_lstadd_back_env(t_env **lst, t_env *new);
 void						ft_lstclear_env(t_env **lst);
 t_env						*lst_search_env(char *s, t_env *env);
 t_command_to_expand			lst_new_command_parsing_result(void);
 t_redirection_to_expand		lst_new_redirection_parsing_result(void);
 t_argument_to_expand		lst_new_argument_parsing_result(void);
-t_command_to_expand			ft_command_to_expand_addback(void);
-t_redirection_to_expand		ft_redirection_to_expand_addback(void);
-t_argument_to_expand		ft_argument_to_expand_addback(void);
+void		ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
+void		ft_lstadd_back_env(t_env **lst, t_env *new);
+void		ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);
+void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new);
 
 /*
 * Free / Error
