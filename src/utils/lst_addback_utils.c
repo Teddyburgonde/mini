@@ -6,11 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/11 19:30:07 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:37:13 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+// 11/04/2024
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {

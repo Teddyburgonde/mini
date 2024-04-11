@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/09 10:58:53 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/11 19:39:57 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_argument_parsing_result parse_argument(char* command_line)
+t_argument_parsing_result parse_argument(const char *command_line)
 {
-	char						*remaining_line;
+	const char					*remaining_line;
 	t_argument_parsing_result	result;
 	char						*arg;
 
@@ -155,7 +155,7 @@ t_command_line_parsing_result ft_parse_command_line(const char *command_line)
 			result.did_succeed = FALSE;
 			return (result);
 		}
-		ft_command_to_expand_add_back(&result.commands, &command_parsing_result.command);
+		ft_command_to_expand_addback(&result.commands, &command_parsing_result.command);
 
 		remaining_line = command_parsing_result.remaining_line;
 		remaining_line = skip_spaces(remaining_line);
