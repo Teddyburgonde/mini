@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 13:25:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:50:12 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct
 {
 	int did_succeed;
 
-	t_command_to_expand command;
+	t_command_to_expand *command;
 
 	char *remaining_line;
 
@@ -96,7 +96,7 @@ typedef struct
 {
 	int did_succeed;
 
-	t_redirection_to_expand redirection;
+	t_redirection_to_expand *redirection;
 
 	char *remaining_line;
 
@@ -106,7 +106,7 @@ typedef struct
 {
 	int did_succeed;
 
-	t_argument_to_expand argument;
+	t_argument_to_expand *argument;
 
 	char *remaining_line;
 
@@ -118,6 +118,7 @@ typedef struct
 
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_strchr(char *s, int c);
+int		ft_strchr_exception(char *str);
 void	ft_putstr_fd(char *s, int fd);
 char	*copy(char *s);
 char	**ft_split(char const *s, char c);
@@ -149,11 +150,12 @@ int		ft_readline(t_env **env, t_vars *vars);
 * Parsing
 */
 
+
 char	*skip_spaces(char *str);
 char	*skip_one_character(char *str);
 char	*skip_quote(
 char *str, char c, t_argument_parsing_result *result);
-t_command_line_parsing_result ft_parse_command_line(char *command_line);
+t_command_line_parsing_result *ft_parse_command_line(char *command_line);
 
 /*
 * Command manager

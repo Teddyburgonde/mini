@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:41:21 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/16 17:31:26 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:36:47 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,22 @@ int	ft_strchr(char *s, int c)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_strchr_exception(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '|' || str[i] == '>' || str[i] == '<'
+			|| str[i] == '$' || str[i] == NEW_LINE
+			|| str[i] == TAB || str[i] == SPACE)
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)

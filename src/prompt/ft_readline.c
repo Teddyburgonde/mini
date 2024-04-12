@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/05 11:37:40 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:50:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_readline(t_env **env, t_vars *vars)
 {
-	t_command_line_parsing_result parsing_result;
+	t_command_line_parsing_result *parsing_result;
 
 	(void)env;
 	vars = malloc(sizeof(t_vars));
@@ -30,7 +30,7 @@ int	ft_readline(t_env **env, t_vars *vars)
 		}
 		add_history(vars->input);
 		parsing_result = ft_parse_command_line(vars->input);
-		if (!parsing_result.did_succeed)
+		if (!parsing_result->did_succeed)
 		{
 			// handle error
 		}

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 13:36:08 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 14:40:33 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,15 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 	int		j;
 	int		n;
 
-	if (!s1 || !s2)
+	if (s1 == NULL && s2 == NULL)
 		return (0);
-	tab = malloc((1 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
+	if (ft_strchr(&s2[1], c) == 0)
+	{
+		tab = malloc((1 + ft_strlen(s1) + ft_strchr_exception(&s2[1]))
+				* sizeof(char));
+	}
+	else
+		tab = malloc((1 + ft_strlen(s1) + ft_strchr(&s2[1], c)) * sizeof(char));
 	if (tab == 0)
 		return (0);
 	i = 0;
@@ -96,13 +102,27 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 		i++;
 	}
 	j = 0;
-	while (s2 && n != 2)
+	if (ft_strchr(&s2[1], c) != 0)
 	{
-		if (s2[j] != c)
-			n++;
-		tab[i] = s2[j];
-		j++;
-		i++;
+		while (s2 && n != 2)
+		{
+			if (s2[j] != c)
+				n++;
+			tab[i] = s2[j];
+			j++;
+			i++;
+		}
+	}
+	else
+	{
+		while (ft_strchr_exception(&s2[1]) > j)
+		{
+			if (s2[j] != c)
+				n++;
+			tab[i] = s2[j];
+			j++;
+			i++;
+		}
 	}
 	tab[i] = 0;
 	if (s1)
