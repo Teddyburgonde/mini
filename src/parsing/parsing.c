@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 12:30:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:23:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_redirection_parsing_result	parse_redirection(char *str)
 	remaining_line = str;
 	skip_one_character(str);
 	skip_spaces(str);
-	redirection_result.redirection = lst_new_redirection_parsing_result();
+	redirection_result.redirection = *lst_new_redirection_parsing_result();
 	// lst_new
 	// Manage errors
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'

@@ -14,6 +14,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/lst_utils_env.c \
             src/utils/ft_strcmp.c \
 			src/utils/ft_split.c \
+			src/utils/parsing_utils.c \
 			src/error_free/free_error.c \
 
 

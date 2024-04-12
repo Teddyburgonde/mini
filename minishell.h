@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 12:28:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:25:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct
 
 	t_command_to_expand command;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_command_parsing_result;
 
@@ -98,7 +98,7 @@ typedef struct
 
 	t_redirection_to_expand redirection;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_redirection_parsing_result;
 
@@ -108,7 +108,7 @@ typedef struct
 
 	t_argument_to_expand argument;
 
-	const char *remaining_line;
+	char *remaining_line;
 
 } t_argument_parsing_result;
 
@@ -153,7 +153,7 @@ char	*skip_spaces(char *str);
 char	*skip_one_character(char *str);
 char	*skip_quote(
 char *str, char c, t_argument_parsing_result *result);
-t_command_line_parsing_result ft_parse_command_line(const char *command_line);
+t_command_line_parsing_result ft_parse_command_line(char *command_line);
 
 /*
 * Command manager

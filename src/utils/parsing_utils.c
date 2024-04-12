@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 12:28:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:36:08 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 	int		j;
 	int		n;
 
-	if (!s1 && !s2)
+	if (!s1 || !s2)
 		return (0);
 	tab = malloc((1 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
 	if (tab == 0)
