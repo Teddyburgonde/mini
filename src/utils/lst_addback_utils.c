@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lst_addback_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/11 19:37:13 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:09:01 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// 11/04/2024
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
@@ -31,7 +29,8 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	tmp->next = new;
 }
 
-void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new)
+void	ft_argument_to_expand_addback(
+	t_argument_to_expand **lst, t_argument_to_expand *new)
 {
 	t_argument_to_expand	*ptr_last_element;
 
@@ -44,13 +43,12 @@ void	ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_exp
 	}
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
-	{
 		ptr_last_element = ptr_last_element->next;
-	}
 	ptr_last_element->next = new;
 }
 
-void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new)
+void	ft_redirection_to_expand_addback(
+	t_redirection_to_expand **lst, t_redirection_to_expand *new)
 {
 	t_redirection_to_expand	*ptr_last_element;
 
@@ -63,13 +61,12 @@ void	ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirecti
 	}
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
-	{
 		ptr_last_element = ptr_last_element->next;
-	}
 	ptr_last_element->next = new;
 }
 
-void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new)
+void	ft_command_to_expand_addback(
+	t_command_to_expand **lst, t_command_to_expand *new)
 {
 	t_command_to_expand	*ptr_last_element;
 
@@ -82,8 +79,6 @@ void	ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand
 	}
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
-	{
 		ptr_last_element = ptr_last_element->next;
-	}
 	ptr_last_element->next = new;
 }

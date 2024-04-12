@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/11 19:32:13 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:28:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_OUTFILE,
 		REDIRECTION_INFILE,
 		REDIRECTION_APPEND,
-		REDIRECTION_HEREDOC
-	} type;
-	struct s_redirection_to_expand *next;
-} t_redirection_to_expand;
+		REDIRECTION_HEREDOC,
+		UNASIGNED
+	}	type;
+	struct	s_redirection_to_expand *next;
+}			t_redirection_to_expand;
 
 
 
@@ -148,10 +149,10 @@ int		ft_readline(t_env **env, t_vars *vars);
 * Parsing
 */
 
-const char	*skip_spaces(const char *str);
-const char	*skip_one_character(const char *str);
-const char	*skip_quote(
-const char *str, char c, t_argument_parsing_result *result);
+char	*skip_spaces(char *str);
+char	*skip_one_character(char *str);
+char	*skip_quote(
+char *str, char c, t_argument_parsing_result *result);
 t_command_line_parsing_result ft_parse_command_line(const char *command_line);
 
 /*
@@ -171,13 +172,13 @@ void	print_env(t_env *envp);
 */
 
 t_env						*ft_lstnew_env(void);
-void						ft_lstclear_env(t_env **lst);
 t_env						*lst_search_env(char *s, t_env *env);
-t_command_to_expand			lst_new_command_parsing_result(void);
-t_redirection_to_expand		lst_new_redirection_parsing_result(void);
-t_argument_to_expand		lst_new_argument_parsing_result(void);
-void		ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
+t_command_to_expand			*lst_new_command_parsing_result(void);
+t_redirection_to_expand		*lst_new_redirection_parsing_result(void);
+t_argument_to_expand		*lst_new_argument_parsing_result(void);
+void						ft_lstclear_env(t_env **lst);
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
+void		ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
 void		ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);
 void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new);
 

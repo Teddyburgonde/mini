@@ -5,15 +5,15 @@ MY_SOURCES= src/prompt/minishell.c \
             src/env/init_env.c \
             src/env/print_env.c \
             src/signal/ft_ctrl.c \
+			src/parsing/parsing.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
             src/utils/ft_putstr_fd.c \
             src/utils/lst_addback_utils.c \
 			src/utils/lst_new_utils.c \
-			src/utils/lst_utils_parse.c \
+			src/utils/lst_utils_env.c \
             src/utils/ft_strcmp.c \
 			src/utils/ft_split.c \
-			src/utils/utils_parsing.c \
 			src/error_free/free_error.c \
 
 

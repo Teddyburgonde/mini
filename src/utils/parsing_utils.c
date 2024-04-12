@@ -3,47 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/06 15:09:24 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:28:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// char *skip_spaces(char *str)
-// {
-// 	int	i;
+char *skip_spaces(char *str)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if ((str[i] == NEW_LINE || str[i] == TAB) || str[i] == SPACE)
-// 			i++;
-// 		else
-// 			break;
-// 	}
-// 	return (&str[i]);
-// }
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == NEW_LINE || str[i] == TAB) || str[i] == SPACE)
+			i++;
+		else
+			break ;
+	}
+	return (&str[i]);
+}
 
-// char	*skip_one_character(char *str)
-// {
-// 	return (&str[1]);
-// }
+char	*skip_one_character(char *str)
+{
+	return (&str[1]);
+}
 
-// int	ft_find_fist_word(char *str)
-// {
-// 	int	i;
+static int	ft_find_fist_word(char *str)
+{
+	int	i;
 
-// 	if (!str)
-// 		return (0);
-// 	i = 0;
-// 	while (str[i] != SPACE && str[i] != TAB && str[i] != NEW_LINE
-// 		&& str[i] != '"' && str[i] != '\'')
-// 		i++;
-// 	return (i + 1);
-// }
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] != SPACE && str[i] != TAB && str[i] != NEW_LINE
+		&& str[i] != '"' && str[i] != '\'')
+		i++;
+	return (i + 1);
+}
 
 char	*ft_strjoin_arg(char *s1, char *s2)
 {
@@ -53,7 +53,7 @@ char	*ft_strjoin_arg(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (0);
-	tab = malloc((2 + ft_strlen(s1) + ft_find_fist_word(s2)) * sizeof(char));
+	tab = malloc((1 + ft_strlen(s1) + ft_find_fist_word(s2)) * sizeof(char));
 	if (tab == 0)
 		return (0);
 	i = 0;
@@ -70,8 +70,7 @@ char	*ft_strjoin_arg(char *s1, char *s2)
 		j++;
 		i++;
 	}
-	tab[i] = SPACE;
-	tab[i + 1] = 0;
+	tab[i] = 0;
 	if (s1)
 		free(s1);
 	return (tab);
@@ -82,46 +81,49 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 	char	*tab;
 	int		i;
 	int		j;
+	int		n;
 
 	if (!s1 && !s2)
 		return (0);
-	tab = malloc((2 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
+	tab = malloc((1 + ft_strlen(s1) + ft_strchr(s2, c)) * sizeof(char));
 	if (tab == 0)
 		return (0);
 	i = 0;
+	n = 0;
 	while (s1 && s1[i])
 	{
 		tab[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (s2 && s2[j] != c)
+	while (s2 && n != 2)
 	{
+		if (s2[j] != c)
+			n++;
 		tab[i] = s2[j];
 		j++;
 		i++;
 	}
-	tab[i] = SPACE;
-	tab[i + 1] = 0;
+	tab[i] = 0;
 	if (s1)
 		free(s1);
 	return (tab);
 }
 
-// char	*skip_quote(
-// 		char *str, char c, t_argument_parsing_result *result)
-// {
-// 	int	i;
+char	*skip_quote(
+		char *str, char c, t_argument_parsing_result *result)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (str[i] && str[i] != c)
-// 		i++;
-// 	if (str[i] == c)
-// 		return (&str[i]);
-// 	else
-// 	{
-// 		ft_putstr_fd("Error\n", 2);
-// 		result->did_succeed = FALSE;
-// 		return (NULL);
-// 	}
-// }
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	if (str[i] == c)
+		return (&str[i]);
+	else
+	{
+		ft_putstr_fd("Error\n", 2);
+		result->did_succeed = FALSE;
+		return (NULL);
+	}
+}

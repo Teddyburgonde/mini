@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:08:24 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 11:47:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/12 12:16:07 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_env	*ft_lstnew_env(void)
 	return (list);
 }
 
-t_argument_to_expand	lst_new_argument_parsing_result(void)
+t_argument_to_expand	*lst_new_argument_parsing_result(void)
 {
 	t_argument_to_expand	*tmp;
 
@@ -38,26 +38,28 @@ t_argument_to_expand	lst_new_argument_parsing_result(void)
 	return (tmp);
 }
 
-t_redirection_to_expand	lst_new_redire_parsing_result(void)
+t_redirection_to_expand	*lst_new_redire_parsing_result(void)
 {
 	t_redirection_to_expand	*tmp;
 
 	tmp = malloc(sizeof(t_redirection_to_expand));
 	if (!tmp)
 		return (NULL);
-	tmp->content = NULL;
+	tmp->arg = NULL;
+	tmp->type = UNASIGNED;
 	tmp->next = NULL;
 	return (tmp);
 }
 
-t_command_to_expand	lst_new_argument_parsing_result(void)
+t_command_to_expand	*lst_new_command_parsing_result(void)
 {
 	t_command_to_expand	*tmp;
 
 	tmp = malloc(sizeof(t_command_to_expand));
 	if (!tmp)
 		return (NULL);
-	tmp->content = NULL;
+	tmp->arguments = NULL;
+	tmp->redirections = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }
