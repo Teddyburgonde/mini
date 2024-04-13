@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 11:11:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 14:12:51 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 				* sizeof(char));
 	}
 	else
-		tab = malloc((1 + ft_strlen(s1) + ft_strchr(&s2[1], c)) * sizeof(char));
+		tab = malloc((3 + ft_strlen(s1) + ft_strchr(&s2[1], c)) * sizeof(char));
 	if (tab == 0)
 		return (0);
 	i = 0;
@@ -117,7 +117,7 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 	{
 		while (ft_strchr_exception(&s2[1]) > j)
 		{
-			if (s2[j] != c)
+			if (s2[j] == c)
 				n++;
 			tab[i] = s2[j];
 			j++;
