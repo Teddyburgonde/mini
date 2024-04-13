@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 15:50:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 12:03:02 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_command_to_expand {
 
 typedef struct
 {
-	int did_succeed;
+	t_bool did_succeed;
 
 	t_command_to_expand *commands;
 
@@ -84,7 +84,7 @@ typedef struct
 
 typedef struct
 {
-	int did_succeed;
+	t_bool did_succeed;
 
 	t_command_to_expand *command;
 
@@ -94,7 +94,7 @@ typedef struct
 
 typedef struct
 {
-	int did_succeed;
+	t_bool did_succeed;
 
 	t_redirection_to_expand *redirection;
 
@@ -104,7 +104,7 @@ typedef struct
 
 typedef struct
 {
-	int did_succeed;
+	t_bool did_succeed;
 
 	t_argument_to_expand *argument;
 

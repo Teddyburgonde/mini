@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 11:21:54 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 12:00:47 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,9 @@ t_command_parsing_result *parse_command(char *command_line)
 		if (remaining_line[0] == '>' || remaining_line[0] == '<')
 		{
 			redirection_result = parse_redirection(remaining_line);
-			if (!redirection_result.did_succeed)
+			if (redirection_result.did_succeed != TRUE)
 			{
+				result = malloc(sizeof(t_command_parsing_result));
 				result->did_succeed = FALSE;
 				return (result);
 			}
