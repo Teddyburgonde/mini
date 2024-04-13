@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 14:09:00 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 14:51:31 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,21 +101,24 @@ t_command_parsing_result *parse_command(char *command_line)
 	char							*remaining_line;
 
 	result = malloc(sizeof(t_command_parsing_result));
+	result->command = malloc(sizeof(t_command_to_expand));
+	result->remaining_line = NULL;
 	remaining_line = skip_spaces(command_line);
+	result->command->arguments = NULL;
 	if (ft_strlen(remaining_line) == 0)
 	{
 		result->did_succeed = TRUE;
 		return (result);
 	}
 
-	while (ft_strlen(remaining_line) > 0 && remaining_line[0] != '|')
+	while (remaining_line && ft_strlen(remaining_line) > 0 && remaining_line[0] != '|')
 	{
+		printf("debog [%c]\n", *remaining_line);
 		if (remaining_line[0] == '>' || remaining_line[0] == '<')
 		{
 			redirection_result = parse_redirection(remaining_line);
 			if (redirection_result.did_succeed != TRUE)
 			{
-				result = malloc(sizeof(t_command_parsing_result));
 				result->did_succeed = FALSE;
 				return (result);
 			}
@@ -132,6 +135,7 @@ t_command_parsing_result *parse_command(char *command_line)
 			}
 			ft_argument_to_expand_addback(&result->command->arguments, argument_result->argument);
 		}
+		remaining_line = result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
 	}
 	result->did_succeed = TRUE;

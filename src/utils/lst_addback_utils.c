@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_addback_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/12 15:36:43 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 14:51:09 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 
 	if (!new)
 		return ;
-	if (!*lst)
+	if (!lst || !*lst)
 	{
 		*lst = new;
 		return ;
@@ -36,14 +36,17 @@ void	ft_argument_to_expand_addback(
 
 	if (!new)
 		return ;
-	if (!*lst)
+	if (!lst || !*lst)
 	{
 		*lst = new;
 		return ;
 	}
 	ptr_last_element = *lst;
 	while (ptr_last_element->next != NULL)
+	{
+		// printf("la\n");
 		ptr_last_element = ptr_last_element->next;
+	}
 	ptr_last_element->next = new;
 }
 
@@ -54,7 +57,7 @@ void	ft_redirection_to_expand_addback(
 
 	if (!new)
 		return ;
-	if (!*lst)
+	if (!lst || !*lst)
 	{
 		*lst = new;
 		return ;
@@ -72,7 +75,7 @@ void	ft_command_to_expand_addback(
 
 	if (!new)
 		return ;
-	if (!*lst)
+	if (!lst || !*lst)
 	{
 		*lst = new;
 		return ;
