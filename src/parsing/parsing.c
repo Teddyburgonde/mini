@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 15:49:51 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 11:21:54 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_command_parsing_result *parse_command(char *command_line)
 	t_argument_parsing_result		*argument_result;
 	char							*remaining_line;
 
-	result = NULL;
+	result = malloc(sizeof(t_command_parsing_result));
 	remaining_line = skip_spaces(command_line);
 	if (ft_strlen(remaining_line) == 0)
 	{
@@ -124,7 +124,7 @@ t_command_parsing_result *parse_command(char *command_line)
 		else
 		{
 			argument_result = parse_argument(remaining_line);
-			if (!argument_result->did_succeed)
+			if (argument_result->did_succeed != TRUE)
 			{
 				result->did_succeed = FALSE;
 				return (result);
