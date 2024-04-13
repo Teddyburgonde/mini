@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 14:51:31 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:21:39 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ t_command_parsing_result *parse_command(char *command_line)
 
 	while (remaining_line && ft_strlen(remaining_line) > 0 && remaining_line[0] != '|')
 	{
-		printf("debog [%c]\n", *remaining_line);
 		if (remaining_line[0] == '>' || remaining_line[0] == '<')
 		{
 			redirection_result = parse_redirection(remaining_line);
@@ -170,7 +169,7 @@ t_command_line_parsing_result *ft_parse_command_line(char *command_line)
 		remaining_line = command_parsing_result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
 
-		if (remaining_line[0] == '|')
+		if (remaining_line && remaining_line[0] == '|')
 		{
 			remaining_line = skip_one_character(remaining_line);
 			remaining_line = skip_spaces(remaining_line);

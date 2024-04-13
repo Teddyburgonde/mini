@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/12 15:50:45 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/13 16:17:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_readline(t_env **env, t_vars *vars)
 		{
 			// handle error
 		}
+		printf("%s\n", parsing_result->commands->arguments->content);
 		// if (parse->next == NULL)
 			// cmd_selector(vars, &env, ac, av);
 		// else
