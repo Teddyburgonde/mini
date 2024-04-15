@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 12:03:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/15 14:50:13 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ typedef struct
 /*
 * Utilitaries
 */
-
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_strchr(char *s, int c);
 int		ft_strchr_exception(char *str);
@@ -127,6 +126,8 @@ int		ft_strlen(char const *str);
 char	*ft_strjoin(char const *s1, char *s2);
 char	*ft_strjoin_arg(char *s1, char *s2);
 char	*ft_strjoin_until(char *s1, char *s2, char c);
+int		single_redictection(char *str);
+int		double_redirection(char *str);
 
 /*
 * Environment
@@ -156,6 +157,7 @@ char	*skip_one_character(char *str);
 char	*skip_quote(
 char *str, char c, t_argument_parsing_result *result);
 t_command_line_parsing_result *ft_parse_command_line(char *command_line);
+t_redirection_parsing_result	*parse_redirection(char *str);
 
 /*
 * Command manager
