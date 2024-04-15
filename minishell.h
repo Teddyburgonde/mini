@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/15 14:50:13 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:59:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct
 
 	t_command_to_expand *command;
 
-	char *remaining_line;
+	const char *remaining_line;
 
 } t_command_parsing_result;
 
@@ -98,7 +98,7 @@ typedef struct
 
 	t_redirection_to_expand *redirection;
 
-	char *remaining_line;
+	const char *remaining_line;
 
 } t_redirection_parsing_result;
 
@@ -108,7 +108,7 @@ typedef struct
 
 	t_argument_to_expand *argument;
 
-	char *remaining_line;
+	const char *remaining_line;
 
 } t_argument_parsing_result;
 
@@ -152,10 +152,10 @@ int		ft_readline(t_env **env, t_vars *vars);
 */
 
 
-char	*skip_spaces(char *str);
-char	*skip_one_character(char *str);
+char	*skip_spaces(const char *str);
+char	*skip_one_character(const char *str);
 char	*skip_quote(
-char *str, char c, t_argument_parsing_result *result);
+const char *str, char c, t_argument_parsing_result *result);
 t_command_line_parsing_result *ft_parse_command_line(char *command_line);
 t_redirection_parsing_result	*parse_redirection(char *str);
 

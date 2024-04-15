@@ -6,13 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/13 16:36:58 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:00:29 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char *skip_spaces(char *str)
+char *skip_spaces(const char *str)
 {
 	if (!str)
 		return NULL;
@@ -26,12 +26,12 @@ char *skip_spaces(char *str)
 		else
 			break ;
 	}
-	return (&str[i]);
+	return ((char*)&str[i]);
 }
 
-char	*skip_one_character(char *str)
+char	*skip_one_character(const char *str)
 {
-	return (&str[1]);
+	return ((char*)&str[1]);
 }
 
 static int	ft_find_fist_word(char *str)
@@ -132,8 +132,8 @@ char	*ft_strjoin_until(char *s1, char *s2, char c)
 	return (tab);
 }
 
-char	*skip_quote(
-		char *str, char c, t_argument_parsing_result *result)
+char	*skip_quote( 
+		const char *str, char c, t_argument_parsing_result *result)
 {
 	int	i;
 
@@ -143,7 +143,7 @@ char	*skip_quote(
 	while (str[i] && str[i] != c)
 		i++;
 	if (str[i] == c)
-		return (&str[i]);
+		return ((char *)&str[i]);
 	else
 	{
 		ft_putstr_fd("Error\n", 2);

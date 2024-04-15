@@ -6,26 +6,70 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/15 14:54:50 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:25:07 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_argument_parsing_result	*parse_argument(char *command_line)
+// typedef struct s_collected_ptr t_collected_ptr;
+// typedef struct s_collected_ptr
+// {
+// 	void *ptr;
+	
+// 	t_collected_ptr *next;
+
+// } t_collected_ptr;
+
+// typedef struct s_collector {
+	
+// 	t_collected_ptr *collection;
+	
+// }t_collector;
+
+// void *ft_collect(void *ptr, t_collector *collector);
+// void ft_collector_free(t_collector *collector);
+// t_collector *ft_collector_new(void);
+
+
+
+// t_collector *collector = ft_collector_new();
+// void *ptr1 = ft_collect(malloc(42), collector);
+// void *ptr2 = ft_collect(malloc(42), collector);
+// void *ptr3 = ft_collect(malloc(42), collector);
+// void *ptr4 = ft_collect(malloc(42), collector);
+
+// ft_collector_free(collector);
+
+
+//strspn ft_strjoin_until
+
+
+
+
+
+t_argument_parsing_result	*parse_argument(const char *command_line)
 {
-	char						*remaining_line;
+	const char					*remaining_line;
 	t_argument_parsing_result	*result;
 
 	result = malloc(sizeof(t_argument_parsing_result));
 	result->argument = lst_new_argument_parsing_result();
 	result->did_succeed = TRUE;
 	remaining_line = skip_spaces(command_line);
+	// faire une fonction pour le while
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'
 		&& remaining_line[0] != '>' && remaining_line[0] != ' '
 		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
 		&& remaining_line[0] != '\t')
 	{
+		// if (remaining_line[0] == '\'' || remaining_line[0] == '"') {
+		// 	t_quote_parsing_result result = parse_quote(remaining_line);
+		// 	continue;
+		// }
+
+		// faire une fonction pour gain de place 
+		
 		if (remaining_line[0] == '\'')
 		{
 			result->argument->content = ft_strjoin_until(
@@ -54,6 +98,13 @@ t_argument_parsing_result	*parse_argument(char *command_line)
 	result->remaining_line = remaining_line;
 	return (result);
 }
+// typage rediction 
+// sauvegarde du file
+		// REDIRECTION_OUTFILE,
+		// REDIRECTION_INFILE,
+		// REDIRECTION_APPEND,
+		// REDIRECTION_HEREDOC,
+		// UNASIGNED
 
 t_redirection_parsing_result	*parse_redirection(char *str)
 {
@@ -62,24 +113,39 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 	redirection_result = malloc(sizeof(t_redirection_parsing_result));
 	redirection_result->did_succeed = TRUE;
 	redirection_result->redirection = lst_new_redirection_parsing_result();
-	if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
+	// begin : a exporter dans une autre fonction
+	if (str[0] == '>' && str[1] == '>')
 	{
 		if (double_redirection(str))
 			redirection_result->did_succeed = FALSE;
 		else
-			skip_one_character(str);
+			str = skip_one_character(str);
+		redirection_result->redirection->type = REDIRECTION_APPEND;
 	}
-	else if (str[0] == '<' || str[0] == '>')
+	else if (str[0] == '<' && str[1] == '<')
+	{
+		if (double_redirection(str))
+			redirection_result->did_succeed = FALSE;
+		else
+			str = skip_one_character(str);
+		redirection_result->redirection->type = REDIRECTION_HEREDOC;
+	}
+	else if (str[0] == '<')
 	{
 		if (single_redictection(str))
 			redirection_result->did_succeed = FALSE;
+		redirection_result->redirection->type = REDIRECTION_INFILE;
 	}
-	if (redirection_result->did_succeed == TRUE)
+	else if (str[0] == '>')
 	{
-		skip_one_character(str);
-		skip_spaces(str);
+		if (single_redictection(str))
+			redirection_result->did_succeed = FALSE;
+		redirection_result->redirection->type = REDIRECTION_OUTFILE;
 	}
-	
+	// end : a exporter dans une autre fonction
+	str = skip_one_character(str);
+	str = skip_spaces(str);
+	redirection_result->redirection->arg = ft_strjoin_arg(NULL, redirection_result->redirection->arg);
 	redirection_result->remaining_line = str;
 	return (redirection_result);
 }
