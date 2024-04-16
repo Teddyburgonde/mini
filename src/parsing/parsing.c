@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 14:49:07 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:51:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,6 @@
 
 
 //strspn ft_strjoin_until
-
-int  ft_strcspn(char *s, char *reject)
-{
-    int	i;
-    int	j;
-
-	i = 0;
-    while (s[i] != '\0')
-    {
-		j = 0;
-        while (reject[j] != '\0')
-        {
-            if(s[i] == reject[j])
-                return (i);
-            j++;
-        }
-        i++;
-    }
-    return (i);
-}
-
-
-
 
 t_argument_parsing_result	*parse_argument(const char *command_line)
 {

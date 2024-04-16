@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:24:05 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/15 15:35:15 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:50:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,24 @@ int	single_redictection(char *str)
 		return (1);
 	}
 	return (0);
+}
+
+int  ft_strcspn(char *s, char *reject)
+{
+    int	i;
+    int	j;
+
+	i = 0;
+    while (s[i] != '\0')
+    {
+		j = 0;
+        while (reject[j] != '\0')
+        {
+            if(s[i] == reject[j])
+                return (i);
+            j++;
+        }
+        i++;
+    }
+    return (i);
 }

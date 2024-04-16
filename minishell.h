@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/15 15:59:30 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:51:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int		ft_readline(t_env **env, t_vars *vars);
 * Parsing
 */
 
-
+int  	ft_strcspn(char *s, char *reject);
 char	*skip_spaces(const char *str);
 char	*skip_one_character(const char *str);
 char	*skip_quote(
