@@ -6,14 +6,58 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 14:51:05 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:55:41 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+t_argument_parsing_result *parse_quote(const char *remaining_line, t_argument_parsing_result *result)
+{
+	if (remaining_line[0] == '\'')
+	{
+		result->argument->content = ft_strjoin_quoted_arg(
+				result->argument->content, remaining_line, "\'");
+		remaining_line = skip_quote(remaining_line, '\'', result);
+		if (result->did_succeed == FALSE)
+			return (result);
+	}
+	else if (remaining_line[0] == '"')
+	{
+		result->argument->content = ft_strjoin_quoted_arg(
+				result->argument->content, remaining_line, "\"");
+		remaining_line = skip_quote(remaining_line, '"', result);
+		if (result->did_succeed == FALSE)
+			return (result);
+	}
+	result->remaining_line = remaining_line;
+	return (result);
+}
 
-//strspn ft_strjoin_until
+t_argument_parsing_result *is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result)
+{
+	while (remaining_line[0] != '|' && remaining_line[0] != '<'
+		&& remaining_line[0] != '>' && remaining_line[0] != ' '
+		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
+		&& remaining_line[0] != '\t')
+	{
+		if (remaining_line[0] == '\'' || remaining_line[0] == '"')
+		{
+			result = parse_quote(remaining_line, result);
+			remaining_line = result->remaining_line;
+			if (result->did_succeed == FALSE)
+				return (result);
+			continue;
+		}
+		result->argument->content = ft_strjoin_arg(
+			result->argument->content, remaining_line);
+		remaining_line = ft_skip_arg(remaining_line, "<>\'\"| \n\t");
+	}
+	return (result);
+}
+
+// salu>
+// ==48941== Conditional jump or move depends on uninitialised value(s)
 
 t_argument_parsing_result	*parse_argument(const char *command_line)
 {
@@ -24,45 +68,27 @@ t_argument_parsing_result	*parse_argument(const char *command_line)
 	result->argument = lst_new_argument_parsing_result();
 	result->did_succeed = TRUE;
 	remaining_line = skip_spaces(command_line);
-	// faire une fonction pour le while
-	while (remaining_line[0] != '|' && remaining_line[0] != '<'
-		&& remaining_line[0] != '>' && remaining_line[0] != ' '
-		&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
-		&& remaining_line[0] != '\t')
-	{
-		// if (remaining_line[0] == '\'' || remaining_line[0] == '"') {
-		// 	t_quote_parsing_result result = parse_quote(remaining_line);
-		// 	continue;
-		// }
-
-		// faire une fonction pour gain de place 
-		
-		if (remaining_line[0] == '\'')
-		{
-			result->argument->content = ft_strjoin_until(
-					result->argument->content, remaining_line, '\'');
-			skip_quote(remaining_line, '\'', result);
-			if (result->did_succeed == FALSE)
-				return (result);
-			break ;
-		}
-		else if (remaining_line[0] == '"')
-		{
-			result->argument->content = ft_strjoin_until(
-					result->argument->content, remaining_line, '"');
-			skip_quote(remaining_line, '"', result);
-			if (result->did_succeed == FALSE)
-				return (result);
-			break ;
-		}
-		else
-		{
-			result->argument->content = ft_strjoin_arg(
-					result->argument->content, remaining_line);
-			break ;
-		}
-	}
-	result->remaining_line = remaining_line;
+	result = is_parsing_arg(remaining_line, result);
+	remaining_line = result->remaining_line;
+	//debut
+	// while (remaining_line[0] != '|' && remaining_line[0] != '<'
+	// 	&& remaining_line[0] != '>' && remaining_line[0] != ' '
+	// 	&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
+	// 	&& remaining_line[0] != '\t')
+	// {
+	// 	if (remaining_line[0] == '\'' || remaining_line[0] == '"')
+	// 	{
+	// 		result = parse_quote(remaining_line, result);
+	// 		remaining_line = result->remaining_line;
+	// 		if (result->did_succeed == FALSE)
+	// 			return (result);
+	// 		continue;
+	// 	}
+	// 	result->argument->content = ft_strjoin_arg(
+	// 		result->argument->content, remaining_line);
+	// 	remaining_line = ft_skip_arg(remaining_line, "<>\'\"| \n\t");
+	// }
+	//fin
 	return (result);
 }
 // typage rediction 
@@ -73,43 +99,52 @@ t_argument_parsing_result	*parse_argument(const char *command_line)
 		// REDIRECTION_HEREDOC,
 		// UNASIGNED
 
-t_redirection_parsing_result	*parse_redirection(char *str)
-{
-	t_redirection_parsing_result	*redirection_result;
 
-	redirection_result = malloc(sizeof(t_redirection_parsing_result));
-	redirection_result->did_succeed = TRUE;
-	redirection_result->redirection = lst_new_redirection_parsing_result();
-	// begin : a exporter dans une autre fonction
+t_redirection_parsing_result *ft_verif_redirection(char *str, t_redirection_parsing_result *redirection_result)
+{
 	if (str[0] == '>' && str[1] == '>')
 	{
 		if (double_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		else
-			str = skip_one_character(str);
 		redirection_result->redirection->type = REDIRECTION_APPEND;
 	}
 	else if (str[0] == '<' && str[1] == '<')
 	{
 		if (double_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		else
-			str = skip_one_character(str);
 		redirection_result->redirection->type = REDIRECTION_HEREDOC;
 	}
 	else if (str[0] == '<')
 	{
-		if (single_redictection(str))
+		if (single_redirection(str))
 			redirection_result->did_succeed = FALSE;
 		redirection_result->redirection->type = REDIRECTION_INFILE;
 	}
 	else if (str[0] == '>')
 	{
-		if (single_redictection(str))
+		if (single_redirection(str))
 			redirection_result->did_succeed = FALSE;
 		redirection_result->redirection->type = REDIRECTION_OUTFILE;
 	}
-	// end : a exporter dans une autre fonction
+	return (redirection_result);
+}
+
+t_redirection_parsing_result	*parse_redirection(char *str)
+{
+	t_redirection_parsing_result	*redirection_result;
+
+	redirection_result = malloc(sizeof(t_redirection_parsing_result));
+	if (!redirection_result)
+		return (NULL);
+	redirection_result->did_succeed = TRUE;
+	redirection_result->redirection = lst_new_redirection_parsing_result();
+	redirection_result = ft_verif_redirection(str, redirection_result);
+	if (redirection_result->did_succeed == FALSE)
+		return (redirection_result);
+	if (str[0] == '>' && str[1] == '>')
+		str = skip_one_character(str);
+	else if (str[0] == '<' && str[1] == '<')
+		str = skip_one_character(str);
 	str = skip_one_character(str);
 	str = skip_spaces(str);
 	redirection_result->redirection->arg = ft_strjoin_arg(NULL, redirection_result->redirection->arg);
@@ -163,7 +198,7 @@ t_command_parsing_result	*parse_command(char *command_line)
 			ft_argument_to_expand_addback(&result->command->arguments,
 				argument_result->argument);
 		}
-		remaining_line = result->remaining_line;
+		remaining_line = (char*)argument_result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
 	}
 	result->did_succeed = TRUE;
@@ -194,7 +229,7 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 		}
 		ft_command_to_expand_addback(
 			&result->commands, command_parsing_result->command);
-		remaining_line = command_parsing_result->remaining_line;
+		remaining_line = (char *)command_parsing_result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
 		if (remaining_line && remaining_line[0] == '|')
 		{

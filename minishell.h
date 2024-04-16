@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 14:51:21 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:26:45 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,15 @@ typedef struct
 */
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_strchr(char *s, int c);
-int		ft_strchr_exception(char *str);
 void	ft_putstr_fd(char *s, int fd);
 char	*copy(char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strlen(char const *str);
 char	*ft_strjoin(char const *s1, char *s2);
-char	*ft_strjoin_arg(char *s1, char *s2);
-char	*ft_strjoin_until(char *s1, char *s2, char c);
-int		single_redictection(char *str);
+int		single_redirection(char *str);
 int		double_redirection(char *str);
+int  	ft_strcspn(const char *s, char *reject);
 
 /*
 * Environment
@@ -151,14 +149,16 @@ int		ft_readline(t_env **env, t_vars *vars);
 * Parsing
 */
 
-int  	ft_strcspn(char *s, char *reject);
 char	*skip_spaces(const char *str);
 char	*skip_one_character(const char *str);
 char	*skip_quote(
 const char *str, char c, t_argument_parsing_result *result);
 t_command_line_parsing_result *ft_parse_command_line(char *command_line);
 t_redirection_parsing_result	*parse_redirection(char *str);
-
+char	*ft_skip_arg(const char *str, char *reject);
+char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
+char	*ft_strjoin_arg(char *s1, const char *s2);
+char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
 /*
 * Command manager
 */
