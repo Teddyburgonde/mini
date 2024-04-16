@@ -6,44 +6,34 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/15 16:25:07 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:49:07 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// typedef struct s_collected_ptr t_collected_ptr;
-// typedef struct s_collected_ptr
-// {
-// 	void *ptr;
-	
-// 	t_collected_ptr *next;
-
-// } t_collected_ptr;
-
-// typedef struct s_collector {
-	
-// 	t_collected_ptr *collection;
-	
-// }t_collector;
-
-// void *ft_collect(void *ptr, t_collector *collector);
-// void ft_collector_free(t_collector *collector);
-// t_collector *ft_collector_new(void);
-
-
-
-// t_collector *collector = ft_collector_new();
-// void *ptr1 = ft_collect(malloc(42), collector);
-// void *ptr2 = ft_collect(malloc(42), collector);
-// void *ptr3 = ft_collect(malloc(42), collector);
-// void *ptr4 = ft_collect(malloc(42), collector);
-
-// ft_collector_free(collector);
-
 
 //strspn ft_strjoin_until
 
+int  ft_strcspn(char *s, char *reject)
+{
+    int	i;
+    int	j;
+
+	i = 0;
+    while (s[i] != '\0')
+    {
+		j = 0;
+        while (reject[j] != '\0')
+        {
+            if(s[i] == reject[j])
+                return (i);
+            j++;
+        }
+        i++;
+    }
+    return (i);
+}
 
 
 
