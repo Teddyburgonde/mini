@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 16:39:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/17 14:37:56 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ char	*skip_spaces(const char *str)
 {
 	int	i;
 
+	i = 0;
 	if (!str)
 		return (NULL);
-	i = 0;
 	while (str[i])
 	{
 		if ((str[i] == NEW_LINE || str[i] == TAB) || str[i] == SPACE)

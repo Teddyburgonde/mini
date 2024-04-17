@@ -6,12 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 16:55:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:11:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+
+// ici ne pas enlever * sur result 
 t_argument_parsing_result *parse_quote(const char *remaining_line, t_argument_parsing_result *result)
 {
 	if (remaining_line[0] == '\'')
@@ -33,7 +35,7 @@ t_argument_parsing_result *parse_quote(const char *remaining_line, t_argument_pa
 	result->remaining_line = remaining_line;
 	return (result);
 }
-
+// ici ne pas enlever * sur result 
 t_argument_parsing_result *is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result)
 {
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'
@@ -53,12 +55,10 @@ t_argument_parsing_result *is_parsing_arg(const char *remaining_line, t_argument
 			result->argument->content, remaining_line);
 		remaining_line = ft_skip_arg(remaining_line, "<>\'\"| \n\t");
 	}
+	result->remaining_line = remaining_line;
 	return (result);
 }
-
-// salu>
-// ==48941== Conditional jump or move depends on uninitialised value(s)
-
+// ici ne pas enlever * sur result 
 t_argument_parsing_result	*parse_argument(const char *command_line)
 {
 	const char					*remaining_line;
@@ -70,36 +70,9 @@ t_argument_parsing_result	*parse_argument(const char *command_line)
 	remaining_line = skip_spaces(command_line);
 	result = is_parsing_arg(remaining_line, result);
 	remaining_line = result->remaining_line;
-	//debut
-	// while (remaining_line[0] != '|' && remaining_line[0] != '<'
-	// 	&& remaining_line[0] != '>' && remaining_line[0] != ' '
-	// 	&& remaining_line[0] != '\n' && remaining_line[0] != '\0'
-	// 	&& remaining_line[0] != '\t')
-	// {
-	// 	if (remaining_line[0] == '\'' || remaining_line[0] == '"')
-	// 	{
-	// 		result = parse_quote(remaining_line, result);
-	// 		remaining_line = result->remaining_line;
-	// 		if (result->did_succeed == FALSE)
-	// 			return (result);
-	// 		continue;
-	// 	}
-	// 	result->argument->content = ft_strjoin_arg(
-	// 		result->argument->content, remaining_line);
-	// 	remaining_line = ft_skip_arg(remaining_line, "<>\'\"| \n\t");
-	// }
-	//fin
 	return (result);
 }
-// typage rediction 
-// sauvegarde du file
-		// REDIRECTION_OUTFILE,
-		// REDIRECTION_INFILE,
-		// REDIRECTION_APPEND,
-		// REDIRECTION_HEREDOC,
-		// UNASIGNED
-
-
+// ici ne pas enlever * sur result 
 t_redirection_parsing_result *ft_verif_redirection(char *str, t_redirection_parsing_result *redirection_result)
 {
 	if (str[0] == '>' && str[1] == '>')
@@ -128,7 +101,7 @@ t_redirection_parsing_result *ft_verif_redirection(char *str, t_redirection_pars
 	}
 	return (redirection_result);
 }
-
+// ici ne pas enlever * sur result 
 t_redirection_parsing_result	*parse_redirection(char *str)
 {
 	t_redirection_parsing_result	*redirection_result;
@@ -201,9 +174,21 @@ t_command_parsing_result	*parse_command(char *command_line)
 		remaining_line = (char*)argument_result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
 	}
+	result->remaining_line = remaining_line;
 	result->did_succeed = TRUE;
 	return (result);
 }
+// normer 
+// verif sur les malloc 
+// eviter les mallocs sur les results (enlever le *)
+// blou bloup | bili | boup |
+//==45406== Conditional jump or move depends on uninitialised value(s)
+// ==45406==    at 0x4026BE: ft_lstlast (lst_addback_utils.c:67)
+// ==45406==    by 0x402681: ft_command_to_expand_addback (lst_addback_utils.c:82)
+// ==45406==    by 0x401E52: ft_parse_command_line (parsing.c:212)
+// ==45406==    by 0x40133D: ft_readline (ft_readline.c:32)
+// ==45406==    by 0x401277: main (minishell.c:33)
+// ==45406== 
 
 t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 {
@@ -212,6 +197,8 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 	t_command_parsing_result		*command_parsing_result;
 
 	result = malloc(sizeof(t_command_line_parsing_result));
+	if (!result)
+		return (NULL);
 	result->commands = NULL;
 	remaining_line = skip_spaces(command_line);
 	if (ft_strlen(remaining_line) == 0)
@@ -222,6 +209,14 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 	while (ft_strlen(remaining_line) > 0)
 	{
 		command_parsing_result = parse_command(remaining_line);
+		if (command_parsing_result == NULL)
+		{
+			result->did_succeed = FALSE;
+			return result;
+			
+		}
+		printf("CMD\n");
+		printf("%s\n", command_parsing_result->command->arguments->content);
 		if (!command_parsing_result->did_succeed)
 		{
 			result->did_succeed = FALSE;
@@ -235,8 +230,9 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 		{
 			remaining_line = skip_one_character(remaining_line);
 			remaining_line = skip_spaces(remaining_line);
-			if (ft_strlen(remaining_line) == 0)
+			if (ft_strlen(remaining_line) == 0 || remaining_line[0] == '|')
 			{
+				write (2, "Error: too much pipe or in a wrong position !\n", 46);
 				result->did_succeed = FALSE;
 				return (result);
 			}
