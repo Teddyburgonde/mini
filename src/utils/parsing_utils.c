@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/17 14:37:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:59:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,34 @@ char	*ft_strjoin_arg(char *s1, const char *s2)
 	tab[i] = 0;
 	if (s1)
 		free(s1);
+	return (tab);
+}
+
+char	*ft_strjoin_file(char *s1, const char *s2)
+{
+	char	*tab;
+	int		i;
+	int		j;
+
+	if (!s1 && !s2)
+		return (0);
+	tab = malloc((1 + ft_strlen(s1) + ft_strcspn(s2, "<>\'\"| \n\t")
+				) * sizeof(char));
+	if (tab == 0)
+		return (0);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && ft_strcspn(s2, "<>\'\"| \n\t") > j)
+	{
+		tab[i] = s2[j++];
+		i++;
+	}
+	tab[i] = 0;
 	return (tab);
 }
 
@@ -139,7 +167,7 @@ char	*skip_quote(
 		return ((char *)&str[i + 1]);
 	else
 	{
-		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Error: quotes are not closed !\n", 2);
 		result->did_succeed = FALSE;
 		return (NULL);
 	}

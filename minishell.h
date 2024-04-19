@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 10:35:24 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:49:05 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ t_redirection_parsing_result	*parse_redirection(char *str);
 char	*ft_skip_arg(const char *str, char *reject);
 char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
+char	*ft_strjoin_file(char *s1, const char *s2);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
 /*
 * Command manager

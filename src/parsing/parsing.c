@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 11:11:06 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:55:12 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_redirection_parsing_result *ft_verif_redirection(char *str, t_redirection_pars
 	return (redirection_result);
 }
 // ici ne pas enlever * sur result 
+
 t_redirection_parsing_result	*parse_redirection(char *str)
 {
 	t_redirection_parsing_result	*redirection_result;
@@ -120,7 +121,8 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 		str = skip_one_character(str);
 	str = skip_one_character(str);
 	str = skip_spaces(str);
-	redirection_result->redirection->arg = ft_strjoin_arg(NULL, redirection_result->redirection->arg);
+	redirection_result->redirection->arg = ft_strjoin_file(
+			str, redirection_result->redirection->arg);
 	redirection_result->remaining_line = str;
 	return (redirection_result);
 }
@@ -159,6 +161,8 @@ t_command_parsing_result	*parse_command(char *command_line)
 			}
 			ft_redirection_to_expand_addback(
 				&result->command->redirections, redirection_result->redirection);
+			remaining_line = (char *)redirection_result->remaining_line;
+			remaining_line = skip_spaces(remaining_line);
 		}
 		else
 		{
@@ -170,9 +174,9 @@ t_command_parsing_result	*parse_command(char *command_line)
 			}
 			ft_argument_to_expand_addback(&result->command->arguments,
 				argument_result->argument);
+			remaining_line = (char *)argument_result->remaining_line;
+			remaining_line = skip_spaces(remaining_line);
 		}
-		remaining_line = (char*)argument_result->remaining_line;
-		remaining_line = skip_spaces(remaining_line);
 	}
 	result->remaining_line = remaining_line;
 	result->did_succeed = TRUE;
@@ -182,22 +186,10 @@ t_command_parsing_result	*parse_command(char *command_line)
 // verif sur les malloc 
 // eviter les mallocs sur les results (enlever le *)
 
-t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
+t_command_line_parsing_result	*parsing_command(
+		char *remaining_line, t_command_line_parsing_result *result
+		, t_command_parsing_result *command_parsing_result)
 {
-	char							*remaining_line;
-	t_command_line_parsing_result	*result;
-	t_command_parsing_result		*command_parsing_result;
-
-	result = malloc(sizeof(t_command_line_parsing_result));
-	if (!result)
-		return (NULL);
-	result->commands = NULL;
-	remaining_line = skip_spaces(command_line);
-	if (ft_strlen(remaining_line) == 0)
-	{
-		result->did_succeed = TRUE;
-		return (result);
-	}
 	while (ft_strlen(remaining_line) > 0)
 	{
 		command_parsing_result = parse_command(remaining_line);
@@ -222,6 +214,27 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 			}
 		}
 	}
+	return (result);
+}
+
+t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
+{
+	char							*remaining_line;
+	t_command_line_parsing_result	*result;
+	t_command_parsing_result		*command_parsing_result;
+
+	result = malloc(sizeof(t_command_line_parsing_result));
+	if (!result)
+		return (NULL);
+	result->commands = NULL;
+	command_parsing_result = NULL;
+	remaining_line = skip_spaces(command_line);
+	if (ft_strlen(remaining_line) == 0)
+	{
+		result->did_succeed = TRUE;
+		return (result);
+	}
+	result = parsing_command(remaining_line, result, command_parsing_result);
 	result->did_succeed = TRUE;
 	return (result);
 }
