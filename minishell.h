@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/16 16:26:45 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:35:24 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	init_env(t_env **env, char **envp);
 * Signal
 */
 
+void	ft_signal(void);
 void	ft_ctrl_c(int signo);
 
 /*

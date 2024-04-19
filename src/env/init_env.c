@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:04:31 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/17 12:09:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/19 10:34:23 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	init_env(t_env **env, char **envp)
 	int		j;
 
 	if (!envp || !envp[0])
+	{
+		*env = NULL;
 		return ;
+	}
 	i = 0;
 	while (envp[i])
 	{

@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ctrl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 00:07:22 by tebandam          #+#    #+#             */
-/*   Updated: 2024/03/09 02:55:53 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/19 10:43:47 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	ft_signal(void)
+{
+	signal(SIGINT, ft_ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 void	ft_ctrl_c(int signo)
 {
@@ -21,3 +27,12 @@ void	ft_ctrl_c(int signo)
 	rl_redisplay();
 	// exit status = 130
 }
+
+
+// si variable des signaux et different de la variable global 
+// des signaux , on return.
+// Variable global dans readline , rl_done qui permet d'arreter
+// readline
+
+// peut etre pour utiliser rl_done il faut utiliser une autre variable
+// global

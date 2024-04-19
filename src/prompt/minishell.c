@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/02 16:46:58 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:47:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int	main(int ac, char **av, char *envp[])
 		return (1);
 	}
 	init_env(&env, envp);
-	if (env == NULL)
-		return (1);
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, (__sighandler_t)1);
+	ft_signal();
 	if (ft_readline(&env, vars) == 1)
 	{
 		ft_lstclear_env(&env);
@@ -38,3 +35,12 @@ int	main(int ac, char **av, char *envp[])
 	ft_lstclear_env(&env);
 	return (0);
 }
+
+
+// parsing 
+// fork
+// parsing dans les fork 
+
+
+
+// "" '' $ 

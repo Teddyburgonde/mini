@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/17 17:11:21 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:11:06 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,14 +181,6 @@ t_command_parsing_result	*parse_command(char *command_line)
 // normer 
 // verif sur les malloc 
 // eviter les mallocs sur les results (enlever le *)
-// blou bloup | bili | boup |
-//==45406== Conditional jump or move depends on uninitialised value(s)
-// ==45406==    at 0x4026BE: ft_lstlast (lst_addback_utils.c:67)
-// ==45406==    by 0x402681: ft_command_to_expand_addback (lst_addback_utils.c:82)
-// ==45406==    by 0x401E52: ft_parse_command_line (parsing.c:212)
-// ==45406==    by 0x40133D: ft_readline (ft_readline.c:32)
-// ==45406==    by 0x401277: main (minishell.c:33)
-// ==45406== 
 
 t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 {
@@ -209,18 +201,10 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 	while (ft_strlen(remaining_line) > 0)
 	{
 		command_parsing_result = parse_command(remaining_line);
-		if (command_parsing_result == NULL)
+		if (command_parsing_result == NULL || !command_parsing_result->did_succeed)
 		{
 			result->did_succeed = FALSE;
-			return result;
-			
-		}
-		printf("CMD\n");
-		printf("%s\n", command_parsing_result->command->arguments->content);
-		if (!command_parsing_result->did_succeed)
-		{
-			result->did_succeed = FALSE;
-			return (result);
+			return result;	
 		}
 		ft_command_to_expand_addback(
 			&result->commands, command_parsing_result->command);

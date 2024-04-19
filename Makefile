@@ -4,7 +4,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/prompt/ft_readline.c \
             src/env/init_env.c \
             src/env/print_env.c \
-            src/signal/ft_ctrl.c \
+            src/signal/signal.c \
 			src/parsing/parsing.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
