@@ -6,6 +6,7 @@ MY_SOURCES= src/prompt/minishell.c \
             src/env/print_env.c \
             src/signal/signal.c \
 			src/parsing/parsing.c \
+			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
             src/utils/ft_putstr_fd.c \

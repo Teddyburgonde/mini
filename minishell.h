@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 11:49:05 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/19 16:53:14 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,13 @@ char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
 char	*ft_strjoin_file(char *s1, const char *s2);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
+t_command_parsing_result		*ft_allocated_result(void);
+t_command_parsing_result	*redirections(t_command_parsing_result *result, char *remaining_line, t_redirection_parsing_result	*redirection_result);
+t_command_parsing_result	*arguments(t_command_parsing_result *result, t_argument_parsing_result *argument_result, char *remaining_line);
+t_argument_parsing_result *parse_quote(const char *remaining_line, t_argument_parsing_result *result);
+t_argument_parsing_result *is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result);
+t_command_parsing_result	*parse_command(char *command_line);
+t_command_parsing_result	*ft_redirections_arguments(char **remaining_line, t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,t_argument_parsing_result *argument_result);
 /*
 * Command manager
 */
