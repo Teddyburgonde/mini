@@ -13,6 +13,7 @@ MY_SOURCES= src/prompt/minishell.c \
             src/utils/lst_addback_utils.c \
 			src/utils/lst_new_utils.c \
 			src/utils/lst_utils_env.c \
+			src/utils/lst_utils.c \
             src/utils/ft_strcmp.c \
 			src/utils/ft_split.c \
 			src/utils/parsing_utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 16:53:14 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:44:46 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,10 @@ t_env						*lst_search_env(char *s, t_env *env);
 t_command_to_expand			*lst_new_command_parsing_result(void);
 t_redirection_to_expand		*lst_new_redirection_parsing_result(void);
 t_argument_to_expand		*lst_new_argument_parsing_result(void);
-void						ft_lstclear_env(t_env **lst);
+void		ft_lstclear_env(t_env **lst);
+void		ft_lstclear_commands(t_command_to_expand **lst);
+void		ft_lstclear_arguments(t_argument_to_expand **lst);
+void		ft_lstclear_redirections(t_redirection_to_expand **lst);
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
 void		ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
 void		ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);

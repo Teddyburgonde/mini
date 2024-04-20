@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 16:54:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:46:30 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_command_parsing_result	*redirections(t_command_parsing_result *result,
 	redirection_result = parse_redirection(remaining_line);
 	if (redirection_result->did_succeed != TRUE)
 	{
+		ft_lstclear_redirections(&redirection_result->redirection);
 		result->did_succeed = FALSE;
 		return (result);
 	}
@@ -63,6 +64,7 @@ t_command_parsing_result	*redirections(t_command_parsing_result *result,
 		&result->command->redirections, redirection_result->redirection);
 	remaining_line = (char *)redirection_result->remaining_line;
 	result->remaining_line = remaining_line;
+	free(redirection_result);
 	return (result);
 }
 
@@ -72,6 +74,7 @@ t_command_parsing_result	*arguments(t_command_parsing_result *result,
 	argument_result = parse_argument(remaining_line);
 	if (argument_result->did_succeed != TRUE)
 	{
+		ft_lstclear_arguments(&argument_result->argument);
 		result->did_succeed = FALSE;
 		return (result);
 	}
@@ -79,6 +82,7 @@ t_command_parsing_result	*arguments(t_command_parsing_result *result,
 		argument_result->argument);
 	remaining_line = (char *)argument_result->remaining_line;
 	result->remaining_line = remaining_line;
+	free(argument_result);
 	return (result);
 }
 

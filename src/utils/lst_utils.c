@@ -6,15 +6,15 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 11:10:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 11:11:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_lstclear_env(t_env **lst)
+void	ft_lstclear_redirections(t_redirection_to_expand **lst)
 {
-	t_env	*tmp;
+	t_redirection_to_expand	*tmp;
 
 	if (!*lst)
 		return ;
@@ -22,23 +22,38 @@ void	ft_lstclear_env(t_env **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		free(tmp->full_path);
-		free(tmp->var_name);
-		free(tmp->var);
+		free(tmp->arg);
 		free(tmp);
 	}
 }
 
-t_env	*lst_search_env(char *s, t_env *env)
+void	ft_lstclear_arguments(t_argument_to_expand **lst)
 {
-	t_env	*tmp;
+	t_argument_to_expand	*tmp;
 
-	tmp = env;
-	while (tmp)
+	if (!*lst)
+		return ;
+	while (*lst)
 	{
-		if (ft_strcmp(tmp->var_name, &s[1]) == 0)
-			return (tmp);
-		tmp = tmp->next;
+		tmp = *lst;
+		*lst = (*lst)->next;
+		free(tmp->content);
+		free(tmp);
 	}
-	return (NULL);
+}
+
+void	ft_lstclear_commands(t_command_to_expand **lst)
+{
+	t_command_to_expand	*tmp;
+
+	if (!*lst)
+		return ;
+	while (*lst)
+	{
+		tmp = *lst;
+		*lst = (*lst)->next;
+		ft_lstclear_redirections(&tmp->redirections);
+		ft_lstclear_arguments(&tmp->arguments);
+		free(tmp);
+	}
 }

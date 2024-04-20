@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 17:03:34 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:49:51 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,10 @@ t_command_parsing_result	*parse_command(char *command_line)
 		result = ft_redirections_arguments(&remaining_line, result,
 				redirection_result, argument_result);
 		if (result->did_succeed == FALSE)
+		{
+			ft_lstclear_redirections(&result->command->redirections);
 			return (result);
+		}
 	}
 	result->remaining_line = remaining_line;
 	result->did_succeed = TRUE;
@@ -161,6 +164,7 @@ t_command_line_parsing_result	*parsing_command(
 			&result->commands, command_parsing_result->command);
 		remaining_line = (char *)command_parsing_result->remaining_line;
 		remaining_line = skip_spaces(remaining_line);
+		free(command_parsing_result);
 		if (remaining_line && remaining_line[0] == '|')
 		{
 			remaining_line = skip_one_character(remaining_line);
