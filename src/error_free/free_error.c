@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:53:00 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 16:09:06 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:18:21 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void	ft_free(char **tab)
 // 	ft_lstclear_env(&env);
 // 	free(vars->input);
 // 	free(vars);
-// 	exit(0);
+// 	return (0);
 // }
