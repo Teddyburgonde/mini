@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:14:18 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:27:02 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 # define NEW_LINE '\n'
 
 
-typedef enum  {
+typedef enum bool {
 	TRUE = 1,
 	FALSE = 0
-} t_bool;
+}	t_bool;
 
 typedef struct s_env{
 	char			*var;
@@ -64,49 +64,47 @@ typedef struct s_redirection_to_expand
 
 typedef struct s_command_to_expand {
 
-	t_argument_to_expand *arguments;
-	t_redirection_to_expand *redirections;
+	t_argument_to_expand		*arguments;
+	t_redirection_to_expand		*redirections;
 
-	struct s_command_to_expand *next;
-} t_command_to_expand;
+	struct s_command_to_expand	*next;
+}	t_command_to_expand;
 
-typedef struct
-{
-	t_bool did_succeed;
+typedef struct command_line_parsing_result {
 
-	t_command_to_expand *commands;
+	t_bool				did_succeed;
 
-} t_command_line_parsing_result;
+	t_command_to_expand	*commands;
 
-typedef struct
-{
-	t_bool did_succeed;
+}	t_command_line_parsing_result;
 
-	t_command_to_expand *command;
+typedef struct command_parsing_result {
+	t_bool				did_succeed;
 
-	const char *remaining_line;
+	t_command_to_expand	*command;
 
-} t_command_parsing_result;
+	const char			*remaining_line;
 
-typedef struct
-{
-	t_bool did_succeed;
+}	t_command_parsing_result;
 
-	t_redirection_to_expand *redirection;
+typedef struct redirection_parsing_result {
+	t_bool					did_succeed;
 
-	const char *remaining_line;
+	t_redirection_to_expand	*redirection;
 
-} t_redirection_parsing_result;
+	const char				*remaining_line;
 
-typedef struct
-{
-	t_bool did_succeed;
+}	t_redirection_parsing_result;
 
-	t_argument_to_expand *argument;
+typedef struct argument_parsing_result {
 
-	const char *remaining_line;
+	t_bool					did_succeed;
 
-} t_argument_parsing_result;
+	t_argument_to_expand	*argument;
+
+	const char				*remaining_line;
+
+}	t_argument_parsing_result;
 
 /*
 * Utilitaries
@@ -121,7 +119,7 @@ int		ft_strlen(char const *str);
 char	*ft_strjoin(char const *s1, char *s2);
 int		single_redirection(char *str);
 int		double_redirection(char *str);
-int  	ft_strcspn(const char *s, char *reject);
+int		ft_strcspn(const char *s, char *reject);
 
 /*
 * Environment
@@ -149,21 +147,22 @@ int		ft_readline(t_env **env);
 char	*skip_spaces(const char *str);
 char	*skip_one_character(const char *str);
 char	*skip_quote(
-const char *str, char c, t_argument_parsing_result *result);
-t_command_line_parsing_result *ft_parse_command_line(char *command_line);
-t_redirection_parsing_result	*parse_redirection(char *str);
+			const char *str, char c, t_argument_parsing_result *result);
 char	*ft_skip_arg(const char *str, char *reject);
 char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
 char	*ft_strjoin_file(char *s1, const char *s2);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
+
+t_command_line_parsing_result	*ft_parse_command_line(char *command_line);
+t_redirection_parsing_result	*parse_redirection(char *str);
 t_command_parsing_result		*ft_allocated_result(void);
-t_command_parsing_result	*redirections(t_command_parsing_result *result, char *remaining_line, t_redirection_parsing_result	*redirection_result);
-t_command_parsing_result	*arguments(t_command_parsing_result *result, t_argument_parsing_result *argument_result, char *remaining_line);
-t_argument_parsing_result *parse_quote(const char *remaining_line, t_argument_parsing_result *result);
-t_argument_parsing_result *is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result);
-t_command_parsing_result	*parse_command(char *command_line);
-t_command_parsing_result	*ft_redirections_arguments(char **remaining_line, t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,t_argument_parsing_result *argument_result);
+t_command_parsing_result		*redirections(t_command_parsing_result *result, char *remaining_line, t_redirection_parsing_result	*redirection_result);
+t_command_parsing_result		*arguments(t_command_parsing_result *result, t_argument_parsing_result *argument_result, char *remaining_line);
+t_argument_parsing_result 		*parse_quote(const char *remaining_line, t_argument_parsing_result *result);
+t_argument_parsing_result 		*is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result);
+t_command_parsing_result		*parse_command(char *command_line);
+t_command_parsing_result		*ft_redirections_arguments(char **remaining_line, t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,t_argument_parsing_result *argument_result);
 /*
 * Command manager
 */

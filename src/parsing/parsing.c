@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:09:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:21:48 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,6 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 	redirection_result->remaining_line = str;
 	return (redirection_result);
 }
-	// help sperateur , voir avec thibaut
-	// echo kebab$LANGUAGE
-	// kebaben
 
 t_command_parsing_result	*ft_redirections_arguments(char **remaining_line,
 	t_command_parsing_result *result,
@@ -146,9 +143,6 @@ t_command_parsing_result	*parse_command(char *command_line)
 	result->did_succeed = TRUE;
 	return (result);
 }
-// normer 
-// verif sur les malloc 
-// eviter les mallocs sur les results (enlever le *)
 
 t_command_line_parsing_result	*parsing_command(
 		char *remaining_line, t_command_line_parsing_result *result
