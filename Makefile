@@ -18,6 +18,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/ft_split.c \
 			src/utils/parsing_utils.c \
 			src/utils/parsing_redirection_utils.c \
+			src/utils/skip.c \
 			src/error_free/free_error.c \
 
 
