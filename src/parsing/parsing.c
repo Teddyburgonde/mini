@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:02:20 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:09:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 
 	redirection_result = malloc(sizeof(t_redirection_parsing_result));
 	if (!redirection_result)
-		return (NULL);
+	{
+		redirection_result->did_succeed = FALSE;
+		return (redirection_result);
+	}
 	redirection_result->did_succeed = TRUE;
 	redirection_result->redirection = lst_new_redirection_parsing_result();
 	redirection_result = ft_verif_redirection(str, redirection_result);

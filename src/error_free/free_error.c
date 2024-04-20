@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:53:00 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 14:16:46 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:09:06 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,7 @@ void	ft_free(char **tab)
 	free(tab);
 }
 
-void	free_readline(t_vars *vars)
-{
-	printf("exit\n");
-	free(vars->input);
-	free(vars);
-}
-
-int	check_free_readline(t_vars *vars)
-{
-	if (!vars)
-	{
-		ft_putstr_fd("Error: malloc is failed !\n", 2);
-		return (1);
-	}
-	return (0);
-}
-// void	ft_free_vars_input(t_vars *vars, char **env)
+// void	ft_free_vars_input(char *command_line, char **env)
 // {
 // 	ft_lstclear_env(&env);
 // 	free(vars->input);

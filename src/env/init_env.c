@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:04:31 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/19 10:34:23 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:05:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*get_name(char *line, int j)
 	if (!tab)
 	{
 		write (2, "Initialize environment variable has an error.\n", 46);
-		exit(1);
+		return (NULL);
 	}
 	i = 0;
 	while (i != j)

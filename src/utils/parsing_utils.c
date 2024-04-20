@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 14:31:10 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:13:30 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strjoin_arg(char *s1, const char *s2)
 	tab = malloc((1 + ft_strlen(s1)
 				+ ft_strcspn(s2, "<>\'\"| \n\t")) * sizeof(char));
 	if (tab == 0)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
 	{
@@ -53,7 +53,7 @@ char	*ft_strjoin_file(char *s1, const char *s2)
 	tab = malloc((1 + ft_strlen(s1) + ft_strcspn(s2, "<>\'\"| \n\t")
 				) * sizeof(char));
 	if (tab == 0)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
 	{
@@ -81,7 +81,7 @@ char	*ft_strjoin_until(char *s1, const char *s2, char *reject)
 	tab = malloc((1 + ft_strlen(s1) + ft_strcspn(
 					s2, reject)) * sizeof(char));
 	if (tab == 0)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
 	{
@@ -112,7 +112,7 @@ char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject)
 	tab = malloc((3 + ft_strlen(s1) + ft_strcspn(
 					&s2[1], reject)) * sizeof(char));
 	if (tab == 0)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:01:48 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:14:18 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ typedef enum  {
 	TRUE = 1,
 	FALSE = 0
 } t_bool;
-
-typedef struct s_vars{
-	char	*input;
-}	t_vars;
 
 typedef struct s_env{
 	char			*var;
@@ -144,7 +140,7 @@ void	ft_ctrl_c(int signo);
 * Prompt
 */
 
-int		ft_readline(t_env **env, t_vars *vars);
+int		ft_readline(t_env **env);
 
 /*
 * Parsing
@@ -172,7 +168,7 @@ t_command_parsing_result	*ft_redirections_arguments(char **remaining_line, t_com
 * Command manager
 */
 
-void	cmd_selector(t_vars *vars, char **env, int ac, char **av);
+void	cmd_selector(char *command_line, char **env, int ac, char **av);
 
 /*
 * Builtins
@@ -203,9 +199,7 @@ void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_ex
 */
 
 void	ft_free(char **tab);
-void	free_readline(t_vars *vars);
-int		check_free_readline(t_vars *vars);
-void	ft_free_vars_input(t_vars *vars, char **env);
+void	ft_free_vars_input(char *command_line, char **env);
 
 
 

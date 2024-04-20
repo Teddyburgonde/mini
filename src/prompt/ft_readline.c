@@ -6,30 +6,28 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 11:12:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:08:16 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_readline(t_env **env, t_vars *vars)
+int	ft_readline(t_env **env)
 {
-	t_command_line_parsing_result *parsing_result;
+	t_command_line_parsing_result	*parsing_result;
+	char							*command_line;
 
 	(void)env;
-	vars = malloc(sizeof(t_vars));
-	if (check_free_readline(vars) == 1)
-		return (1);
 	while (1)
 	{
-		vars->input = readline("minishell > ");
-		if (vars->input == NULL)
+		command_line = readline("minishell > ");
+		if (command_line == NULL)
 		{
-			free_readline(vars);
+			free(command_line);
 			break ;
 		}
-		add_history(vars->input);
-		parsing_result = ft_parse_command_line(vars->input);
+		add_history(command_line);
+		parsing_result = ft_parse_command_line(command_line);
 		if (!parsing_result->did_succeed)
 		{
 			// handle error
@@ -41,7 +39,7 @@ int	ft_readline(t_env **env, t_vars *vars)
 			// cmd
 		ft_lstclear_commands(&parsing_result->commands);
 		free(parsing_result);
-		free(vars->input);
+		free(command_line);
 	}
 	return (0);
 }

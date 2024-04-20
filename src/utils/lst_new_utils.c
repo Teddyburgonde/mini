@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:08:24 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 16:02:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:15:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env	*ft_lstnew_env(void)
 	if (!list)
 	{
 		write (2, "Initialize environment variable has an error.\n", 46);
-		exit(1);
+		return (NULL);
 	}
 	list->next = NULL;
 	return (list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:41:21 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/16 14:54:58 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:10:42 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	*ft_strjoin(char const *s1, char *s2)
 	if (!s1 && !s2)
 		return (0);
 	tab = malloc((1 + ft_strlen(s1) + ft_strlen(s2)) * sizeof(char));
+	if (!tab)
+		return (NULL);
 	i = 0;
 	j = 0;
 	if (tab == 0)
@@ -57,6 +59,8 @@ char	*slash_add(char const *s1, char *s2)
 	int		j;
 
 	tab = malloc((1 + ft_strlen(s1) + ft_strlen(s2)) * sizeof(char));
+	if (!tab)
+		return (NULL);
 	i = 0;
 	j = 0;
 	if (tab == 0)
@@ -108,7 +112,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	i = 0;
 	tab = malloc(size_m);
 	if (tab == 0)
-		return (0);
+		return (NULL);
 	while (i < (nmemb * size))
 	{
 		tab[i] = '\0';

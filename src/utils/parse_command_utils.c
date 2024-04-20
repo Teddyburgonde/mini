@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 15:50:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:12:46 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,17 @@ t_argument_parsing_result	*parse_argument(const char *command_line)
 	t_argument_parsing_result	*result;
 
 	result = malloc(sizeof(t_argument_parsing_result));
+	if (!result)
+	{
+		result->did_succeed = FALSE;
+		return (result);
+	}
 	result->argument = lst_new_argument_parsing_result();
+	if (result->argument == NULL)
+	{
+		result->did_succeed = FALSE;
+		return (result);
+	}
 	result->did_succeed = TRUE;
 	remaining_line = skip_spaces(command_line);
 	result = is_parsing_arg(remaining_line, result);
@@ -93,6 +103,11 @@ t_command_parsing_result	*ft_allocated_result(void)
 	t_command_parsing_result		*result;
 
 	result = malloc(sizeof(t_command_parsing_result));
+	if (!result)
+	{
+		result->did_succeed = FALSE;
+		return (result);
+	}
 	result->command = malloc(sizeof(t_command_to_expand));
 	if (!result || !result->command)
 	{
