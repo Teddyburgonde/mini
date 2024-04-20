@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:27:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:43:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,27 @@ char	*ft_strjoin_file(char *s1, const char *s2);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
 
 t_command_line_parsing_result	*ft_parse_command_line(char *command_line);
+
 t_redirection_parsing_result	*parse_redirection(char *str);
+
 t_command_parsing_result		*ft_allocated_result(void);
-t_command_parsing_result		*redirections(t_command_parsing_result *result, char *remaining_line, t_redirection_parsing_result	*redirection_result);
-t_command_parsing_result		*arguments(t_command_parsing_result *result, t_argument_parsing_result *argument_result, char *remaining_line);
-t_argument_parsing_result 		*parse_quote(const char *remaining_line, t_argument_parsing_result *result);
-t_argument_parsing_result 		*is_parsing_arg(const char *remaining_line, t_argument_parsing_result *result);
+t_command_parsing_result		*redirections(
+			t_command_parsing_result *result, char *remaining_line,
+			t_redirection_parsing_result *redirection_result);
+t_command_parsing_result		*arguments(
+			t_command_parsing_result *result,
+			t_argument_parsing_result *argument_result, char *remaining_line);
+
+t_argument_parsing_result		*parse_quote(const char *remaining_line,
+			t_argument_parsing_result *result);
+t_argument_parsing_result		*is_parsing_arg(const char *remaining_line,
+			t_argument_parsing_result *result);
+
 t_command_parsing_result		*parse_command(char *command_line);
-t_command_parsing_result		*ft_redirections_arguments(char **remaining_line, t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,t_argument_parsing_result *argument_result);
+t_command_parsing_result		*ft_redirections_arguments(
+			char **remaining_line, t_command_parsing_result *result,
+			t_redirection_parsing_result *redirection_result,
+			t_argument_parsing_result *argument_result);
 /*
 * Command manager
 */
@@ -179,19 +192,24 @@ void	print_env(t_env *envp);
 * Chain list
 */
 
-t_env						*ft_lstnew_env(void);
-t_env						*lst_search_env(char *s, t_env *env);
-t_command_to_expand			*lst_new_command_parsing_result(void);
-t_redirection_to_expand		*lst_new_redirection_parsing_result(void);
-t_argument_to_expand		*lst_new_argument_parsing_result(void);
-void		ft_lstclear_env(t_env **lst);
-void		ft_lstclear_commands(t_command_to_expand **lst);
-void		ft_lstclear_arguments(t_argument_to_expand **lst);
-void		ft_lstclear_redirections(t_redirection_to_expand **lst);
-void		ft_lstadd_back_env(t_env **lst, t_env *new);
-void		ft_command_to_expand_addback(t_command_to_expand **lst, t_command_to_expand *new);
-void		ft_redirection_to_expand_addback(t_redirection_to_expand **lst, t_redirection_to_expand *new);
-void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_expand *new);
+t_env	*ft_lstnew_env(void);
+t_env	*lst_search_env(char *s, t_env *env);
+
+t_argument_to_expand				*lst_new_argument_parsing_result(void);
+t_command_to_expand					*lst_new_command_parsing_result(void);
+t_redirection_to_expand				*lst_new_redirection_parsing_result(void);
+
+void	ft_lstclear_env(t_env **lst);
+void	ft_lstclear_commands(t_command_to_expand **lst);
+void	ft_lstclear_arguments(t_argument_to_expand **lst);
+void	ft_lstclear_redirections(t_redirection_to_expand **lst);
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+void	ft_command_to_expand_addback(
+			t_command_to_expand **lst, t_command_to_expand *new);
+void	ft_redirection_to_expand_addback(
+			t_redirection_to_expand **lst, t_redirection_to_expand *new);
+void	ft_argument_to_expand_addback(
+			t_argument_to_expand **lst, t_argument_to_expand *new);
 
 /*
 * Free / Error
@@ -222,4 +240,3 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 #endif
-
