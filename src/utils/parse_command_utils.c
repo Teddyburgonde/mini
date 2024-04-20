@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 11:46:30 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 13:54:40 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ t_command_parsing_result	*ft_allocated_result(void)
 	result->remaining_line = NULL;
 	result->command->arguments = NULL;
 	result->command->redirections = NULL;
-	
 	return (result);
 }

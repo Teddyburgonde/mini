@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:03:46 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/19 11:06:53 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 14:03:23 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,10 @@ void	ft_redirection_to_expand_addback(
 
 static t_command_to_expand	*ft_lstlast(t_command_to_expand *lst)
 {
-	if (lst == NULL) {
+	if (lst == NULL)
 		return (NULL);
-	}
 	while (lst->next != NULL)
-	{
 		lst = lst->next;
-	}
 	return (lst);
 }
 

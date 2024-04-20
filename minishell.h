@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 11:44:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 13:44:07 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ void		ft_argument_to_expand_addback(t_argument_to_expand **lst, t_argument_to_ex
 void	ft_free(char **tab);
 void	free_readline(t_vars *vars);
 int		check_free_readline(t_vars *vars);
+void	ft_free_vars_input(t_vars *vars, char **env);
 
 
 

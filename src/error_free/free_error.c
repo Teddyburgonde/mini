@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:53:00 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/24 16:17:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 14:16:46 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,10 @@ int	check_free_readline(t_vars *vars)
 	}
 	return (0);
 }
+// void	ft_free_vars_input(t_vars *vars, char **env)
+// {
+// 	ft_lstclear_env(&env);
+// 	free(vars->input);
+// 	free(vars);
+// 	exit(0);
+// }

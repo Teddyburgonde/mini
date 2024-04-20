@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/17 16:13:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 14:16:35 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,33 +94,28 @@ static void	single_cmd(t_vars *vars, char **env)
 	}
 }
 
-void	cmd_selector(t_vars *vars, char **env, int ac, char **av)
-{
-	t_env	*tmp;
+// void	cmd_selector(t_vars *vars, char **env, int ac, char **av)
+// {
+// 	t_env	*tmp;
 
-	tmp = env;
-	if (ft_strcmp(vars->input, "echo") == 0)
-		ft_echo(ac, av);
-	else if (ft_strcmp(vars->input, "pwd") == 0)
-		ft_pwd();
-	else if (ft_strcmp(vars->input, "unset") == 0)
-		unset(&env, av[1]);
-	else if (ft_strcmp(vars->input, "export") == 0)
-		export(&env, av);
-	else if (ft_strcmp(vars->input, "printenv") == 0
-		|| ft_strcmp(vars->input, "env") == 0)
-	{
-		while (tmp)
-		{
-			printf("%s\n", tmp->full_path);
-			tmp = tmp->next;
-		}
-	}
-	else if (vars->input[0] == 'q' && vars->input[1] == 0)
-	{
-		ft_lstclear(&env);
-		free(vars->input);
-		free(vars);
-		exit(0);
-	}
-}
+// 	tmp = env;
+// 	if (ft_strcmp(vars->input, "echo") == 0)
+// 		ft_echo(ac, av);
+// 	else if (ft_strcmp(vars->input, "pwd") == 0)
+// 		ft_pwd();
+// 	else if (ft_strcmp(vars->input, "unset") == 0)
+// 		unset(&env, av[1]);
+// 	else if (ft_strcmp(vars->input, "export") == 0)
+// 		export(&env, av);
+// 	else if (ft_strcmp(vars->input, "printenv") == 0
+// 		|| ft_strcmp(vars->input, "env") == 0)
+// 	{
+// 		while (tmp)
+// 		{
+// 			printf("%s\n", tmp->full_path);
+// 			tmp = tmp->next;
+// 		}
+// 	}
+// 	else if (vars->input[0] == 'q' && vars->input[1] == 0)
+// 		ft_free_vars_input(vars, env);
+// }

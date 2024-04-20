@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_redirection_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:24:05 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/19 11:43:42 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 14:02:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ char	*ft_skip_arg(const char *str, char *reject)
 {
 	while (ft_strcspn(str, reject))
 		str++;
-	return ((char*)str);
+	return ((char *)str);
 }
