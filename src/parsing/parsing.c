@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 14:56:51 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:02:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@ t_redirection_parsing_result	*ft_verif_redirection(char *str,
 	{
 		if (double_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		redirection_result->redirection->type = REDIRECTION_APPEND;
+		redirection_result->redirection->e_type = REDIRECTION_APPEND;
 	}
 	else if (str[0] == '<' && str[1] == '<')
 	{
 		if (double_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		redirection_result->redirection->type = REDIRECTION_HEREDOC;
+		redirection_result->redirection->e_type = REDIRECTION_HEREDOC;
 	}
 	else if (str[0] == '<')
 	{
 		if (single_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		redirection_result->redirection->type = REDIRECTION_INFILE;
+		redirection_result->redirection->e_type = REDIRECTION_INFILE;
 	}
 	else if (str[0] == '>')
 	{
 		if (single_redirection(str))
 			redirection_result->did_succeed = FALSE;
-		redirection_result->redirection->type = REDIRECTION_OUTFILE;
+		redirection_result->redirection->e_type = REDIRECTION_OUTFILE;
 	}
 	return (redirection_result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_new_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:08:24 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/17 15:55:50 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:02:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_redirection_to_expand	*lst_new_redirection_parsing_result(void)
 	if (!tmp)
 		return (NULL);
 	tmp->arg = NULL;
-	tmp->type = UNASIGNED;
+	tmp->e_type = UNASIGNED;
 	tmp->next = NULL;
 	return (tmp);
 }

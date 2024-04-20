@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 13:44:07 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:01:48 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_argument_to_expand
 
 typedef struct s_redirection_to_expand
 {
-	char *arg;
+	char							*arg;
 
 	enum
 	{
@@ -58,8 +58,8 @@ typedef struct s_redirection_to_expand
 		REDIRECTION_APPEND,
 		REDIRECTION_HEREDOC,
 		UNASIGNED
-	}	type;
-	struct	s_redirection_to_expand *next;
+	}	e_type;
+	struct s_redirection_to_expand	*next;
 }			t_redirection_to_expand;
 
 
