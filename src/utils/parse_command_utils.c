@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 15:03:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 15:50:14 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ t_command_parsing_result	*ft_allocated_result(void)
 	result->remaining_line = NULL;
 	result->command->arguments = NULL;
 	result->command->redirections = NULL;
+	result->command->next = NULL;
 	return (result);
 }
