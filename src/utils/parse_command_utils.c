@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 13:54:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:03:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_command_parsing_result	*redirections(t_command_parsing_result *result,
 	if (redirection_result->did_succeed != TRUE)
 	{
 		ft_lstclear_redirections(&redirection_result->redirection);
+		free(redirection_result);
 		result->did_succeed = FALSE;
 		return (result);
 	}
@@ -75,6 +76,7 @@ t_command_parsing_result	*arguments(t_command_parsing_result *result,
 	if (argument_result->did_succeed != TRUE)
 	{
 		ft_lstclear_arguments(&argument_result->argument);
+		free(argument_result);
 		result->did_succeed = FALSE;
 		return (result);
 	}

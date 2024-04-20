@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 11:11:20 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/20 14:54:04 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	ft_lstclear_redirections(t_redirection_to_expand **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		free(tmp->arg);
+		if (tmp->arg)
+			free(tmp->arg);
 		free(tmp);
 	}
 }
@@ -37,7 +38,8 @@ void	ft_lstclear_arguments(t_argument_to_expand **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		free(tmp->content);
+		if (tmp->content)
+			free(tmp->content);
 		free(tmp);
 	}
 }
@@ -52,8 +54,10 @@ void	ft_lstclear_commands(t_command_to_expand **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		ft_lstclear_redirections(&tmp->redirections);
-		ft_lstclear_arguments(&tmp->arguments);
+		if (tmp->redirections)
+			ft_lstclear_redirections(&tmp->redirections);
+		if (tmp->arguments)
+			ft_lstclear_arguments(&tmp->arguments);
 		free(tmp);
 	}
 }
