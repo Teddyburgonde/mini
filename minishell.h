@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 15:11:17 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 16:14:28 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,19 +276,19 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 
-// typedef struct s_char_list {
+typedef struct s_char_list {
 
-// 	char		value;
-// 	t_bool		was_in_a_variable;
+	char		value;
+	t_bool		was_in_a_variable;
 
-// 	s_char_list	*next;
-// }	t_char_list;
+	s_char_list	*next;
+}	t_char_list;
 
-// typedef struct s_argument {
-// 	t_char_list	*chars;
+typedef struct s_argument {
+	t_char_list	*chars;
 
-// 	s_argument	*next;	
-// }	t_argument;
+	s_argument	*next;	
+}	t_argument;
 
 // t_char_list	*lst_new_chars_list(void)
 // {
@@ -476,16 +476,18 @@ void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
 * 
 */
 
-t_splitted_argument	*ft_split_argument(const t_argument *argument_to_split)
+t_argument	*ft_split_argument(const t_argument *argument_to_split, t_splitted_argument **args)
 {
 	t_splitted_argument	*splitted_arguments;
+	t_argument			*actual_arg;
 
 	splitted_argument = lst_new_splitted_argument();
 	if (!splitted_arguments)
 		return (NULL);
+	while (actual_arg->chars->value)
 	// iterer sur les character de argument_to_split
 	// couper aux espaces.
-	return (splitted_arguments);
+	return (actual_arg);
 }
 
 // char	*ft_remove_quotes(char *src)
