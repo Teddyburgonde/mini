@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 15:09:25 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 15:11:17 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -472,7 +472,8 @@ void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
 }
 
 /*
-* Split sur SPACE / NEW_LINE / TAB et si le 
+* Split sur SPACE / NEW_LINE / TAB et si le premier char est une double quote
+* 
 */
 
 t_splitted_argument	*ft_split_argument(const t_argument *argument_to_split)
@@ -482,23 +483,6 @@ t_splitted_argument	*ft_split_argument(const t_argument *argument_to_split)
 	splitted_argument = lst_new_splitted_argument();
 	if (!splitted_arguments)
 		return (NULL);
-	if (old == NULL)
-		old->next = splitted_arguments;
-	if (argument_to_split->argument != '\'' && argument_to_split->argument)
-	splitted_arguments->argument = malloc(
-			(strcspn(argument_to_split, " \t\n") + 1) * sizeof(char));
-	while (argument_to_split->argument[i] != SPACE
-		&& argument_to_split->argument[i] != NEW_LINE
-		&& argument_to_split->argument[i] != TAB
-		&& argument_to_split->argument[i] != '\''
-		&& argument_to_split->argument[i] != '"')
-	{
-		splitted_arguments->argument[i] = argument_to_split[i];
-		i++;
-	}
-	splitted_arguments->argument[i] = 0;
-	if (argument_to_split[i] != 0 && old == NULL)
-		ft_split_argument(argument_to_split, splitted_arguments, i);
 	// iterer sur les character de argument_to_split
 	// couper aux espaces.
 	return (splitted_arguments);
