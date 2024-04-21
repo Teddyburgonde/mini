@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 14:02:54 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 14:04:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -432,15 +432,7 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 		}
 // 		else
 // 		{
-// 			if (argument[i] == '$' && argument[i + 1] == 0)
-// 			{
-// 				tmp = lst_new_chars_list();
-// 				if (!tmp)
-// 					return (NULL);
-// 				tmp->value = argument[i];
-// 				ft_lstadd_back_char_list(&arg->chars, tmp);
-// 			}
-// 			else if (lst_search_env(get_var_name(&argument[i]), env))
+// 			if (lst_search_env(get_var_name(&argument[i]), env))
 // 			{
 // 				tmp = lst_new_chars_list();
 // 				if (!tmp)
