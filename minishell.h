@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 14:04:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 14:55:09 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,24 +276,19 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 
+// typedef struct s_char_list {
 
-// typedef struct s_char_list t_char_list;
-// struct s_char_list char_list
-// {
+// 	char		value;
+// 	t_bool		was_in_a_variable;
 
-// 	char	value;
-// 	t_bool	was_in_a_variable;
+// 	s_char_list	*next;
+// }	t_char_list;
 
-// 	t_char_list *next;
-// };
+// typedef struct s_argument {
+// 	t_char_list	*chars;
 
-// typedef struct s_argument t_argument;
-// struct s_argument argument
-// {
-// 	t_char_list *chars;
-
-// 	t_argument* next;	
-// };
+// 	s_argument	*next;	
+// }	t_argument;
 
 // t_char_list	*lst_new_chars_list(void)
 // {
@@ -459,18 +454,74 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 			// sinon je remplace le charactere sans le marquer.
 // }
 
-// t_argument *ft_split_argument(const t_argument *argument_to_split)
-// {
-// 	t_argument *splitted_arguments;
 
-// 	splitted_arguments = NULL;
+typedef struct s_splitted_argument {
 
-// 	// iterer sur les character de argument_to_split
+	char				*argument;
 
-// 	// couper aux espaces.
+	s_splitted_argument	*next;	
+}	t_splitted_argument;
 
-// 	return (splitted_arguments);
-// }
+t_splitted_argument	lst_new_splitted_argument(void)
+{
+	t_splitted_argument	*tmp;
+
+	tmp = malloc(sizeof(t_splitted_argument));
+	if (!tmp)
+		return (NULL);
+	tmp->argument = NULL;
+	tmp->next = NULL;
+	return (tmp);
+}
+
+void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
+	t_splitted_argument *new)
+{
+	t_splitted_argument	*tmp;
+
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp && tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+/*
+* Split sur SPACE / NEW_LINE / TAB et si le 
+*/
+
+t_splitted_argument	*ft_split_argument(const t_argument *argument_to_split)
+{
+	t_splitted_argument	*splitted_arguments;
+
+	splitted_argument = lst_new_splitted_argument();
+	if (!splitted_arguments)
+		return (NULL);
+	if (old == NULL)
+		old->next = splitted_arguments;
+	if (argument_to_split->argument != '\'' && argument_to_split->argument)
+	splitted_arguments->argument = malloc(
+			(strcspn(argument_to_split, " \t\n") + 1) * sizeof(char));
+	while (argument_to_split->argument[i] != SPACE
+		&& argument_to_split->argument[i] != NEW_LINE
+		&& argument_to_split->argument[i] != TAB
+		&& argument_to_split->argument[i] != '\''
+		&& argument_to_split->argument[i] != '"')
+	{
+		splitted_arguments->argument[i] = argument_to_split[i];
+		i++;
+	}
+	splitted_arguments->argument[i] = 0;
+	if (argument_to_split[i] != 0 && old == NULL)
+		ft_split_argument(argument_to_split, splitted_arguments, i);
+	// iterer sur les character de argument_to_split
+	// couper aux espaces.
+	return (splitted_arguments);
+}
 
 // char	*ft_remove_quotes(char *src)
 // {
