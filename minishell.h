@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 12:08:54 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 14:02:54 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,17 @@ void	ft_free_vars_input(char *command_line, char **env);
 // "" '' $ 
 
 
+// printf "%s\n" $VAR
+
+// yi
+// yfieif
+// ihwf
+
+// printf "%s\n" "$VAR"
+
+// yi yfieif ihwf
+
+
 
 
 
@@ -379,20 +390,45 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 			tmp->value = argument[i];
 // 			ft_lstadd_back_char_list(&arg->chars, tmp);
 // 			i++;
-// 			while (argument[i] != '\'')
+// 			if (argument[i] != '$')
 // 			{
+// 				while (argument[i] != '\'')
+// 				{
+// 					tmp = lst_new_chars_list();
+// 					if (!tmp)
+// 						return (NULL);
+// 					tmp->value = argument[i];
+// 					ft_lstadd_back_char_list(&arg->chars, tmp);
+// 					i++;
+// 				}
 // 				tmp = lst_new_chars_list();
 // 				if (!tmp)
 // 					return (NULL);
 // 				tmp->value = argument[i];
 // 				ft_lstadd_back_char_list(&arg->chars, tmp);
-// 				i++;
 // 			}
-// 			tmp = lst_new_chars_list();
-// 			if (!tmp)
-// 				return (NULL);
-// 			tmp->value = argument[i];
-// 			ft_lstadd_back_char_list(&arg->chars, tmp);
+// 			else
+// 			{
+// 				if (argument[i] == '$' && argument[i + 1] == 0)
+// 				{
+// 					tmp = lst_new_chars_list();
+// 					if (!tmp)
+// 						return (NULL);
+// 					tmp->value = argument[i];
+// 					ft_lstadd_back_char_list(&arg->chars, tmp);
+// 				}
+// 				else if (lst_search_env(get_var_name(&argument[i]), env))
+// 				{
+// 					tmp = lst_new_chars_list();
+// 					if (!tmp)
+// 						return (NULL);
+// 					tmp->value = env->var[j];
+// 					tmp->was_in_a_variable = TRUE;
+// 					ft_lstadd_back_char_list(&arg->chars, tmp);
+// 				}
+// 				else
+// 					i = skip_dolar_var(argument, i);
+// 			}
 // 		}
 // 		else
 // 		{
@@ -471,9 +507,9 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 	t_argument *argument_with_expanded_vars;
 // 	t_argument *splitted_arguments;
 // 	t_argument *final_arguments;
-	
+
 // 	// deux étapes:
-// 	//  1) remplacement des variables + flaguer les characteres -> t_char_list *
+// 	//  1) remplacement des variables + flaguer les characteres -> t_char_list * dans un while
 // 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content);
 // 	// 2) split aux espaces qui sont pas entre quotes.
 // 	splitted_arguments = ft_split_argument(argument_with_expanded_vars);
@@ -481,7 +517,7 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
 
 // 	return (final_arguments);
-	
+
 // }
 
 
