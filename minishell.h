@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 12:00:20 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 12:08:54 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 
-// TODO
+// No needed now
 
 // t_argument_to_expand *original_arguments;
 // t_argument_to_expand *arguments_with_parameters_expanded =NULL;
@@ -240,6 +240,8 @@ void	ft_free_vars_input(char *command_line, char **env);
 // t_argument_to_expand* ft_expand_quotes(t_argument_to_expand argument) {
 
 // }
+
+
 
 // parsing 
 // fork , ecouter exit status du dernier
@@ -258,8 +260,11 @@ void	ft_free_vars_input(char *command_line, char **env);
 // struct le caractere et le bool 
 // 
 
-
 // "" '' $ 
+
+
+
+
 
 // typedef struct s_char_list t_char_list;
 // struct s_char_list char_list
@@ -437,6 +442,28 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 	// couper aux espaces.
 
 // 	return (splitted_arguments);
+// }
+
+// char	*ft_remove_quotes(char *src)
+// {
+// 	char	*dest;
+// 	int		i;
+// 	int		j;
+
+// 	i = 1;
+// 	j = 0;
+
+// 	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
+// 	while (src[i])
+// 	{
+// 		dest[j] = src[i];
+// 		i++;
+// 		j++;
+// 		if (src[i + 1] == '\0')
+// 			break ;
+// 	}
+// 	dest[j] = '\0';
+// 	return (dest);
 // }
 
 // t_argument* ft_expand_argument(const t_argument_to_expand argument)
