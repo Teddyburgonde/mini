@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 14:55:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 14:59:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ void	init_env(t_env **env, char **envp);
 * Signal
 */
 
-void	ft_signal(void);
-void	ft_ctrl_c(int signo);
+void	ft_ctrl_c(int signal);
+void	ctrl_d(int signal);
 
 /*
 * Prompt
