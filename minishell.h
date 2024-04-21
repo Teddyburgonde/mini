@@ -6,13 +6,12 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 10:30:00 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 12:00:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define SPACE 32
 # include <stdio.h>
 # include <signal.h>
 # include <stdlib.h>
@@ -21,8 +20,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-# define TAB '\t'
 # define NEW_LINE '\n'
+# define SPACE ' '
+# define RIGHT '>'
+# define LEFT '<'
+# define TAB '\t'
+# define PIPE '|'
 
 
 typedef enum bool {
@@ -259,9 +262,9 @@ void	ft_free_vars_input(char *command_line, char **env);
 // "" '' $ 
 
 // typedef struct s_char_list t_char_list;
-// struct s_char_list
+// struct s_char_list char_list
 // {
-	
+
 // 	char	value;
 // 	t_bool	was_in_a_variable;
 
@@ -269,16 +272,147 @@ void	ft_free_vars_input(char *command_line, char **env);
 // };
 
 // typedef struct s_argument t_argument;
-// struct s_argument
+// struct s_argument argument
 // {
 // 	t_char_list *chars;
 
 // 	t_argument* next;	
 // };
 
-
-// t_argument *ft_expand_vars_in_argument(const char* argument)
+// t_char_list	*lst_new_chars_list(void)
 // {
+// 	t_char_list	*tmp;
+
+// 	tmp = malloc(sizeof(t_char_list));
+// 	if (!tmp)
+// 		return (NULL);
+// 	tmp->value = NULL;
+// 	tmp->was_in_a_variable = FALSE;
+// 	tmp->next = NULL;
+// 	return (tmp);
+// }
+
+// t_argument	*lst_new_argument(void)
+// {
+// 	t_argument	*tmp;
+
+// 	tmp = malloc(sizeof(t_argument));
+// 	if (!tmp)
+// 		return (NULL);
+// 	tmp->chars = NULL;
+// 	tmp->next = NULL;
+// 	return (tmp);
+// }
+
+// void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new)
+// {
+// 	t_char_list	*tmp;
+
+// 	if (!*lst)
+// 	{
+// 		*lst = new;
+// 		return ;
+// 	}
+// 	tmp = *lst;
+// 	while (tmp && tmp->next != NULL)
+// 		tmp = tmp->next;
+// 	tmp->next = new;
+// }
+
+// char	*get_var_name(char *str)
+// {
+// 	char	*var_name;
+// 	int		i;
+
+// 	i = 0;
+// 	var_name = malloc((strcspn(str, "<>\'\"| \n\t") + 1) * sizeof(char));
+// 	if (!var_name)
+// 		return (NULL);
+// 	while (str[i] != SPACE && str[i] != NEW_LINE && str[i] != TAB &&
+// 		str[i] != PIPE && str[i] != LEFT && str[i] != RIGHT &&
+// 		str[i] != '\'' && str[i] != '"')
+// 	{
+// 		var_name[i] = str[i];
+// 		i++;
+// 	}
+// 	var_name[i] = 0;
+// 	return (var_name);
+// }
+
+// int	skip_dolar_var(char *argument, int index)
+// {
+// 	int	i;
+
+// 	i = index;
+// 	while (argument[i] != SPACE && argument[i] != NEW_LINE &&
+// 		argument[i] != TAB && argument[i] != PIPE &&
+// 		argument[i] != LEFT && argument[i] != RIGHT &&
+// 		argument[i] != '\'' && argument[i] != '"')
+// 		i++;
+// 	return (i);
+// }
+
+// t_argument *ft_expand_vars_in_argument(const char* argument, t_env *env)
+// {
+// 	t_char_list	*tmp;
+// 	t_argument	*arg;
+// 	int			i;
+// 	int			j;
+
+// 	i = 0;
+// 	arg = lst_new_argument();
+// 	if (!arg)
+// 		return (NULL);
+// 	while (argument[i])
+// 	{
+// 		j = 0;
+// 		if (argument[i] == '\'')
+// 		{
+// 			tmp = lst_new_chars_list();
+// 			if (!tmp)
+// 				return (NULL);
+// 			tmp->value = argument[i];
+// 			ft_lstadd_back_char_list(&arg->chars, tmp);
+// 			i++;
+// 			while (argument[i] != '\'')
+// 			{
+// 				tmp = lst_new_chars_list();
+// 				if (!tmp)
+// 					return (NULL);
+// 				tmp->value = argument[i];
+// 				ft_lstadd_back_char_list(&arg->chars, tmp);
+// 				i++;
+// 			}
+// 			tmp = lst_new_chars_list();
+// 			if (!tmp)
+// 				return (NULL);
+// 			tmp->value = argument[i];
+// 			ft_lstadd_back_char_list(&arg->chars, tmp);
+// 		}
+// 		else
+// 		{
+// 			if (argument[i] == '$' && argument[i + 1] == 0)
+// 			{
+// 				tmp = lst_new_chars_list();
+// 				if (!tmp)
+// 					return (NULL);
+// 				tmp->value = argument[i];
+// 				ft_lstadd_back_char_list(&arg->chars, tmp);
+// 			}
+// 			else if (lst_search_env(get_var_name(&argument[i]), env))
+// 			{
+// 				tmp = lst_new_chars_list();
+// 				if (!tmp)
+// 					return (NULL);
+// 				tmp->value = env->var[j];
+// 				tmp->was_in_a_variable = TRUE;
+// 				ft_lstadd_back_char_list(&arg->chars, tmp);
+// 			}
+// 			else
+// 				i = skip_dolar_var(argument, i);
+// 		}
+// 		i++;
+// 	}
 // 	// pour chaque charactere de l'argument:
 // 		// si je suis une quote simple ':
 // 			// je vais chercher la quote simple suivante. (ELLE EXISTE NECESSAIREMENT)
