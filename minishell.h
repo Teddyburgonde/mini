@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 15:01:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/21 15:09:25 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,71 +363,77 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 	return (i);
 // }
 
-t_argument *ft_expand_vars_in_argument(const char* argument, t_env *env)
-{
-	t_char_list	*tmp;
-	t_argument	*arg;
-	int			i;
-	int			j;
+// t_argument *ft_expand_vars_in_argument(const char* argument, t_env *env)
+// {
+// 	t_char_list	*tmp;
+// 	t_argument	*arg;
+// 	t_env		*var;
+// 	int			i;
+// 	int			j;
 
-	i = 0;
-	arg = lst_new_argument();
-	if (!arg)
-		return (NULL);
-	while (argument[i])
-	{
-		j = 0;
-		if (argument[i] == '\'')
-		{
-			tmp = lst_new_chars_list();
-			if (!tmp)
-				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
-			i++;
-			while (argument[i] != '\'')
-			{
-				tmp = lst_new_chars_list();
-				if (!tmp)
-					return (NULL);
-				tmp->value = argument[i];
-				ft_lstadd_back_char_list(&arg->chars, tmp);
-				i++;
-			}
-			tmp = lst_new_chars_list();
-			if (!tmp)
-				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
-		}
-		else
-		{
-			if (lst_search_env(get_var_name(&argument[i]), env))
-			{
-				tmp = lst_new_chars_list();
-				if (!tmp)
-					return (NULL);
-				tmp->value = env->var[j];
-				tmp->was_in_a_variable = TRUE;
-				ft_lstadd_back_char_list(&arg->chars, tmp);
-			}
-			else
-				i = skip_dolar_var(argument, i);
-		}
-		i++;
-	}
-	// pour chaque charactere de l'argument:
-		// si je suis une quote simple ':
-			// je vais chercher la quote simple suivante. (ELLE EXISTE NECESSAIREMENT)
-			// et je remplace tous les characteres rencontrés sans les marquer.
-		// sinon
-			// si je suis un dollar $:
-				// si je suis suivi de \0:
-					// j'ecris un dollar
-				// sinon:
-					// je remplace en marquant les characteres (was_in_a_variable = TRUE)
-			// sinon je remplace le charactere sans le marquer.
-}
+// 	i = 0;
+// 	arg = lst_new_argument();
+// 	if (!arg)
+// 		return (NULL);
+// 	while (argument[i])
+// 	{
+// 		j = 0;
+// 		if (argument[i] == '\'')
+// 		{
+// 			tmp = lst_new_chars_list();
+// 			if (!tmp)
+// 				return (NULL);
+// 			tmp->value = argument[i];
+// 			ft_lstadd_back_char_list(&arg->chars, tmp);
+// 			i++;
+// 			while (argument[i] != '\'')
+// 			{
+// 				tmp = lst_new_chars_list();
+// 				if (!tmp)
+// 					return (NULL);
+// 				tmp->value = argument[i];
+// 				ft_lstadd_back_char_list(&arg->chars, tmp);
+// 				i++;
+// 			}
+// 			tmp = lst_new_chars_list();
+// 			if (!tmp)
+// 				return (NULL);
+// 			tmp->value = argument[i];
+// 			ft_lstadd_back_char_list(&arg->chars, tmp);
+// 		}
+// 		else
+// 		{
+// 			if (argument[i] == '$'
+// 				&& lst_search_env(get_var_name(&argument[i]), env))
+// 			{
+// 				var = lst_search_env(get_var_name(&argument[i]), env);
+// 				while (var->var[j])
+// 				{
+// 					tmp = lst_new_chars_list();
+// 					if (!tmp)
+// 						return (NULL);
+// 					tmp->value = env->var[j];
+// 					tmp->was_in_a_variable = TRUE;
+// 					ft_lstadd_back_char_list(&arg->chars, tmp);
+// 				}
+// 			}
+// 			else
+// 				i = skip_dolar_var(argument, i);
+// 		}
+// 		i++;
+// 	}
+// 	// pour chaque charactere de l'argument:
+// 		// si je suis une quote simple ':
+// 			// je vais chercher la quote simple suivante. (ELLE EXISTE NECESSAIREMENT)
+// 			// et je remplace tous les characteres rencontrés sans les marquer.
+// 		// sinon
+// 			// si je suis un dollar $:
+// 				// si je suis suivi de \0:
+// 					// j'ecris un dollar
+// 				// sinon:
+// 					// je remplace en marquant les characteres (was_in_a_variable = TRUE)
+// 			// sinon je remplace le charactere sans le marquer.
+// }
 
 
 typedef struct s_splitted_argument {
