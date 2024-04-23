@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 12:46:11 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/23 13:00:12 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -637,5 +637,12 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 // }
 
+
+// Si il existe redef la var en question sinon ajoute a la liste
+// export vide affiche env
+// unset sans rien sa fait rien
+// env si tu met un truc derriere il le prend comme un fichier si il existe il se passe rien
+// sinon il dit que le fichier n'existe pas si il y a un fichier existant et d'autre argument
+// env fait rien
 
 #endif
