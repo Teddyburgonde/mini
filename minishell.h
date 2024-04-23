@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 16:14:28 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/23 12:00:52 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,11 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 
+// Si $VAR existe pas echo va print du vide mais qu'est-ce que 
+// sa fait pour d'autre fonction
+
+
+
 
 typedef struct s_char_list {
 
@@ -471,20 +476,104 @@ void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
 	tmp->next = new;
 }
 
+int	ft_lstsize_expand(t_char_list *lst)
+{
+	t_char_list	*tmp;
+	t_bool		in_quote;
+	int			size;
+
+	tmp = lst;
+	if (tmp->value == '\'' || tmp->value == '"')
+	{
+		size++;
+		in_quote = TRUE;
+		tmp = tmp->next;
+	}
+	else
+		in_quote = FALSE;
+	while (tmp && in_quote == FALSE)
+	{
+		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
+			break ;
+		else if (tmp->value == '\'' || tmp->value == '"')
+			break ;
+		else
+		{
+			tmp = tmp->next;
+			size++;
+		}
+	}
+	while (tmp && in_quote == TRUE)
+	{
+		if (tmp->value == '\'' || tmp->value == '"')
+		{
+			in_quote = FALSE;
+			size++;
+		}
+		else
+		{
+			tmp = tmp->next;
+			size++;
+		}
+	}
+	return (size);
+}
+
 /*
-* Split sur SPACE / NEW_LINE / TAB et si le premier char est une double quote
-* 
+* Split sur SPACE / NEW_LINE / TAB et si le premier char 
+* est une double quote ou simple
+* t_arg contient les arg et on avance a chaque appelle de fonction 
+* envoie l'adresse de la liste chainee final qui contient 
+* les arg avec les variable expand split.
+*
+* Le was_in_variable est important pour eviter d'expand une
+* variable dans une autre variable par exemple.
 */
+
+
+
+// rgobet@2G5:~$ printf "%s\n" "$VAR"
+// test test
+// rgobet@2G5:~$ printf "%s\n" $VAR
+// test
+// test
+
+// chars -> liste chainee
+// 	value -> char
+// 	was_in_variable -> bool
+
 
 t_argument	*ft_split_argument(const t_argument *argument_to_split, t_splitted_argument **args)
 {
 	t_splitted_argument	*splitted_arguments;
 	t_argument			*actual_arg;
+	t_bool				in_quote;
 
 	splitted_argument = lst_new_splitted_argument();
 	if (!splitted_arguments)
 		return (NULL);
-	while (actual_arg->chars->value)
+	splitted_arguments->argument = malloc((1 + ft_lstsize_expand()) * sizeof(char));
+	if (actual_arg->chars->value == '"' || actual_arg->chars->value == '\'')
+		in_quote = TRUE;
+	else
+		in_quote = FALSE;
+	while (actual_arg->chars)
+	{
+		if (actual_arg->chars->value == SPACE || actual_arg->chars->value == TAB
+			|| actual_arg->chars->value == NEW_LINE)
+			break ;
+		actual_arg->chars = actual_arg->chars->next;
+	}
+	while (actual_arg->chars && in_quote == TRUE)
+	{
+		if (actual_arg->chars->value == '\''
+			|| actual_arg->chars->value == '"')
+			in_quote = FALSE;
+		actual_arg->chars = actual_arg->chars->next;
+	}
+	ft_lstadd_back_splitted_argument(args, splitted_arguments);
+	if (actual_arg->chars->next == NULL)
+		actual_arg = actual_arg->next;
 	// iterer sur les character de argument_to_split
 	// couper aux espaces.
 	return (actual_arg);
