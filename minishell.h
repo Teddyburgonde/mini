@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 12:00:52 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/23 12:30:02 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,19 +281,19 @@ void	ft_free_vars_input(char *command_line, char **env);
 
 
 
-typedef struct s_char_list {
+// typedef struct s_char_list {
 
-	char		value;
-	t_bool		was_in_a_variable;
+// 	char		value;
+// 	t_bool		was_in_a_variable;
 
-	s_char_list	*next;
-}	t_char_list;
+// 	s_char_list	*next;
+// }	t_char_list;
 
-typedef struct s_argument {
-	t_char_list	*chars;
+// typedef struct s_argument {
+// 	t_char_list	*chars;
 
-	s_argument	*next;	
-}	t_argument;
+// 	s_argument	*next;	
+// }	t_argument;
 
 // t_char_list	*lst_new_chars_list(void)
 // {
@@ -441,83 +441,83 @@ typedef struct s_argument {
 // }
 
 
-typedef struct s_splitted_argument {
+// typedef struct s_splitted_argument {
 
-	char				*argument;
+// 	char				*argument;
 
-	s_splitted_argument	*next;	
-}	t_splitted_argument;
+// 	s_splitted_argument	*next;	
+// }	t_splitted_argument;
 
-t_splitted_argument	lst_new_splitted_argument(void)
-{
-	t_splitted_argument	*tmp;
+// t_splitted_argument	lst_new_splitted_argument(void)
+// {
+// 	t_splitted_argument	*tmp;
 
-	tmp = malloc(sizeof(t_splitted_argument));
-	if (!tmp)
-		return (NULL);
-	tmp->argument = NULL;
-	tmp->next = NULL;
-	return (tmp);
-}
+// 	tmp = malloc(sizeof(t_splitted_argument));
+// 	if (!tmp)
+// 		return (NULL);
+// 	tmp->argument = NULL;
+// 	tmp->next = NULL;
+// 	return (tmp);
+// }
 
-void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
-	t_splitted_argument *new)
-{
-	t_splitted_argument	*tmp;
+// void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
+// 	t_splitted_argument *new)
+// {
+// 	t_splitted_argument	*tmp;
 
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
-	while (tmp && tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
-}
+// 	if (!*lst)
+// 	{
+// 		*lst = new;
+// 		return ;
+// 	}
+// 	tmp = *lst;
+// 	while (tmp && tmp->next != NULL)
+// 		tmp = tmp->next;
+// 	tmp->next = new;
+// }
 
-int	ft_lstsize_expand(t_char_list *lst)
-{
-	t_char_list	*tmp;
-	t_bool		in_quote;
-	int			size;
+// int	ft_lstsize_expand(t_char_list *lst)
+// {
+// 	t_char_list	*tmp;
+// 	t_bool		in_quote;
+// 	int			size;
 
-	tmp = lst;
-	if (tmp->value == '\'' || tmp->value == '"')
-	{
-		size++;
-		in_quote = TRUE;
-		tmp = tmp->next;
-	}
-	else
-		in_quote = FALSE;
-	while (tmp && in_quote == FALSE)
-	{
-		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
-			break ;
-		else if (tmp->value == '\'' || tmp->value == '"')
-			break ;
-		else
-		{
-			tmp = tmp->next;
-			size++;
-		}
-	}
-	while (tmp && in_quote == TRUE)
-	{
-		if (tmp->value == '\'' || tmp->value == '"')
-		{
-			in_quote = FALSE;
-			size++;
-		}
-		else
-		{
-			tmp = tmp->next;
-			size++;
-		}
-	}
-	return (size);
-}
+// 	tmp = lst;
+// 	if (tmp->value == '\'' || tmp->value == '"')
+// 	{
+// 		size++;
+// 		in_quote = TRUE;
+// 		tmp = tmp->next;
+// 	}
+// 	else
+// 		in_quote = FALSE;
+// 	while (tmp && in_quote == FALSE)
+// 	{
+// 		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
+// 			break ;
+// 		else if (tmp->value == '\'' || tmp->value == '"')
+// 			break ;
+// 		else
+// 		{
+// 			tmp = tmp->next;
+// 			size++;
+// 		}
+// 	}
+// 	while (tmp && in_quote == TRUE)
+// 	{
+// 		if (tmp->value == '\'' || tmp->value == '"')
+// 		{
+// 			in_quote = FALSE;
+// 			size++;
+// 		}
+// 		else
+// 		{
+// 			tmp = tmp->next;
+// 			size++;
+// 		}
+// 	}
+// 	return (size);
+// }
 
 /*
 * Split sur SPACE / NEW_LINE / TAB et si le premier char 
@@ -543,41 +543,50 @@ int	ft_lstsize_expand(t_char_list *lst)
 // 	was_in_variable -> bool
 
 
-t_argument	*ft_split_argument(const t_argument *argument_to_split, t_splitted_argument **args)
-{
-	t_splitted_argument	*splitted_arguments;
-	t_argument			*actual_arg;
-	t_bool				in_quote;
+// t_argument	*ft_split_argument(const t_argument *argument_to_split, t_splitted_argument **args)
+// {
+// 	t_splitted_argument	*splitted_arguments;
+// 	t_argument			*actual_arg;
+// 	t_bool				in_quote;
+// 	int					i;
 
-	splitted_argument = lst_new_splitted_argument();
-	if (!splitted_arguments)
-		return (NULL);
-	splitted_arguments->argument = malloc((1 + ft_lstsize_expand()) * sizeof(char));
-	if (actual_arg->chars->value == '"' || actual_arg->chars->value == '\'')
-		in_quote = TRUE;
-	else
-		in_quote = FALSE;
-	while (actual_arg->chars)
-	{
-		if (actual_arg->chars->value == SPACE || actual_arg->chars->value == TAB
-			|| actual_arg->chars->value == NEW_LINE)
-			break ;
-		actual_arg->chars = actual_arg->chars->next;
-	}
-	while (actual_arg->chars && in_quote == TRUE)
-	{
-		if (actual_arg->chars->value == '\''
-			|| actual_arg->chars->value == '"')
-			in_quote = FALSE;
-		actual_arg->chars = actual_arg->chars->next;
-	}
-	ft_lstadd_back_splitted_argument(args, splitted_arguments);
-	if (actual_arg->chars->next == NULL)
-		actual_arg = actual_arg->next;
-	// iterer sur les character de argument_to_split
-	// couper aux espaces.
-	return (actual_arg);
-}
+// 	splitted_argument = lst_new_splitted_argument();
+// 	if (!splitted_arguments)
+// 		return (NULL);
+// 	actual_arg = argument_to_split;
+// 	splitted_arguments->argument = malloc(
+// 			(1 + ft_lstsize_expand(actual_arg->chars)) * sizeof(char));
+// 	if (actual_arg->chars->value == '"' || actual_arg->chars->value == '\'')
+// 		in_quote = TRUE;
+// 	else
+// 		in_quote = FALSE;
+// 	i = 0;
+// 	while (actual_arg->chars && in_quote == FALSE)
+// 	{
+// 		if (actual_arg->chars->value == SPACE || actual_arg->chars->value == TAB
+// 			|| actual_arg->chars->value == NEW_LINE)
+// 			break ;
+// 		splitted_arguments->argument[i] = actual_arg->chars->value;
+// 		actual_arg->chars = actual_arg->chars->next;
+// 		i++;
+// 	}
+// 	while (actual_arg->chars && in_quote == TRUE)
+// 	{
+// 		if (actual_arg->chars->value == '\''
+// 			|| actual_arg->chars->value == '"')
+// 			in_quote = FALSE;
+// 		splitted_arguments->argument[i] = actual_arg->chars->value;
+// 		actual_arg->chars = actual_arg->chars->next;
+// 		i++;
+// 	}
+// 	splitted_arguments->argument[i] = 0;
+// 	ft_lstadd_back_splitted_argument(args, splitted_arguments);
+// 	if (actual_arg->chars->next == NULL)
+// 		actual_arg = actual_arg->next;
+// 	// iterer sur les character de argument_to_split
+// 	// couper aux espaces.
+// 	return (actual_arg);
+// }
 
 // char	*ft_remove_quotes(char *src)
 // {
