@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 12:30:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/23 12:46:11 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -438,6 +438,7 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 				// sinon:
 // 					// je remplace en marquant les characteres (was_in_a_variable = TRUE)
 // 			// sinon je remplace le charactere sans le marquer.
+	// return (arg);
 // }
 
 
@@ -610,19 +611,27 @@ void	ft_free_vars_input(char *command_line, char **env);
 // 	return (dest);
 // }
 
-// t_argument* ft_expand_argument(const t_argument_to_expand argument)
+// t_argument* ft_expand_argument(const t_argument_to_expand argument, t_env *env)
 // {
-// 	t_argument *argument_with_expanded_vars;
-// 	t_argument *splitted_arguments;
-// 	t_argument *final_arguments;
+// 	t_argument	*argument_with_expanded_vars;
+// 	t_argument	*splitted_arguments;
+// 	t_argument	*final_arguments;
+// 	t_argument	*tmp;
 
-// 	// deux étapes:
-// 	//  1) remplacement des variables + flaguer les characteres -> t_char_list * dans un while
-// 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content);
-// 	// 2) split aux espaces qui sont pas entre quotes.
-// 	splitted_arguments = ft_split_argument(argument_with_expanded_vars);
-// 	// 3) virer les quotes qui sont pas flaguees
+// 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content, env);
+// 	tmp = argument_with_expanded_vars;
+// 	while (tmp->chars->value != 0)
+// 		splitted_arguments = ft_split_argument(tmp);
 // 	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
+
+
+// // 	// deux étapes:
+// // 	//  1) remplacement des variables + flaguer les characteres -> t_char_list * dans un while
+// // 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content, env);
+// // 	// 2) split aux espaces qui sont pas entre quotes.
+// // 	splitted_arguments = ft_split_argument(argument_with_expanded_vars);
+// // 	// 3) virer les quotes qui sont pas flaguees
+// // 	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
 
 // 	return (final_arguments);
 
