@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 00:07:22 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/21 14:58:20 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:29:06 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_ctrl_c(int signal)
 {
-	extern int exit_status;
+	extern int	exit_status;
+
 	(void)signal;
 	printf("\n");
 	rl_on_new_line();
@@ -25,7 +26,8 @@ void	ft_ctrl_c(int signal)
 
 void	ctrl_d(int signal)
 {
-	extern int exit_status;
+	extern int	exit_status;
+
 	(void)signal;
 	ft_putstr_fd("exit\n", 1);
 	exit(exit_status);
