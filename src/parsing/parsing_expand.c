@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 14:29:56 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 15:45:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_var_name(char *str)
 }
 
 static t_argument	*ft_expand_vars_in_argument(
-		const char* argument, t_env *env)
+		const char *argument, t_env *env)
 {
 	t_char_list	*tmp;
 	t_argument	*arg;
@@ -44,9 +44,9 @@ static t_argument	*ft_expand_vars_in_argument(
 
 	i = 0;
 	arg = lst_new_argument();
-	if (!arg)
+	if (!arg || !argument)
 		return (NULL);
-	while (argument[i])
+	while (argument[i] != 0)
 	{
 		j = 0;
 		if (argument[i] == '\'')
