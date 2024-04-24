@@ -6,12 +6,15 @@ MY_SOURCES= src/prompt/minishell.c \
             src/env/print_env.c \
             src/signal/signal.c \
 			src/parsing/parsing.c \
+			src/parsing/parsing_expand.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
             src/utils/ft_putstr_fd.c \
-            src/utils/lst_addback_utils.c \
 			src/utils/lst_new_utils.c \
+			src/utils/lst_new_utils_bis.c \
+            src/utils/lst_addback_utils.c \
+			src/utils/lst_addback_utils_bis.c \
 			src/utils/lst_utils_env.c \
 			src/utils/lst_utils.c \
             src/utils/ft_strcmp.c \

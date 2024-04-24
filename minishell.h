@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 13:00:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:16:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,20 @@ typedef enum bool {
 	FALSE = 0
 }	t_bool;
 
+/*
+* Environment
+*/
+
 typedef struct s_env{
 	char			*var;
 	char			*var_name;
 	char			*full_path;
 	struct s_env	*next;
 }	t_env;
+
+/*
+* Parsing
+*/
 
 typedef struct s_argument_to_expand
 {
@@ -60,10 +68,6 @@ typedef struct s_redirection_to_expand
 	}	e_type;
 	struct s_redirection_to_expand	*next;
 }			t_redirection_to_expand;
-
-
-
-// arg1 < re'dir2' arg2 arg3 < redir1
 
 typedef struct s_command_to_expand {
 
@@ -110,6 +114,31 @@ typedef struct argument_parsing_result {
 }	t_argument_parsing_result;
 
 /*
+* Expand parsing 
+*/
+
+typedef struct s_char_list {
+
+	char		value;
+	t_bool		was_in_a_variable;
+
+	s_char_list	*next;
+}	t_char_list;
+
+typedef struct s_argument {
+	t_char_list	*chars;
+
+	s_argument	*next;	
+}	t_argument;
+
+typedef struct s_splitted_argument {
+
+	char				*argument;
+
+	s_splitted_argument	*next;	
+}	t_splitted_argument;
+
+/*
 * Utilitaries
 */
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -123,6 +152,7 @@ char	*ft_strjoin(char const *s1, char *s2);
 int		single_redirection(char *str);
 int		double_redirection(char *str);
 int		ft_strcspn(const char *s, char *reject);
+int		skip_dolar_var(char *argument, int index);
 
 /*
 * Environment
@@ -201,6 +231,9 @@ t_env	*lst_search_env(char *s, t_env *env);
 t_argument_to_expand				*lst_new_argument_parsing_result(void);
 t_command_to_expand					*lst_new_command_parsing_result(void);
 t_redirection_to_expand				*lst_new_redirection_parsing_result(void);
+t_char_list							*lst_new_chars_list(void);
+t_argument							*lst_new_argument(void);
+t_splitted_argument					*lst_new_splitted_argument(void);
 
 void	ft_lstclear_env(t_env **lst);
 void	ft_lstclear_commands(t_command_to_expand **lst);
@@ -213,6 +246,11 @@ void	ft_redirection_to_expand_addback(
 			t_redirection_to_expand **lst, t_redirection_to_expand *new);
 void	ft_argument_to_expand_addback(
 			t_argument_to_expand **lst, t_argument_to_expand *new);
+void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new);
+void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
+			t_splitted_argument *new);
+
+int		ft_lstsize_expand(t_char_list *lst);
 
 /*
 * Free / Error
@@ -279,247 +317,6 @@ void	ft_free_vars_input(char *command_line, char **env);
 // sa fait pour d'autre fonction
 
 
-
-
-// typedef struct s_char_list {
-
-// 	char		value;
-// 	t_bool		was_in_a_variable;
-
-// 	s_char_list	*next;
-// }	t_char_list;
-
-// typedef struct s_argument {
-// 	t_char_list	*chars;
-
-// 	s_argument	*next;	
-// }	t_argument;
-
-// t_char_list	*lst_new_chars_list(void)
-// {
-// 	t_char_list	*tmp;
-
-// 	tmp = malloc(sizeof(t_char_list));
-// 	if (!tmp)
-// 		return (NULL);
-// 	tmp->value = NULL;
-// 	tmp->was_in_a_variable = FALSE;
-// 	tmp->next = NULL;
-// 	return (tmp);
-// }
-
-// t_argument	*lst_new_argument(void)
-// {
-// 	t_argument	*tmp;
-
-// 	tmp = malloc(sizeof(t_argument));
-// 	if (!tmp)
-// 		return (NULL);
-// 	tmp->chars = NULL;
-// 	tmp->next = NULL;
-// 	return (tmp);
-// }
-
-// void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new)
-// {
-// 	t_char_list	*tmp;
-
-// 	if (!*lst)
-// 	{
-// 		*lst = new;
-// 		return ;
-// 	}
-// 	tmp = *lst;
-// 	while (tmp && tmp->next != NULL)
-// 		tmp = tmp->next;
-// 	tmp->next = new;
-// }
-
-// char	*get_var_name(char *str)
-// {
-// 	char	*var_name;
-// 	int		i;
-
-// 	i = 0;
-// 	var_name = malloc((strcspn(str, "<>\'\"| \n\t") + 1) * sizeof(char));
-// 	if (!var_name)
-// 		return (NULL);
-// 	while (str[i] != SPACE && str[i] != NEW_LINE && str[i] != TAB &&
-// 		str[i] != PIPE && str[i] != LEFT && str[i] != RIGHT &&
-// 		str[i] != '\'' && str[i] != '"')
-// 	{
-// 		var_name[i] = str[i];
-// 		i++;
-// 	}
-// 	var_name[i] = 0;
-// 	return (var_name);
-// }
-
-// int	skip_dolar_var(char *argument, int index)
-// {
-// 	int	i;
-
-// 	i = index;
-// 	while (argument[i] != SPACE && argument[i] != NEW_LINE &&
-// 		argument[i] != TAB && argument[i] != PIPE &&
-// 		argument[i] != LEFT && argument[i] != RIGHT &&
-// 		argument[i] != '\'' && argument[i] != '"')
-// 		i++;
-// 	return (i);
-// }
-
-// t_argument *ft_expand_vars_in_argument(const char* argument, t_env *env)
-// {
-// 	t_char_list	*tmp;
-// 	t_argument	*arg;
-// 	t_env		*var;
-// 	int			i;
-// 	int			j;
-
-// 	i = 0;
-// 	arg = lst_new_argument();
-// 	if (!arg)
-// 		return (NULL);
-// 	while (argument[i])
-// 	{
-// 		j = 0;
-// 		if (argument[i] == '\'')
-// 		{
-// 			tmp = lst_new_chars_list();
-// 			if (!tmp)
-// 				return (NULL);
-// 			tmp->value = argument[i];
-// 			ft_lstadd_back_char_list(&arg->chars, tmp);
-// 			i++;
-// 			while (argument[i] != '\'')
-// 			{
-// 				tmp = lst_new_chars_list();
-// 				if (!tmp)
-// 					return (NULL);
-// 				tmp->value = argument[i];
-// 				ft_lstadd_back_char_list(&arg->chars, tmp);
-// 				i++;
-// 			}
-// 			tmp = lst_new_chars_list();
-// 			if (!tmp)
-// 				return (NULL);
-// 			tmp->value = argument[i];
-// 			ft_lstadd_back_char_list(&arg->chars, tmp);
-// 		}
-// 		else
-// 		{
-// 			if (argument[i] == '$'
-// 				&& lst_search_env(get_var_name(&argument[i]), env))
-// 			{
-// 				var = lst_search_env(get_var_name(&argument[i]), env);
-// 				while (var->var[j])
-// 				{
-// 					tmp = lst_new_chars_list();
-// 					if (!tmp)
-// 						return (NULL);
-// 					tmp->value = env->var[j];
-// 					tmp->was_in_a_variable = TRUE;
-// 					ft_lstadd_back_char_list(&arg->chars, tmp);
-// 				}
-// 			}
-// 			else
-// 				i = skip_dolar_var(argument, i);
-// 		}
-// 		i++;
-// 	}
-// 	// pour chaque charactere de l'argument:
-// 		// si je suis une quote simple ':
-// 			// je vais chercher la quote simple suivante. (ELLE EXISTE NECESSAIREMENT)
-// 			// et je remplace tous les characteres rencontrés sans les marquer.
-// 		// sinon
-// 			// si je suis un dollar $:
-// 				// si je suis suivi de \0:
-// 					// j'ecris un dollar
-// 				// sinon:
-// 					// je remplace en marquant les characteres (was_in_a_variable = TRUE)
-// 			// sinon je remplace le charactere sans le marquer.
-	// return (arg);
-// }
-
-
-// typedef struct s_splitted_argument {
-
-// 	char				*argument;
-
-// 	s_splitted_argument	*next;	
-// }	t_splitted_argument;
-
-// t_splitted_argument	lst_new_splitted_argument(void)
-// {
-// 	t_splitted_argument	*tmp;
-
-// 	tmp = malloc(sizeof(t_splitted_argument));
-// 	if (!tmp)
-// 		return (NULL);
-// 	tmp->argument = NULL;
-// 	tmp->next = NULL;
-// 	return (tmp);
-// }
-
-// void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
-// 	t_splitted_argument *new)
-// {
-// 	t_splitted_argument	*tmp;
-
-// 	if (!*lst)
-// 	{
-// 		*lst = new;
-// 		return ;
-// 	}
-// 	tmp = *lst;
-// 	while (tmp && tmp->next != NULL)
-// 		tmp = tmp->next;
-// 	tmp->next = new;
-// }
-
-// int	ft_lstsize_expand(t_char_list *lst)
-// {
-// 	t_char_list	*tmp;
-// 	t_bool		in_quote;
-// 	int			size;
-
-// 	tmp = lst;
-// 	if (tmp->value == '\'' || tmp->value == '"')
-// 	{
-// 		size++;
-// 		in_quote = TRUE;
-// 		tmp = tmp->next;
-// 	}
-// 	else
-// 		in_quote = FALSE;
-// 	while (tmp && in_quote == FALSE)
-// 	{
-// 		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
-// 			break ;
-// 		else if (tmp->value == '\'' || tmp->value == '"')
-// 			break ;
-// 		else
-// 		{
-// 			tmp = tmp->next;
-// 			size++;
-// 		}
-// 	}
-// 	while (tmp && in_quote == TRUE)
-// 	{
-// 		if (tmp->value == '\'' || tmp->value == '"')
-// 		{
-// 			in_quote = FALSE;
-// 			size++;
-// 		}
-// 		else
-// 		{
-// 			tmp = tmp->next;
-// 			size++;
-// 		}
-// 	}
-// 	return (size);
-// }
-
 /*
 * Split sur SPACE / NEW_LINE / TAB et si le premier char 
 * est une double quote ou simple
@@ -542,101 +339,6 @@ void	ft_free_vars_input(char *command_line, char **env);
 // chars -> liste chainee
 // 	value -> char
 // 	was_in_variable -> bool
-
-
-// t_argument	*ft_split_argument(const t_argument *argument_to_split, t_splitted_argument **args)
-// {
-// 	t_splitted_argument	*splitted_arguments;
-// 	t_argument			*actual_arg;
-// 	t_bool				in_quote;
-// 	int					i;
-
-// 	splitted_argument = lst_new_splitted_argument();
-// 	if (!splitted_arguments)
-// 		return (NULL);
-// 	actual_arg = argument_to_split;
-// 	splitted_arguments->argument = malloc(
-// 			(1 + ft_lstsize_expand(actual_arg->chars)) * sizeof(char));
-// 	if (actual_arg->chars->value == '"' || actual_arg->chars->value == '\'')
-// 		in_quote = TRUE;
-// 	else
-// 		in_quote = FALSE;
-// 	i = 0;
-// 	while (actual_arg->chars && in_quote == FALSE)
-// 	{
-// 		if (actual_arg->chars->value == SPACE || actual_arg->chars->value == TAB
-// 			|| actual_arg->chars->value == NEW_LINE)
-// 			break ;
-// 		splitted_arguments->argument[i] = actual_arg->chars->value;
-// 		actual_arg->chars = actual_arg->chars->next;
-// 		i++;
-// 	}
-// 	while (actual_arg->chars && in_quote == TRUE)
-// 	{
-// 		if (actual_arg->chars->value == '\''
-// 			|| actual_arg->chars->value == '"')
-// 			in_quote = FALSE;
-// 		splitted_arguments->argument[i] = actual_arg->chars->value;
-// 		actual_arg->chars = actual_arg->chars->next;
-// 		i++;
-// 	}
-// 	splitted_arguments->argument[i] = 0;
-// 	ft_lstadd_back_splitted_argument(args, splitted_arguments);
-// 	if (actual_arg->chars->next == NULL)
-// 		actual_arg = actual_arg->next;
-// 	// iterer sur les character de argument_to_split
-// 	// couper aux espaces.
-// 	return (actual_arg);
-// }
-
-// char	*ft_remove_quotes(char *src)
-// {
-// 	char	*dest;
-// 	int		i;
-// 	int		j;
-
-// 	i = 1;
-// 	j = 0;
-
-// 	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
-// 	while (src[i])
-// 	{
-// 		dest[j] = src[i];
-// 		i++;
-// 		j++;
-// 		if (src[i + 1] == '\0')
-// 			break ;
-// 	}
-// 	dest[j] = '\0';
-// 	return (dest);
-// }
-
-// t_argument* ft_expand_argument(const t_argument_to_expand argument, t_env *env)
-// {
-// 	t_argument	*argument_with_expanded_vars;
-// 	t_argument	*splitted_arguments;
-// 	t_argument	*final_arguments;
-// 	t_argument	*tmp;
-
-// 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content, env);
-// 	tmp = argument_with_expanded_vars;
-// 	while (tmp->chars->value != 0)
-// 		splitted_arguments = ft_split_argument(tmp);
-// 	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
-
-
-// // 	// deux étapes:
-// // 	//  1) remplacement des variables + flaguer les characteres -> t_char_list * dans un while
-// // 	argument_with_expanded_vars = ft_expand_vars_in_argument(argument.content, env);
-// // 	// 2) split aux espaces qui sont pas entre quotes.
-// // 	splitted_arguments = ft_split_argument(argument_with_expanded_vars);
-// // 	// 3) virer les quotes qui sont pas flaguees
-// // 	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
-
-// 	return (final_arguments);
-
-// }
-
 
 // Si il existe redef la var en question sinon ajoute a la liste
 // export vide affiche env
