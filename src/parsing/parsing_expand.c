@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 15:45:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 15:55:58 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static t_argument	*ft_expand_vars_in_argument(
 			else
 				i = skip_dolar_var((char *)argument, i);
 		}
+		if (argument[i] != 0)
 		i++;
 	}
 	return (arg);
@@ -172,9 +173,9 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	while (tmp->chars != NULL)
 		ft_split_argument(tmp, &splitted_arguments);
 	tmp_split = splitted_arguments;
-	while (tmp_split)
+	while (tmp_split->next != NULL)
 	{
-		while (tmp_split->chars)
+		while (tmp_split->chars->next != NULL)
 		{
 			if (tmp_split->chars->value == '\''
 				|| tmp_split->chars->value == '"')
