@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/24 11:16:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:55:19 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,24 +119,18 @@ typedef struct argument_parsing_result {
 
 typedef struct s_char_list {
 
-	char		value;
-	t_bool		was_in_a_variable;
+	char				value;
+	t_bool				was_in_a_variable;
 
-	s_char_list	*next;
+	struct s_char_list	*next;
 }	t_char_list;
 
 typedef struct s_argument {
-	t_char_list	*chars;
 
-	s_argument	*next;	
+	t_char_list			*chars;
+
+	struct s_argument	*next;	
 }	t_argument;
-
-typedef struct s_splitted_argument {
-
-	char				*argument;
-
-	s_splitted_argument	*next;	
-}	t_splitted_argument;
 
 /*
 * Utilitaries
@@ -209,6 +203,8 @@ t_command_parsing_result		*ft_redirections_arguments(
 			char **remaining_line, t_command_parsing_result *result,
 			t_redirection_parsing_result *redirection_result,
 			t_argument_parsing_result *argument_result);
+t_argument						*ft_expand_argument(
+			const t_argument_to_expand *argument, t_env *env);
 /*
 * Command manager
 */
@@ -231,9 +227,8 @@ t_env	*lst_search_env(char *s, t_env *env);
 t_argument_to_expand				*lst_new_argument_parsing_result(void);
 t_command_to_expand					*lst_new_command_parsing_result(void);
 t_redirection_to_expand				*lst_new_redirection_parsing_result(void);
-t_char_list							*lst_new_chars_list(void);
+t_char_list							*lst_new_char_list(void);
 t_argument							*lst_new_argument(void);
-t_splitted_argument					*lst_new_splitted_argument(void);
 
 void	ft_lstclear_env(t_env **lst);
 void	ft_lstclear_commands(t_command_to_expand **lst);
@@ -246,9 +241,8 @@ void	ft_redirection_to_expand_addback(
 			t_redirection_to_expand **lst, t_redirection_to_expand *new);
 void	ft_argument_to_expand_addback(
 			t_argument_to_expand **lst, t_argument_to_expand *new);
+void	ft_lstadd_back_argument(t_argument **lst, t_argument *new);
 void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new);
-void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
-			t_splitted_argument *new);
 
 int		ft_lstsize_expand(t_char_list *lst);
 

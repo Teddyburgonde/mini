@@ -6,20 +6,20 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 11:05:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:30:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
-t_char_list	*lst_new_chars_list(void)
+t_char_list	*lst_new_char_list(void)
 {
 	t_char_list	*tmp;
 
 	tmp = malloc(sizeof(t_char_list));
 	if (!tmp)
 		return (NULL);
-	tmp->value = NULL;
+	tmp->value = 0;
 	tmp->was_in_a_variable = FALSE;
 	tmp->next = NULL;
 	return (tmp);
@@ -33,18 +33,6 @@ t_argument	*lst_new_argument(void)
 	if (!tmp)
 		return (NULL);
 	tmp->chars = NULL;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-t_splitted_argument	*lst_new_splitted_argument(void)
-{
-	t_splitted_argument	*tmp;
-
-	tmp = malloc(sizeof(t_splitted_argument));
-	if (!tmp)
-		return (NULL);
-	tmp->argument = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }

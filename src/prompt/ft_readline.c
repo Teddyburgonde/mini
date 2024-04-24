@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:08:16 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:32:05 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	ft_readline(t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
+	t_argument						*final_parsing;
 	char							*command_line;
 
-	(void)env;
 	while (1)
 	{
 		command_line = readline("minishell > ");
@@ -32,6 +32,8 @@ int	ft_readline(t_env **env)
 		{
 			// handle error
 		}
+		final_parsing = ft_expand_argument(
+				parsing_result->commands->arguments, *env);
 		// printf("%s\n", parsing_result->commands->arguments->content);
 		// if (parse->next == NULL)
 			// cmd_selector(vars, &env, ac, av);

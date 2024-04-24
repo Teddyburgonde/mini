@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 11:12:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:31:08 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_lstsize_expand(t_char_list *lst)
 	int			size;
 
 	tmp = lst;
+	size = 0;
 	if (tmp->value == '\'' || tmp->value == '"')
 	{
 		size++;

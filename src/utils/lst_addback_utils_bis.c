@@ -6,11 +6,11 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:07:59 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 11:08:22 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:39:13 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new)
 {
@@ -27,10 +27,9 @@ void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new)
 	tmp->next = new;
 }
 
-void	ft_lstadd_back_splitted_argument(t_splitted_argument **lst,
-	t_splitted_argument *new)
+void	ft_lstadd_back_argument(t_argument **lst, t_argument *new)
 {
-	t_splitted_argument	*tmp;
+	t_argument	*tmp;
 
 	if (!*lst)
 	{

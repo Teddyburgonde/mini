@@ -6,11 +6,11 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 11:19:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:29:56 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 
 char	*get_var_name(char *str)
@@ -51,7 +51,7 @@ static t_argument	*ft_expand_vars_in_argument(
 		j = 0;
 		if (argument[i] == '\'')
 		{
-			tmp = lst_new_chars_list();
+			tmp = lst_new_char_list();
 			if (!tmp)
 				return (NULL);
 			tmp->value = argument[i];
@@ -59,14 +59,14 @@ static t_argument	*ft_expand_vars_in_argument(
 			i++;
 			while (argument[i] != '\'')
 			{
-				tmp = lst_new_chars_list();
+				tmp = lst_new_char_list();
 				if (!tmp)
 					return (NULL);
 				tmp->value = argument[i];
 				ft_lstadd_back_char_list(&arg->chars, tmp);
 				i++;
 			}
-			tmp = lst_new_chars_list();
+			tmp = lst_new_char_list();
 			if (!tmp)
 				return (NULL);
 			tmp->value = argument[i];
@@ -75,12 +75,12 @@ static t_argument	*ft_expand_vars_in_argument(
 		else
 		{
 			if (argument[i] == '$'
-				&& lst_search_env(get_var_name(&argument[i]), env))
+				&& lst_search_env(get_var_name((char *)&argument[i]), env))
 			{
-				var = lst_search_env(get_var_name(&argument[i]), env);
+				var = lst_search_env(get_var_name((char *)&argument[i]), env);
 				while (var->var[j])
 				{
-					tmp = lst_new_chars_list();
+					tmp = lst_new_char_list();
 					if (!tmp)
 						return (NULL);
 					tmp->value = env->var[j];
@@ -89,91 +89,102 @@ static t_argument	*ft_expand_vars_in_argument(
 				}
 			}
 			else
-				i = skip_dolar_var(argument, i);
+				i = skip_dolar_var((char *)argument, i);
 		}
 		i++;
 	}
 	return (arg);
 }
 
-static t_argument	*ft_split_argument(const t_argument *argument_to_split,
-	t_splitted_argument **args)
+static void	ft_split_argument(const t_argument *argument_to_split,
+	t_argument **args)
 {
-	t_splitted_argument	*splitted_arguments;
-	t_argument			*actual_arg;
-	t_bool				in_quote;
-	int					i;
+	t_char_list	*arg;
+	t_argument	*splitted_arguments;
+	t_argument	*actual_arg;
+	t_bool		in_quote;
 
-	splitted_argument = lst_new_splitted_argument();
+	splitted_arguments = lst_new_argument();
 	if (!splitted_arguments)
-		return (NULL);
-	actual_arg = argument_to_split;
-	splitted_arguments->argument = malloc(
-			(1 + ft_lstsize_expand(actual_arg->chars)) * sizeof(char));
+		return ;
+	actual_arg = (t_argument *)argument_to_split;
 	if (actual_arg->chars->value == '"' || actual_arg->chars->value == '\'')
 		in_quote = TRUE;
 	else
 		in_quote = FALSE;
-	i = 0;
 	while (actual_arg->chars && in_quote == FALSE)
 	{
 		if (actual_arg->chars->value == SPACE || actual_arg->chars->value == TAB
 			|| actual_arg->chars->value == NEW_LINE)
 			break ;
-		splitted_arguments->argument[i] = actual_arg->chars->value;
+		arg = lst_new_char_list();
+		arg->value = actual_arg->chars->value;
+		arg->was_in_a_variable = actual_arg->chars->was_in_a_variable;
+		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
 		actual_arg->chars = actual_arg->chars->next;
-		i++;
 	}
 	while (actual_arg->chars && in_quote == TRUE)
 	{
 		if (actual_arg->chars->value == '\''
 			|| actual_arg->chars->value == '"')
 			in_quote = FALSE;
-		splitted_arguments->argument[i] = actual_arg->chars->value;
+		arg = lst_new_char_list();
+		arg->value = actual_arg->chars->value;
+		arg->was_in_a_variable = actual_arg->chars->was_in_a_variable;
+		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
 		actual_arg->chars = actual_arg->chars->next;
-		i++;
 	}
-	splitted_arguments->argument[i] = 0;
-	ft_lstadd_back_splitted_argument(args, splitted_arguments);
+	ft_lstadd_back_argument(args, splitted_arguments);
 	if (actual_arg->chars->next == NULL)
 		actual_arg = actual_arg->next;
-	return (actual_arg);
 }
 
-static char	*ft_remove_quotes(char *src)
+static void	ft_remove_quotes(t_char_list *src)
 {
-	char	*dest;
-	int		i;
-	int		j;
+	t_char_list	*tmp;
+	t_char_list	*tmp2;
 
-	i = 1;
-	j = 0;
-
-	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
-	while (src[i])
+	tmp = src;
+	src = src->next;
+	free(tmp);
+	tmp = src;
+	while (tmp->next != NULL)
 	{
-		dest[j] = src[i];
-		i++;
-		j++;
-		if (src[i + 1] == '\0')
-			break ;
+		if (tmp->next->next == NULL)
+			tmp2 = tmp;
+		tmp = tmp->next;
 	}
-	dest[j] = '\0';
-	return (dest);
+	free(tmp);
+	tmp2->next = NULL;
 }
 
-t_argument	*ft_expand_argument(const t_argument_to_expand argument, t_env *env)
+t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
+		t_env *env)
 {
-	t_argument	*argument_with_expanded_vars;
-	t_argument	*splitted_arguments;
-	t_argument	*final_arguments;
-	t_argument	*tmp;
+	t_argument			*argument_with_expanded_vars;
+	t_argument			*splitted_arguments;
+	t_argument			*tmp_split;
+	t_argument			*tmp;
 
 	argument_with_expanded_vars = ft_expand_vars_in_argument(
-			argument.content, env);
+			argument->content, env);
 	tmp = argument_with_expanded_vars;
-	while (tmp->chars->value != 0)
-		splitted_arguments = ft_split_argument(tmp);
-	final_arguments = ft_remove_quotes_from_arguments(splitted_arguments);
-	return (final_arguments);
+	while (tmp->chars != NULL)
+		ft_split_argument(tmp, &splitted_arguments);
+	tmp_split = splitted_arguments;
+	while (tmp_split)
+	{
+		while (tmp_split->chars)
+		{
+			if (tmp_split->chars->value == '\''
+				|| tmp_split->chars->value == '"')
+				ft_remove_quotes(splitted_arguments->chars);
+			tmp_split->chars = tmp_split->chars->next;
+		}
+		tmp_split = tmp_split->next;
+	}
+	return (splitted_arguments);
 }
+
+// Modif et supp t_splitted_argument car faut utiliser t_argument
+// Chaque arg = un node et chaque node de t_char_list = une lettre
