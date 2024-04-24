@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:24:05 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 13:49:21 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/24 10:52:25 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,19 @@ int	double_redirection(char *str)
 	str = skip_one_character(str);
 	str = skip_one_character(str);
 	str = skip_spaces(str);
-	if (str[0] == '>' || str[0] == '<' || str[0] == '\0')
+	if (str[0] == '\0')
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+		return (1);
+	}
+	if (str[0] == '>')
+	{
+		ft_putstr_fd("syntax error near unexpected token `>'\n", 2);
+		return (1);
+	}
+	if (str[0] == '<')
+	{
+		ft_putstr_fd("syntax error near unexpected token `<'\n", 2);
 		return (1);
 	}
 	return (0);
@@ -32,9 +42,19 @@ int	single_redirection(char *str)
 {
 	str = skip_one_character(str);
 	str = skip_spaces(str);
-	if (str[0] == '>' || str[0] == '<' || str[0] == '\0')
+	if (str[0] == '\0')
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+		return (1);
+	}
+	if (str[0] == '>')
+	{
+		ft_putstr_fd("syntax error near unexpected token `>'\n", 2);
+		return (1);
+	}
+	if (str[0] == '<')
+	{
+		ft_putstr_fd("syntax error near unexpected token `<'\n", 2);
 		return (1);
 	}
 	return (0);
