@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:13:30 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/26 23:24:09 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject)
 		i++;
 	}
 	j = 0;
-	while (s2 && (ft_strcspn(&s2[1], reject) + 1) > j)
+	while (s2 && (ft_strcspn(&s2[1], reject) + 2) > j)
 	{
 		tab[i] = s2[j];
 		j++;

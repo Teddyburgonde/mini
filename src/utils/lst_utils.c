@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 14:31:08 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/26 22:55:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,46 +62,76 @@ void	ft_lstclear_commands(t_command_to_expand **lst)
 	}
 }
 
-int	ft_lstsize_expand(t_char_list *lst)
+// int	ft_lstsize_expand(t_char_list *lst)
+// {
+// 	t_char_list	*tmp;
+// 	t_bool		in_quote;
+// 	int			size;
+
+// 	tmp = lst;
+// 	size = 0;
+// 	if (tmp->value == '\'' || tmp->value == '"')
+// 	{
+// 		size++;
+// 		in_quote = TRUE;
+// 		tmp = tmp->next;
+// 	}
+// 	else
+// 		in_quote = FALSE;
+// 	while (tmp && in_quote == FALSE)
+// 	{
+// 		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
+// 			break ;
+// 		else if (tmp->value == '\'' || tmp->value == '"')
+// 			break ;
+// 		else
+// 		{
+// 			tmp = tmp->next;
+// 			size++;
+// 		}
+// 	}
+// 	while (tmp && in_quote == TRUE)
+// 	{
+// 		if (tmp->value == '\'' || tmp->value == '"')
+// 		{
+// 			in_quote = FALSE;
+// 			size++;
+// 		}
+// 		else
+// 		{
+// 			tmp = tmp->next;
+// 			size++;
+// 		}
+// 	}
+// 	return (size);
+// }
+
+void	ft_lstclear_char_list(t_char_list **lst)
 {
 	t_char_list	*tmp;
-	t_bool		in_quote;
-	int			size;
 
-	tmp = lst;
-	size = 0;
-	if (tmp->value == '\'' || tmp->value == '"')
+	if (!*lst)
+		return ;
+	while (*lst)
 	{
-		size++;
-		in_quote = TRUE;
-		tmp = tmp->next;
+		tmp = *lst;
+		*lst = (*lst)->next;
+		free(tmp);
 	}
-	else
-		in_quote = FALSE;
-	while (tmp && in_quote == FALSE)
+}
+
+void	ft_lstclear_argument(t_argument **lst)
+{
+	t_argument	*tmp;
+
+	if (!*lst)
+		return ;
+	while (*lst)
 	{
-		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
-			break ;
-		else if (tmp->value == '\'' || tmp->value == '"')
-			break ;
-		else
-		{
-			tmp = tmp->next;
-			size++;
-		}
+		tmp = *lst;
+		*lst = (*lst)->next;
+		if (tmp->chars)
+			ft_lstclear_char_list(&tmp->chars);
+		free(tmp);
 	}
-	while (tmp && in_quote == TRUE)
-	{
-		if (tmp->value == '\'' || tmp->value == '"')
-		{
-			in_quote = FALSE;
-			size++;
-		}
-		else
-		{
-			tmp = tmp->next;
-			size++;
-		}
-	}
-	return (size);
 }

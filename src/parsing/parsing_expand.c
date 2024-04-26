@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/26 15:51:03 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/26 23:27:47 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,22 @@ static t_argument	*ft_expand_vars_in_argument(
 static void	ft_split_argument(t_argument **argument_to_split,
 	t_argument **args)
 {
+	int			in;
 	t_char_list	*arg;
+	t_argument	*tmp;
 	t_argument	*splitted_arguments;
 	t_bool		in_quote;
 
 	splitted_arguments = lst_new_argument();
 	if (!splitted_arguments)
 		return ;
+	in = 0;
 	if ((*argument_to_split)->chars->value == '"'
 		|| (*argument_to_split)->chars->value == '\'')
 		in_quote = TRUE;
 	else
 		in_quote = FALSE;
+	tmp = *argument_to_split;
 	while ((*argument_to_split)->chars && in_quote == FALSE)
 	{
 		if ((*argument_to_split)->chars->value == SPACE
@@ -141,7 +145,12 @@ static void	ft_split_argument(t_argument **argument_to_split,
 	{
 		if ((*argument_to_split)->chars->value == '\''
 			|| (*argument_to_split)->chars->value == '"')
-			in_quote = FALSE;
+		{
+			if (in == 1)
+				in_quote = FALSE;
+			else
+				in++;
+		}
 		arg = lst_new_char_list();
 		arg->value = (*argument_to_split)->chars->value;
 		arg->was_in_a_variable = (*argument_to_split)->chars->was_in_a_variable;
@@ -150,7 +159,10 @@ static void	ft_split_argument(t_argument **argument_to_split,
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
 	if ((*argument_to_split)->chars == NULL)
+	{
 		(*argument_to_split) = (*argument_to_split)->next;
+		ft_lstclear_argument(&tmp);
+	}
 }
 
 static void	ft_remove_quotes(t_char_list *src)
@@ -162,7 +174,7 @@ static void	ft_remove_quotes(t_char_list *src)
 	src = src->next;
 	free(tmp);
 	tmp = src;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		if (tmp->next->next == NULL)
 			tmp2 = tmp;
@@ -194,16 +206,19 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	}
 	tmp = args_with_expanded_vars;
 	// Si VAR="sdf$x" -> "sdfxxxx" -> "sdf", "xxxx" sont deux args differents
+	// Problem "fer" for fir -> while only two times !
 	while (tmp != NULL)
 		ft_split_argument(&tmp, &splitted_arguments);
 	tmp_split = splitted_arguments;
+	// Need to be recoded
 	while (tmp_split->next != NULL)
 	{
 		if (tmp_split->chars->value == '\''
 			|| tmp_split->chars->value == '"')
-			ft_remove_quotes(splitted_arguments->chars);
+			ft_remove_quotes(tmp_split->chars);
 		tmp_split = tmp_split->next;
 	}
+	// ft_lstclear_argument(&args_with_expanded_vars);
 	return (splitted_arguments);
 }
 
