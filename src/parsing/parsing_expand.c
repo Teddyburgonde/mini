@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/24 15:55:58 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/26 14:27:25 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ static t_argument	*ft_expand_vars_in_argument(
 			tmp->value = argument[i];
 			ft_lstadd_back_char_list(&arg->chars, tmp);
 		}
-		else
+		else if (argument[i] == '$')
 		{
-			if (argument[i] == '$'
-				&& lst_search_env(get_var_name((char *)&argument[i]), env))
+			if (lst_search_env(get_var_name((char *)&argument[i]), env))
 			{
 				var = lst_search_env(get_var_name((char *)&argument[i]), env);
 				while (var->var[j])
@@ -91,8 +90,22 @@ static t_argument	*ft_expand_vars_in_argument(
 			else
 				i = skip_dolar_var((char *)argument, i);
 		}
+		else
+		{
+			while (argument[i])
+			{
+				if (argument[i] == '$')
+					break ;
+				tmp = lst_new_char_list();
+				if (!tmp)
+					return (NULL);
+				tmp->value = argument[i];
+				ft_lstadd_back_char_list(&arg->chars, tmp);
+				i++;
+			}
+		}
 		if (argument[i] != 0)
-		i++;
+			i++;
 	}
 	return (arg);
 }
@@ -136,7 +149,7 @@ static void	ft_split_argument(const t_argument *argument_to_split,
 		actual_arg->chars = actual_arg->chars->next;
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
-	if (actual_arg->chars->next == NULL)
+	if (actual_arg->chars == NULL)
 		actual_arg = actual_arg->next;
 }
 
@@ -162,15 +175,26 @@ static void	ft_remove_quotes(t_char_list *src)
 t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		t_env *env)
 {
-	t_argument			*argument_with_expanded_vars;
-	t_argument			*splitted_arguments;
-	t_argument			*tmp_split;
-	t_argument			*tmp;
+	t_argument				*argument_with_expanded_vars;
+	t_argument				*args_with_expanded_vars;
+	t_argument				*splitted_arguments;
+	t_argument_to_expand	*tmp_to_expand;
+	t_argument				*tmp_split;
+	t_argument				*tmp;
 
-	argument_with_expanded_vars = ft_expand_vars_in_argument(
-			argument->content, env);
-	tmp = argument_with_expanded_vars;
-	while (tmp->chars != NULL)
+	tmp_to_expand = (t_argument_to_expand *)argument;
+	args_with_expanded_vars = NULL;
+	while (tmp_to_expand != NULL)
+	{
+		argument_with_expanded_vars = ft_expand_vars_in_argument(
+				tmp_to_expand->content, env);
+		ft_lstadd_back_argument(&args_with_expanded_vars,
+			argument_with_expanded_vars);
+		tmp_to_expand = tmp_to_expand->next;
+	}
+	tmp = args_with_expanded_vars;
+	// Si VAR="sdf$x" -> "sdfxxxx" -> "sdf", "xxxx" sont deux args differents
+	while (tmp != NULL)
 		ft_split_argument(tmp, &splitted_arguments);
 	tmp_split = splitted_arguments;
 	while (tmp_split->next != NULL)
