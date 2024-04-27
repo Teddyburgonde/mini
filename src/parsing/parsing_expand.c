@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/26 23:27:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/27 04:22:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,16 @@ static t_argument	*ft_expand_vars_in_argument(
 	return (arg);
 }
 
+// Problem tmp2 is link to tmp .. But I need a var which keep the first node of each char_list
+
 static void	ft_split_argument(t_argument **argument_to_split,
 	t_argument **args)
 {
 	int			in;
 	t_char_list	*arg;
 	t_argument	*tmp;
+	t_argument	*first_node;
+	t_char_list	*next;
 	t_argument	*splitted_arguments;
 	t_bool		in_quote;
 
@@ -123,28 +127,29 @@ static void	ft_split_argument(t_argument **argument_to_split,
 	if (!splitted_arguments)
 		return ;
 	in = 0;
-	if ((*argument_to_split)->chars->value == '"'
-		|| (*argument_to_split)->chars->value == '\'')
+	first_node = *argument_to_split;
+	tmp = *argument_to_split;
+	if (tmp->chars->value == '"'
+		|| tmp->chars->value == '\'')
 		in_quote = TRUE;
 	else
 		in_quote = FALSE;
-	tmp = *argument_to_split;
-	while ((*argument_to_split)->chars && in_quote == FALSE)
+	while (tmp->chars && in_quote == FALSE)
 	{
-		if ((*argument_to_split)->chars->value == SPACE
-			|| (*argument_to_split)->chars->value == TAB
-			|| (*argument_to_split)->chars->value == NEW_LINE)
+		if (tmp->chars->value == SPACE
+			|| tmp->chars->value == TAB
+			|| tmp->chars->value == NEW_LINE)
 			break ;
 		arg = lst_new_char_list();
-		arg->value = (*argument_to_split)->chars->value;
-		arg->was_in_a_variable = (*argument_to_split)->chars->was_in_a_variable;
+		arg->value = tmp->chars->value;
+		arg->was_in_a_variable = tmp->chars->was_in_a_variable;
 		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		(*argument_to_split)->chars = (*argument_to_split)->chars->next;
+		tmp->chars = tmp->chars->next;
 	}
-	while ((*argument_to_split)->chars && in_quote == TRUE)
+	while (tmp->chars && in_quote == TRUE)
 	{
-		if ((*argument_to_split)->chars->value == '\''
-			|| (*argument_to_split)->chars->value == '"')
+		if (tmp->chars->value == '\''
+			|| tmp->chars->value == '"')
 		{
 			if (in == 1)
 				in_quote = FALSE;
@@ -152,16 +157,23 @@ static void	ft_split_argument(t_argument **argument_to_split,
 				in++;
 		}
 		arg = lst_new_char_list();
-		arg->value = (*argument_to_split)->chars->value;
-		arg->was_in_a_variable = (*argument_to_split)->chars->was_in_a_variable;
+		arg->value = tmp->chars->value;
+		arg->was_in_a_variable = tmp->chars->was_in_a_variable;
 		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		(*argument_to_split)->chars = (*argument_to_split)->chars->next;
+		tmp->chars = tmp->chars->next;
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
-	if ((*argument_to_split)->chars == NULL)
+	if (tmp->chars == NULL)
 	{
-		(*argument_to_split) = (*argument_to_split)->next;
-		ft_lstclear_argument(&tmp);
+		tmp = tmp->next;
+		*argument_to_split = (*argument_to_split)->next;
+		while (first_node->chars)
+		{
+			next = first_node->chars->next;
+			free(first_node->chars);
+			first_node->chars = next;
+		}
+		free(first_node);
 	}
 }
 
@@ -171,15 +183,20 @@ static void	ft_remove_quotes(t_char_list *src)
 	t_char_list	*tmp2;
 
 	tmp = src;
+	tmp2 = NULL;
 	src = src->next;
 	free(tmp);
 	tmp = src;
 	while (tmp != NULL)
 	{
 		if (tmp->next->next == NULL)
+		{
 			tmp2 = tmp;
+			break ;
+		}
 		tmp = tmp->next;
 	}
+	tmp = tmp->next;
 	free(tmp);
 	tmp2->next = NULL;
 }
@@ -218,7 +235,7 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 			ft_remove_quotes(tmp_split->chars);
 		tmp_split = tmp_split->next;
 	}
-	// ft_lstclear_argument(&args_with_expanded_vars);
+	ft_lstclear_argument(&args_with_expanded_vars);
 	return (splitted_arguments);
 }
 
