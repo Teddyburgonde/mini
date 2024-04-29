@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/26 17:33:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:17:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct argument_parsing_result {
 typedef struct s_char_list {
 
 	char				value;
+	t_bool				last_pos;
 	t_bool				was_in_a_variable;
 
 	struct s_char_list	*next;

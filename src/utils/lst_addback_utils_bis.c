@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:07:59 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/26 17:06:58 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/29 11:54:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new)
 {
 	t_char_list	*tmp;
 
+	new->next = NULL;
 	if (!*lst)
 	{
 		*lst = new;
@@ -31,6 +32,7 @@ void	ft_lstadd_back_argument(t_argument **lst, t_argument *new)
 {
 	t_argument	*tmp;
 
+	new->next = NULL;
 	if (!*lst)
 	{
 		*lst = new;

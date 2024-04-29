@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/26 14:31:58 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:17:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_char_list	*lst_new_char_list(void)
 	if (!tmp)
 		return (NULL);
 	tmp->value = 0;
+	tmp->last_pos = FALSE;
 	tmp->was_in_a_variable = FALSE;
 	tmp->next = NULL;
 	return (tmp);

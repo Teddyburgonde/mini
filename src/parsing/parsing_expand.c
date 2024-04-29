@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/27 04:22:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/29 12:15:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,33 @@ static t_argument	*ft_expand_vars_in_argument(
 	return (arg);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Problem tmp2 is link to tmp .. But I need a var which keep the first node of each char_list
+
+/*
 
 static void	ft_split_argument(t_argument **argument_to_split,
 	t_argument **args)
@@ -177,29 +203,164 @@ static void	ft_split_argument(t_argument **argument_to_split,
 	}
 }
 
-static void	ft_remove_quotes(t_char_list *src)
+*/
+
+// Mettre en place une variable permettant de trouver ou nous en sommes.
+// Sans avoir a retrouver les premiers nodes les frees seront bien plus simple.
+// Le fonctionnement en lui meme de la fonction est correcte.
+
+static t_argument	*ft_get_last_pos(t_argument *lst)
 {
 	t_char_list	*tmp;
-	t_char_list	*tmp2;
 
-	tmp = src;
-	tmp2 = NULL;
-	src = src->next;
-	free(tmp);
-	tmp = src;
-	while (tmp != NULL)
+	while (lst)
 	{
-		if (tmp->next->next == NULL)
+		tmp = lst->chars;
+		while (tmp)
 		{
-			tmp2 = tmp;
-			break ;
+			if (tmp->last_pos == TRUE)
+				return (lst);
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
+		lst = lst->next;
 	}
-	tmp = tmp->next;
-	free(tmp);
-	tmp2->next = NULL;
+	return (NULL);
 }
+
+// Le argument_to_split se synchro avec tmp ste pd
+// Maybe faire une var t_char_list dans le get
+// peut etre que y a que le arg qui est synchro
+
+static int	ft_split_argument(t_argument *argument_to_split,
+	t_argument **args)
+{
+	int			in;
+	t_char_list	*arg;
+	t_char_list	*tmp_char;
+	t_argument	*tmp;
+	t_argument	*splitted_arguments;
+	t_bool		in_quote;
+
+	splitted_arguments = lst_new_argument();
+	if (!splitted_arguments)
+		return (0);
+	in = 0;
+	tmp = argument_to_split;
+	tmp = ft_get_last_pos(tmp);
+	if (tmp == NULL)
+		tmp = argument_to_split;
+	if (tmp->chars->value == '"'
+		|| tmp->chars->value == '\'')
+		in_quote = TRUE;
+	else
+		in_quote = FALSE;
+	tmp_char = tmp->chars;
+	tmp_char->last_pos = FALSE;
+	while (tmp_char && in_quote == FALSE)
+	{
+		if (tmp_char->value == SPACE
+			|| tmp_char->value == TAB
+			|| tmp_char->value == NEW_LINE)
+			break ;
+		arg = lst_new_char_list();
+		arg->value = tmp_char->value;
+		arg->was_in_a_variable = tmp_char->was_in_a_variable;
+		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
+		tmp_char = tmp_char->next;
+	}
+	while (tmp_char && in_quote == TRUE)
+	{
+		if (tmp_char->value == '\''
+			|| tmp_char->value == '"')
+		{
+			if (in == 1)
+				in_quote = FALSE;
+			else
+				in++;
+		}
+		arg = lst_new_char_list();
+		arg->value = tmp_char->value;
+		arg->was_in_a_variable = tmp_char->was_in_a_variable;
+		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
+		tmp_char = tmp_char->next;
+	}
+	// printf("%c\n", splitted_arguments->chars->value);
+	// printf("%p\n", splitted_arguments->chars->next);
+	// printf("%u\n", splitted_arguments->chars->was_in_a_variable);
+	// printf("%u\n", splitted_arguments->chars->last_pos);
+	// printf("%p\n", splitted_arguments->chars);
+	// printf("%p\n", splitted_arguments->next);
+
+	// Conditionnal jump premier node raison ?????
+	ft_lstadd_back_argument(args, splitted_arguments);
+	if (tmp_char == NULL)
+	{
+		tmp = tmp->next;
+		if (tmp != NULL)
+			tmp_char = tmp->chars;
+	}
+	if (tmp == NULL)
+		return (0);
+	tmp_char->last_pos = TRUE;
+	return (1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// static void	ft_remove_quotes(t_char_list *src)
+// {
+// 	t_char_list	*tmp;
+// 	t_char_list	*tmp2;
+
+// 	tmp = src;
+// 	tmp2 = NULL;
+// 	src = src->next;
+// 	free(tmp);
+// 	tmp = src;
+// 	while (tmp != NULL)
+// 	{
+// 		if (tmp->next->next == NULL)
+// 		{
+// 			tmp2 = tmp;
+// 			break ;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	tmp = tmp->next;
+// 	free(tmp);
+// 	tmp2->next = NULL;
+// }
 
 t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		t_env *env)
@@ -209,8 +370,9 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	t_argument				*splitted_arguments;
 	t_argument_to_expand	*tmp_to_expand;
 	t_argument				*tmp_split;
-	t_argument				*tmp;
+	int						tmp;
 
+	tmp = 1;
 	tmp_to_expand = (t_argument_to_expand *)argument;
 	args_with_expanded_vars = NULL;
 	while (tmp_to_expand != NULL)
@@ -221,20 +383,21 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 			argument_with_expanded_vars);
 		tmp_to_expand = tmp_to_expand->next;
 	}
-	tmp = args_with_expanded_vars;
 	// Si VAR="sdf$x" -> "sdfxxxx" -> "sdf", "xxxx" sont deux args differents
 	// Problem "fer" for fir -> while only two times !
-	while (tmp != NULL)
-		ft_split_argument(&tmp, &splitted_arguments);
+	// Add a head and a tail can't resolve the problem.
+	// Maybe erase and recreate ft_split_argument to be able to think about a new solution.
+	while (tmp != 0)
+		tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
 	tmp_split = splitted_arguments;
 	// Need to be recoded
-	while (tmp_split->next != NULL)
-	{
-		if (tmp_split->chars->value == '\''
-			|| tmp_split->chars->value == '"')
-			ft_remove_quotes(tmp_split->chars);
-		tmp_split = tmp_split->next;
-	}
+	// while (tmp_split != NULL)
+	// {
+	// 	if (tmp_split->chars->value == '\''
+	// 		|| tmp_split->chars->value == '"')
+	// 		ft_remove_quotes(tmp_split->chars);
+	// 	tmp_split = tmp_split->next;
+	// }
 	ft_lstclear_argument(&args_with_expanded_vars);
 	return (splitted_arguments);
 }
