@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/29 14:44:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/29 16:07:28 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static t_argument	*ft_expand_vars_in_argument(
 	t_char_list	*tmp;
 	t_argument	*arg;
 	t_env		*var;
+	char		*var_name;
 	int			i;
 	int			j;
 
@@ -74,21 +75,26 @@ static t_argument	*ft_expand_vars_in_argument(
 		}
 		else if (argument[i] == '$')
 		{
-			if (lst_search_env(get_var_name((char *)&argument[i]), env))
+			var_name = get_var_name((char *)&argument[i]);
+			if (lst_search_env(var_name, env))
 			{
-				var = lst_search_env(get_var_name((char *)&argument[i]), env);
+				var = lst_search_env(var_name, env);
 				while (var->var[j])
 				{
 					tmp = lst_new_char_list();
 					if (!tmp)
 						return (NULL);
-					tmp->value = env->var[j];
+					tmp->value = var->var[j];
 					tmp->was_in_a_variable = TRUE;
 					ft_lstadd_back_char_list(&arg->chars, tmp);
+					j++;
 				}
+				i = skip_dolar_var((char *)argument, i);
 			}
 			else
 				i = skip_dolar_var((char *)argument, i);
+			if (var_name)
+				free(var_name);
 		}
 		else
 		{
@@ -407,6 +413,12 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	{
 		argument_with_expanded_vars = ft_expand_vars_in_argument(
 				tmp_to_expand->content, env);
+		if (argument_with_expanded_vars->chars == NULL)
+		{
+			free(argument_with_expanded_vars);
+			argument_with_expanded_vars = NULL;
+			break ;
+		}
 		ft_lstadd_back_argument(&args_with_expanded_vars,
 			argument_with_expanded_vars);
 		tmp_to_expand = tmp_to_expand->next;
@@ -415,19 +427,18 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	// Problem "fer" for fir -> while only two times !
 	// Add a head and a tail can't resolve the problem.
 	// Maybe erase and recreate ft_split_argument to be able to think about a new solution.
-	while (tmp != 0)
-		tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
-	tmp_split = splitted_arguments;
-	ft_remove_quotes(&tmp_split);
-	// Need to be recoded
-	// while (tmp_split != NULL)
-	// {
-	// 	if (tmp_split->chars->value == '\''
-	// 		|| tmp_split->chars->value == '"')
-	// 		ft_remove_quotes(tmp_split->chars);
-	// 	tmp_split = tmp_split->next;
-	// }
-	ft_lstclear_argument(&args_with_expanded_vars);
+	splitted_arguments = NULL;
+	if (argument_with_expanded_vars != NULL)
+	{
+		while (tmp != 0)
+			tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
+		tmp_split = splitted_arguments;
+		ft_remove_quotes(&tmp_split);
+	}
+	if (args_with_expanded_vars)
+		ft_lstclear_argument(&args_with_expanded_vars);
+	else
+		return (NULL);
 	return (splitted_arguments);
 }
 

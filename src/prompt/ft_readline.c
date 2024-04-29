@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/29 11:47:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:57:01 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,14 @@ int	ft_readline(t_env **env)
 		}
 		final_parsing = ft_expand_argument(
 				parsing_result->commands->arguments, *env);
+		if (final_parsing != NULL)
+		{
 		// printf("%s\n", parsing_result->commands->arguments->content);
 		// if (parse->next == NULL)
 			// cmd_selector(vars, &env, ac, av);
 		// else
 			// cmd
+		}
 		ft_lstclear_commands(&parsing_result->commands);
 		ft_lstclear_argument(&final_parsing);
 		free(parsing_result);
