@@ -3,30 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/03 16:36:51 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/30 13:38:33 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 void	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
 	t_env	*tmp;
 
-	tmp = ft_lstnew();
-	tmp_env = lst_search_env(cmd[1], *env)
+	tmp_env = lst_search_env(cmd[1], *env);
 	if (!cmd[1])
-		print_env(*env);
+	{
+		tmp = *env;
+		while (tmp)
+		{
+			printf("%s\n", tmp->full_path);
+			tmp = tmp->next;
+		}
+	}
+	tmp = ft_lstnew_env();
 	if (!tmp_env)
 	{
 		tmp->var_name = cmd[1];
 		tmp->var = cmd[2];
 		tmp->next = NULL;
-		ft_lstadd_back(env, tmp);
+		ft_lstadd_back_env(env, tmp);
 	}
 	else
 	{

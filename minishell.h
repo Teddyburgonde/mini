@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/28 15:17:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/30 13:18:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int		single_redirection(char *str);
 int		double_redirection(char *str);
 int		ft_strcspn(const char *s, char *reject);
 int		skip_dolar_var(char *argument, int index);
+int		ft_atoi(const char *str);
 
 /*
 * Environment
@@ -206,17 +207,28 @@ t_command_parsing_result		*ft_redirections_arguments(
 			t_argument_parsing_result *argument_result);
 t_argument						*ft_expand_argument(
 			const t_argument_to_expand *argument, t_env *env);
+
+/*
+* Setup command
+*/
+
+char	**ft_setup_command(t_argument *arg);
+
 /*
 * Command manager
 */
 
-void	cmd_selector(char *command_line, char **env, int ac, char **av);
+int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
 
 /*
 * Builtins
 */
 
-void	print_env(t_env *envp);
+void	export(t_env **env, char **cmd);
+int		ft_cd(char **command, char **envp);
+void	ft_echo(char **command);
+int		ft_pwd(void);
+void	unset(t_env **env, char *name);
 
 /*
 * Chain list

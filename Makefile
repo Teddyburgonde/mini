@@ -2,9 +2,16 @@ NAME=minishell
 
 MY_SOURCES= src/prompt/minishell.c \
 			src/prompt/ft_readline.c \
+			src/prompt/setup_command.c \
+			src/prompt/cmd_manager.c \
             src/env/init_env.c \
             src/env/print_env.c \
             src/signal/signal.c \
+			src/builtin/export.c \
+			src/builtin/ft_cd.c \
+			src/builtin/ft_echo.c \
+			src/builtin/ft_pwd.c \
+			src/builtin/unset.c \
 			src/parsing/parsing.c \
 			src/parsing/parsing_expand.c \
 			src/utils/parse_command_utils.c \

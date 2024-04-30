@@ -6,11 +6,18 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/29 15:57:01 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/04/30 13:11:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+// Envoie parsing_result afin d'avoir acces aux redirections ainsi que l'env,
+// dans la fonction on appel ft_expand argument sur chaque commande.
+// Puis appel de ft_setup commande qui permet d'obtenir un char **.
+// On regarde si la commande est un built-in si oui on l'envoie 
+// dans un selecteur de buit-in. Le selecteur execute le built-in en question.
+// Si se n'est pas un built-in on creer un fork ... (pipex_bonus)
 
 int	ft_readline(t_env **env)
 {
@@ -32,16 +39,7 @@ int	ft_readline(t_env **env)
 		{
 			// handle error
 		}
-		final_parsing = ft_expand_argument(
-				parsing_result->commands->arguments, *env);
-		if (final_parsing != NULL)
-		{
-		// printf("%s\n", parsing_result->commands->arguments->content);
-		// if (parse->next == NULL)
-			// cmd_selector(vars, &env, ac, av);
-		// else
-			// cmd
-		}
+		ft_cmd_manager(env, parsing_result);
 		ft_lstclear_commands(&parsing_result->commands);
 		ft_lstclear_argument(&final_parsing);
 		free(parsing_result);
