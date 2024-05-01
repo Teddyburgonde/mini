@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/30 13:42:38 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/01 05:14:12 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,80 +96,68 @@
 
 static int	cmd_selector(t_env **env, char **command_line)
 {
-	t_env	*tmp;
-
-	tmp = *env;
-	if (ft_strcmp(command_line[0], "echo") == 0)
+	if (ft_strcmp(command_line[0], "echo") == 0
+		|| ft_strcmp(command_line[0], "pwd") == 0
+		|| ft_strcmp(command_line[0], "unset") == 0
+		|| ft_strcmp(command_line[0], "export") == 0
+		|| ft_strcmp(command_line[0], "printenv") == 0
+		|| ft_strcmp(command_line[0], "env") == 0
+		|| ft_strcmp(command_line[0], "exit") == 0)
 	{
-		ft_echo(command_line);
+		if (ft_strcmp(command_line[0], "echo") == 0)
+			ft_echo(command_line);
+		else if (ft_strcmp(command_line[0], "pwd") == 0)
+			ft_pwd();
+		else if (ft_strcmp(command_line[0], "unset") == 0)
+			unset(env, command_line[1]);
+		else if (ft_strcmp(command_line[0], "export") == 0)
+			export(env, command_line);
+		else if (ft_strcmp(command_line[0], "printenv") == 0
+			|| ft_strcmp(command_line[0], "env") == 0)
+			ft_env(env, command_line[1]);
+		else if (ft_strcmp(command_line[0], "exit") == 0)
+			return (atoi(command_line[1]));
 		return (0);
 	}
-	else if (ft_strcmp(command_line[0], "pwd") == 0)
-	{
-		ft_pwd();
-		return (0);
-	}
-	else if (ft_strcmp(command_line[0], "unset") == 0)
-	{
-		unset(env, command_line[1]);
-		return (0);
-	}
-	else if (ft_strcmp(command_line[0], "export") == 0)
-	{
-		export(env, command_line);
-		return (0);
-	}
-	else if (ft_strcmp(command_line[0], "printenv") == 0
-		|| ft_strcmp(command_line[0], "env") == 0)
-	{
-		if (ft_strcmp(command_line[0], "env") == 0 && command_line[1] != NULL
-			&& access(command_line[1], F_OK) == 0)
-		{
-			ft_putstr_fd("env: ‘", 2);
-			ft_putstr_fd(command_line[1], 2);
-			ft_putstr_fd("‘: No such file or directory", 2);
-		}
-		else if (ft_strcmp(command_line[0], "env") == 0
-			&& command_line[1] == NULL)
-		{
-			while (tmp)
-			{
-				printf("%s\n", tmp->full_path);
-				tmp = tmp->next;
-			}
-		}
-		return (0);
-	}
-	else if (ft_strcmp(command_line[0], "exit") == 0)
-		return (atoi(command_line[1]));
 	return (666);
+}
+
+static int	ft_command_exec(t_env **env, t_argument *final_parsing,
+		t_redirection_to_expand *redirections)
+{
+	t_redirection_to_expand			*tmp_redir;
+	char							**command_line;
+	int								exit;
+
+	command_line = ft_setup_command(final_parsing);
+	tmp_redir = redirections;
+	exit = cmd_selector(env, command_line);
+	if (exit == 666)
+		write(1, "pipex_bonus\n", 12);
+	else if (exit != 0)
+	{
+		write(2, "Error !\n", 8);
+		return (exit);
+	}
+	ft_free(command_line);
+	return (0);
 }
 
 int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 {
+	t_redirection_to_expand			*redirections;
 	t_command_to_expand				*tmp;
-	t_redirection_to_expand			*tmp_redir;
 	t_argument_to_expand			*tmp_arg;
 	t_argument						*final_parsing;
-	char							**command_line;
-	int								exit;
 
 	tmp = cmd->commands;
 	while (tmp)
 	{
 		tmp_arg = tmp->arguments;
+		redirections = tmp->redirections;
 		final_parsing = ft_expand_argument(tmp_arg, *env);
 		if (final_parsing != NULL)
-		{
-			command_line = ft_setup_command(final_parsing);
-			tmp_redir = tmp->redirections;
-			exit = cmd_selector(env, command_line);
-			if (exit == 666)
-				write(1, "pipex_bonus\n", 12);
-			else if (exit != 0)
-				write(2, "Error !\n", 8);
-		}
-		ft_free(command_line);
+			ft_command_exec(env, final_parsing, redirections);
 		tmp = tmp->next;
 	}
 	return (0);

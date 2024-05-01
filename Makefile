@@ -12,6 +12,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/builtin/ft_echo.c \
 			src/builtin/ft_pwd.c \
 			src/builtin/unset.c \
+			src/builtin/ft_env.c \
 			src/parsing/parsing.c \
 			src/parsing/parsing_expand.c \
 			src/utils/parse_command_utils.c \

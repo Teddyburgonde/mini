@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/30 13:38:33 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/01 04:36:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,7 @@ void	export(t_env **env, char **cmd)
 
 	tmp_env = lst_search_env(cmd[1], *env);
 	if (!cmd[1])
-	{
-		tmp = *env;
-		while (tmp)
-		{
-			printf("%s\n", tmp->full_path);
-			tmp = tmp->next;
-		}
-	}
+		ft_env(env, NULL);
 	tmp = ft_lstnew_env();
 	if (!tmp_env)
 	{

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/30 13:18:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/01 05:08:07 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ char	*skip_one_character(const char *str);
 char	*skip_quote(
 			const char *str, char c, t_argument_parsing_result *result);
 char	*ft_skip_arg(const char *str, char *reject);
-char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
 char	*ft_strjoin_file(char *s1, const char *s2);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
@@ -229,6 +228,7 @@ int		ft_cd(char **command, char **envp);
 void	ft_echo(char **command);
 int		ft_pwd(void);
 void	unset(t_env **env, char *name);
+void	ft_env(t_env **env, char *command_line);
 
 /*
 * Chain list

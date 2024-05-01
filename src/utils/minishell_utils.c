@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:41:21 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 16:10:42 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/01 05:15:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ char	*ft_strjoin(char const *s1, char *s2)
 	}
 	while (s2 && s2[j])
 	{
-		tab[i] = s2[j];
-		j++;
+		tab[i] = s2[j++];
 		i++;
 	}
 	tab[i] = 0;
@@ -72,8 +71,7 @@ char	*slash_add(char const *s1, char *s2)
 	}
 	while (s2 && s2[j])
 	{
-		tab[i] = s2[j];
-		j++;
+		tab[i] = s2[j++];
 		i++;
 	}
 	tab[i] = 0;

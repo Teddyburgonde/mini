@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/30 13:18:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/01 04:29:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	unset(t_env **env, char *name)
 	{
 		if (ft_strcmp(tmp->var_name, name) == 0)
 		{
-			prev->next = tmp->next;	
+			prev->next = tmp->next;
 			free(tmp->var_name);
 			free(tmp->var);
 			free(tmp);
