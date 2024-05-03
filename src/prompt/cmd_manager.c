@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/30 13:42:38 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/03 11:32:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 			else if (exit != 0)
 				write(2, "Error !\n", 8);
 		}
+		if (final_parsing)
+			ft_lstclear_argument(&final_parsing);
 		ft_free(command_line);
 		tmp = tmp->next;
 	}

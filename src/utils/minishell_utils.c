@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:41:21 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/20 16:10:42 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/03 11:38:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ char	*ft_strjoin(char const *s1, char *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	if (tab == 0)
-		return (0);
 	while (s1 && s1[i])
 	{
 		tab[i] = s1[i];
@@ -63,8 +61,6 @@ char	*slash_add(char const *s1, char *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	if (tab == 0)
-		return (0);
 	while (s1 && s1[i])
 	{
 		tab[i] = s1[i];
