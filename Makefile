@@ -14,6 +14,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/builtin/unset.c \
 			src/parsing/parsing.c \
 			src/parsing/parsing_expand.c \
+			src/parsing/redirection_expand.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/30 13:11:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/11 13:57:48 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	ft_readline(t_env **env)
 	t_argument						*final_parsing;
 	char							*command_line;
 
+	final_parsing = NULL;
 	while (1)
 	{
-		command_line = readline("minishell > ");
+		command_line = readline("minishell ~ ");
 		if (command_line == NULL)
 		{
 			free(command_line);

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/30 13:18:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/10 11:41:04 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include "multi_pipe.h"
 # define NEW_LINE '\n'
 # define SPACE ' '
 # define RIGHT '>'
@@ -28,7 +29,7 @@
 # define PIPE '|'
 
 
-typedef enum bool {
+typedef enum s_bool {
 	TRUE = 1,
 	FALSE = 0
 }	t_bool;
@@ -149,6 +150,8 @@ int		double_redirection(char *str);
 int		ft_strcspn(const char *s, char *reject);
 int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
+char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
+char	*get_next_line(int fd);
 
 /*
 * Environment
@@ -356,5 +359,9 @@ void	ft_free_vars_input(char *command_line, char **env);
 // env si tu met un truc derriere il le prend comme un fichier si il existe il se passe rien
 // sinon il dit que le fichier n'existe pas si il y a un fichier existant et d'autre argument
 // env fait rien
+
+t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirection,
+		t_env *env);
+char	*get_var_name(char *str);
 
 #endif

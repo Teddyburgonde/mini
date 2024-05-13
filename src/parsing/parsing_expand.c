@@ -6,12 +6,11 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/29 16:07:28 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/07 16:31:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
 
 char	*get_var_name(char *str)
 {
@@ -290,14 +289,6 @@ static int	ft_split_argument(t_argument *argument_to_split,
 		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
 		tmp_char = tmp_char->next;
 	}
-	// printf("%c\n", splitted_arguments->chars->value);
-	// printf("%p\n", splitted_arguments->chars->next);
-	// printf("%u\n", splitted_arguments->chars->was_in_a_variable);
-	// printf("%u\n", splitted_arguments->chars->last_pos);
-	// printf("%p\n", splitted_arguments->chars);
-	// printf("%p\n", splitted_arguments->next);
-
-	// Conditionnal jump premier node raison ?????
 	ft_lstadd_back_argument(args, splitted_arguments);
 	if (tmp_char == NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 11:40:34 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/27 14:33:13 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:06:58 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	ft_gap(char const *s, char c)
 	return (i);
 }
 
-static char	*ft_substr1(char const *s, char c)
+char	*ft_substr1(char const *s, char c)
 {
 	unsigned int	i;
 	char			*tab;
