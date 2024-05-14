@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/13 11:41:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/14 16:00:32 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_redirection_to_expand	*expand_redirection(t_redirection_to_expand *redirection
 		tmp->arg = malloc(sizeof(char) * ft_strlen_ultime(
 					redirection, env) + 1);
 		tmp->e_type = redirection->e_type;
-		if (ft_strcspn(redirection->arg, "'") != 0
-			&& ft_strcspn(&redirection->arg[i], "$") == 0
+		if (ft_strcspn2(redirection->arg, "'") != 0
+			&& ft_strcspn2(&redirection->arg[i], "$") == 0
 			&& redirection->arg[i] != '$')
 		{
 			tmp->arg[i] = redirection->arg[i];
@@ -91,10 +91,10 @@ t_redirection_to_expand	*expand_redirection(t_redirection_to_expand *redirection
 				i++;
 			}
 		}
-		else if (ft_strcspn(&redirection->arg[i], "$") != 0 ||
+		else if (ft_strcspn2(&redirection->arg[i], "$") != 0 ||
 			redirection->arg[i] == '$')
 		{
-			var_name = get_var_name(&redirection->arg[ft_strcspn(
+			var_name = get_var_name(&redirection->arg[ft_strcspn2(
 						&redirection->arg[i], "$")]);
 			if (lst_search_env(var_name, env))
 			{
@@ -108,9 +108,13 @@ t_redirection_to_expand	*expand_redirection(t_redirection_to_expand *redirection
 		}
 		else
 		{
-			tmp->arg[i] = node->var[i];
-			i++;
+			while (redirection->arg[i])
+			{
+				tmp->arg[i] = redirection->arg[i];
+				i++;
+			}
 		}
+		tmp->arg[i] = 0;
 		ft_redirection_to_expand_addback(&final, tmp);
 		redirection = redirection->next;
 	}
@@ -137,6 +141,7 @@ static int	ft_split_redirection(t_redirection_to_expand *redirection_to_split,
 	t_redirection_to_expand	*tmp;
 	t_redirection_to_expand	*splitted_redirections;
 
+	
 	splitted_redirections = lst_new_redirection_parsing_result();
 	if (!splitted_redirections || !redirection_to_split)
 		return (0);
@@ -150,8 +155,6 @@ static int	ft_split_redirection(t_redirection_to_expand *redirection_to_split,
 
 	// Comment split ?
 	// Essayons la meme
-
-
 	while (tmp && tmp->arg[i] && in_quote == FALSE)
 	{
 		if (tmp->arg[i] == SPACE
@@ -160,6 +163,7 @@ static int	ft_split_redirection(t_redirection_to_expand *redirection_to_split,
 			break ;
 		else if (in == 0)
 		{
+			printf("tmp->arg[i] = %s\n", &tmp->arg[i]);
 			splitted_redirections->arg = malloc(
 					ft_strcspn(&tmp->arg[i], " \t\n") + 1);
 			in++;
@@ -254,7 +258,8 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirec
 	t_redirection_to_expand	*splitted_redirections;
 	t_redirection_to_expand	*tmp_split;
 	int						tmp;
-
+	
+	//redirection = NULL;
 	tmp = 1;
 	expand_redirections = NULL;
 	splitted_redirections = NULL;

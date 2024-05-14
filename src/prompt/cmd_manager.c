@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/12 13:56:52 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:42:26 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -988,7 +988,7 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	exit = 666;
 	command_line = NULL;
 	// exit = cmd_selector(env, command_line);
-	if (exit == 666)
+	if (exit == 666 && env)
 	{
 		i = 0;
 		ft_expand_redirections(tmp_redir, *env);

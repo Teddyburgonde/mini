@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/10 11:41:04 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:00:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
+
+int	ft_strcspn2(const char *s, char *reject);
 
 /*
 * Environment

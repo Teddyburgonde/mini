@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_redirection_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:24:05 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/24 10:52:25 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:00:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,28 @@ int	ft_strcspn(const char *s, char *reject)
 		i++;
 	}
 	return (i);
+}
+
+int	ft_strcspn2(const char *s, char *reject)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
+	{
+		j = 0;
+		while (reject[j] != '\0')
+		{
+			if (s[i] == reject[j])
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
 
 char	*ft_skip_arg(const char *str, char *reject)
