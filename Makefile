@@ -15,6 +15,9 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/parsing/parsing.c \
 			src/parsing/parsing_expand.c \
 			src/parsing/redirection_expand.c \
+			src/exec/check.c \
+			src/exec/fd_manager.c \
+			src/exec/redirection.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
@@ -30,6 +33,9 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/parsing_utils.c \
 			src/utils/parsing_redirection_utils.c \
 			src/utils/skip.c \
+			src/utils/len_utils.c \
+			src/utils/ft_strncmp.c \
+			src/ft_strlcpy.c \
 			src/error_free/free_error.c \
 
 

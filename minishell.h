@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/14 15:00:55 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:47:28 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,20 @@ int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
+static int	ft_lstsize_command(t_command_to_expand *cmd);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+int	ft_lstsize_env(t_env *env);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 int	ft_strcspn2(const char *s, char *reject);
 
 /*
-* Environment
+* Env
 */
 
 void	init_env(t_env **env, char **envp);
+char	**env_to_char(t_env *env);
+void	print_env(t_env *envp);
 
 /*
 * Signal
@@ -225,6 +231,7 @@ char	**ft_setup_command(t_argument *arg);
 
 int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
 
+
 /*
 * Builtins
 */
@@ -273,6 +280,7 @@ void	ft_lstclear_char_list(t_char_list **lst);
 
 void	ft_free(char **tab);
 void	ft_free_vars_input(char *command_line, char **env);
+void	ft_free_tab_3d(t_vars *vars);
 
 
 
