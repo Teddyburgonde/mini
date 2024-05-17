@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/15 13:42:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:01:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,13 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 		return (vars->full_cmd);
 	build_path(path, &bin_path, &is_valid_cmd, vars->full_cmd);
 	return (vars->full_cmd);
+}
+
+void	verif_tab(char *tab)
+{
+	if (!tab)
+	{
+		ft_putstr_fd("Error\n No limiter for heredoc", 2);
+		exit(1);
+	}
 }

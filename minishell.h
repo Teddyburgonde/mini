@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/15 14:47:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:25:09 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-# include "multi_pipe.h"
+// # include "multi_pipe.h"
 # define NEW_LINE '\n'
 # define SPACE ' '
 # define RIGHT '>'
@@ -28,6 +28,33 @@
 # define TAB '\t'
 # define PIPE '|'
 
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
+
+typedef struct s_vars{
+	enum{
+		APPEND,
+		OUTFILE,
+		UNASIGN
+	}	e_last;
+	pid_t	child;
+	int		fd_infile;
+	int		fd_outfile;
+	int		fd_append;
+	int		nb_out;
+	int		nb_cmd;
+	char	**path;
+	char	***cmd;
+	char	**full_cmd;
+	int		pipe_1[2];
+	int		tmp_fd;
+	// A malloc sur nb_hd, la liste chainee sera parcouru lors de l'utilisation des hd
+	int		nb_hd;
+	int		hd_w;
+	int		hd_r;
+}	t_vars;
 
 typedef enum s_bool {
 	TRUE = 1,
@@ -152,7 +179,7 @@ int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
-static int	ft_lstsize_command(t_command_to_expand *cmd);
+int	ft_lstsize_command(t_command_to_expand *cmd);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 int	ft_lstsize_env(t_env *env);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -281,6 +308,95 @@ void	ft_lstclear_char_list(t_char_list **lst);
 void	ft_free(char **tab);
 void	ft_free_vars_input(char *command_line, char **env);
 void	ft_free_tab_3d(t_vars *vars);
+
+
+// ici 
+
+// # ifndef BUFFER_SIZE
+// #  define BUFFER_SIZE 1
+// # endif
+
+// typedef struct s_vars{
+// 	enum{
+// 		APPEND,
+// 		OUTFILE,
+// 		UNASIGN
+// 	}	e_last;
+// 	pid_t	child;
+// 	int		fd_infile;
+// 	int		fd_outfile;
+// 	int		fd_append;
+// 	int		nb_out;
+// 	int		nb_cmd;
+// 	char	**path;
+// 	char	***cmd;
+// 	char	**full_cmd;
+// 	int		pipe_1[2];
+// 	int		tmp_fd;
+// 	// A malloc sur nb_hd, la liste chainee sera parcouru lors de l'utilisation des hd
+// 	int		nb_hd;
+// 	int		hd_w;
+// 	int		hd_r;
+// }	t_vars;
+
+/*
+* Exec
+*/
+int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
+int	check_infile(t_redirection_to_expand *redir);
+int	open_files(t_vars *vars, t_redirection_to_expand *redir);
+char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
+void	build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
+void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
+int		fill_command_paths(t_vars *vars, t_argument_to_expand *tmp_arg, t_env *env);
+int		verif_fill_command_paths(t_vars *vars, t_argument_to_expand *tmp_arg, t_env *env);
+void	ft_close_fd(t_vars *vars);
+void	ft_flow_redirection(t_vars *vars, int actual_cmd);
+int	fork_processes(t_vars *vars, char *envp[], t_command_to_expand *tmp);
+int	child_process(t_vars *vars, char *envp[], int actual_cmd);
+void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
+void	open_fd_infile(t_vars *vars);
+void	open_hd_w(t_vars *vars);
+void	verif_tab(char *tab);
+void	ft_get_nb_hd(t_vars *vars, t_redirection_to_expand *redir);
+void	ft_heredoc(t_vars *vars, t_redirection_to_expand *redir);
+
+
+/*
+* GNL
+*/
+
+char	*ft_strjoin_mod(char *s1, char *s2);
+char	*read_loop(char *buf, char *stock, int *len, int fd);
+char	*ft_strchr_rl(const char *s, int c);
+char	*read_line(int fd, char *stock);
+char	*ft_strdup_gnl(const char *s);
+char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
+char	*extract_line(char *stock);
+char	*ft_strdup(const char *s);
+char	*extract_surplus_line(char *stock);
+char	*get_next_line(int fd);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

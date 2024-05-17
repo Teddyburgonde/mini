@@ -6,6 +6,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/prompt/cmd_manager.c \
             src/env/init_env.c \
             src/env/print_env.c \
+			src/env/env_to_char.c \
             src/signal/signal.c \
 			src/builtin/export.c \
 			src/builtin/ft_cd.c \
@@ -18,6 +19,11 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/exec/check.c \
 			src/exec/fd_manager.c \
 			src/exec/redirection.c \
+			src/exec/fork.c \
+			src/exec/heredoc.c \
+			src/exec/path.c \
+			src/gnl/gnl_utils.c \
+			src/gnl/gnl.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
@@ -35,7 +41,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/skip.c \
 			src/utils/len_utils.c \
 			src/utils/ft_strncmp.c \
-			src/ft_strlcpy.c \
+			src/utils/ft_strlcpy.c \
 			src/error_free/free_error.c \
 
 

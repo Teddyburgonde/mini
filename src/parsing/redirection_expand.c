@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/14 16:00:32 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:34:26 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,6 @@ static int	ft_split_redirection(t_redirection_to_expand *redirection_to_split,
 		in_quote = TRUE;
 	else
 		in_quote = FALSE;
-
-	// Comment split ?
-	// Essayons la meme
 	while (tmp && tmp->arg[i] && in_quote == FALSE)
 	{
 		if (tmp->arg[i] == SPACE
@@ -163,7 +160,6 @@ static int	ft_split_redirection(t_redirection_to_expand *redirection_to_split,
 			break ;
 		else if (in == 0)
 		{
-			printf("tmp->arg[i] = %s\n", &tmp->arg[i]);
 			splitted_redirections->arg = malloc(
 					ft_strcspn(&tmp->arg[i], " \t\n") + 1);
 			in++;

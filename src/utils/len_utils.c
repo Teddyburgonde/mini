@@ -6,13 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:33:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/15 14:20:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:23:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	ft_lstsize_command(t_command_to_expand *cmd)
+int	ft_lstsize_command(t_command_to_expand *cmd)
 {
 	int	counter;
 
