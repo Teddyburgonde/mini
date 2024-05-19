@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/17 15:25:09 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/19 16:44:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,30 @@
 #  define BUFFER_SIZE 1
 # endif
 
+
+typedef struct s_redirection {
+  int  infile_fd;
+  int  outfile_fd;
+  char	*limiter;
+  enum
+  {
+	HERE,
+	COMING,
+	NONE
+  }	e_position;
+  enum
+  {
+	PIPE_OUT,
+	STDOUT 
+  } e_type;
+  struct s_redirection  *next;
+}  t_redirection;
+
+typedef struct s_heredoc {
+	char 				*arg;
+	struct s_heredoc	*next;
+} t_heredoc ;
+
 typedef struct s_vars{
 	enum{
 		APPEND,
@@ -40,20 +64,13 @@ typedef struct s_vars{
 		UNASIGN
 	}	e_last;
 	pid_t	child;
-	int		fd_infile;
-	int		fd_outfile;
-	int		fd_append;
-	int		nb_out;
 	int		nb_cmd;
 	char	**path;
 	char	***cmd;
 	char	**full_cmd;
 	int		pipe_1[2];
 	int		tmp_fd;
-	// A malloc sur nb_hd, la liste chainee sera parcouru lors de l'utilisation des hd
-	int		nb_hd;
-	int		hd_w;
-	int		hd_r;
+	char	**env;
 }	t_vars;
 
 typedef enum s_bool {
@@ -295,6 +312,12 @@ void	ft_argument_to_expand_addback(
 			t_argument_to_expand **lst, t_argument_to_expand *new);
 void	ft_lstadd_back_argument(t_argument **lst, t_argument *new);
 void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new);
+void	ft_lstadd_back_heredoc(t_heredoc **lst, t_heredoc *new);
+void	ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new);
+
+
+t_redirection	*ft_lstnew_redirection(void);
+t_heredoc	*ft_lstnew_heredoc(void);
 
 // int		ft_lstsize_expand(t_char_list *lst);
 
@@ -308,6 +331,8 @@ void	ft_lstclear_char_list(t_char_list **lst);
 void	ft_free(char **tab);
 void	ft_free_vars_input(char *command_line, char **env);
 void	ft_free_tab_3d(t_vars *vars);
+void 	ft_lstclear_final_redirection(t_redirection **lst);
+void 	ft_lstclear_heredoc(t_heredoc **lst);
 
 
 // ici 
@@ -342,7 +367,10 @@ void	ft_free_tab_3d(t_vars *vars);
 /*
 * Exec
 */
+
 int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
+t_redirection	*stock_redirection(t_command_to_expand *list);
+t_heredoc	*ft_heredoc(t_redirection *redirection);
 int	check_infile(t_redirection_to_expand *redir);
 int	open_files(t_vars *vars, t_redirection_to_expand *redir);
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
@@ -350,16 +378,14 @@ void	build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_c
 void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
 int		fill_command_paths(t_vars *vars, t_argument_to_expand *tmp_arg, t_env *env);
 int		verif_fill_command_paths(t_vars *vars, t_argument_to_expand *tmp_arg, t_env *env);
-void	ft_close_fd(t_vars *vars);
+void	ft_close_fd(t_vars *vars, t_redirection **redirect);
 void	ft_flow_redirection(t_vars *vars, int actual_cmd);
-int	fork_processes(t_vars *vars, char *envp[], t_command_to_expand *tmp);
-int	child_process(t_vars *vars, char *envp[], int actual_cmd);
+int	fork_processes(t_vars *vars, t_command_to_expand *tmp, t_redirection *redirect, t_heredoc *hd);
+int	child_process(t_vars *vars, t_redirection *redirect, char **actual_cmd);
 void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);
 void	open_hd_w(t_vars *vars);
 void	verif_tab(char *tab);
-void	ft_get_nb_hd(t_vars *vars, t_redirection_to_expand *redir);
-void	ft_heredoc(t_vars *vars, t_redirection_to_expand *redir);
 
 
 /*

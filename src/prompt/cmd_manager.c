@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/17 15:33:13 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/19 16:39:20 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,16 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	t_command_to_expand				*tmp;
 	t_redirection_to_expand			*tmp_redir;
 	t_argument_to_expand			*tmp_arg;
+	t_redirection					*redirection;
+	t_heredoc						*heredoc;
 	char							**command_line;
-	char							**envp;
 	int								exit;
 	int								i;
 
 	tmp = cmd->commands;
 	tmp_redir = tmp->redirections;
 	tmp_arg = tmp->arguments;
+	vars.env = NULL;
 	exit = 666;
 	command_line = NULL;
 	// exit = cmd_selector(env, command_line);
@@ -170,19 +172,21 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	{
 		i = 0;
 		ft_expand_redirections(tmp_redir, *env);
-		check_infile(tmp->redirections);
+		// check_infile(tmp->redirections);
+		redirection = stock_redirection(tmp);
+		heredoc = ft_heredoc(redirection);
 		vars.nb_cmd = ft_lstsize_command(cmd->commands);
 		vars.path = ft_split(lst_search_env("$PATH", *env)->var, ':');
 		vars.cmd = ft_calloc(vars.nb_cmd + 1, sizeof(char **));
 		// Mettre les built-ins V
 		verif_fill_command_paths(&vars, tmp_arg, *env);
 		vars.tmp_fd = -1;
-		envp = env_to_char(*env);
-		// fork_processes(&vars, envp, tmp);
+		vars.env = env_to_char(*env);
+		fork_processes(&vars, tmp, redirection, heredoc);
 		ft_free(vars.path);
 		ft_free_tab_3d(&vars);
-		ft_close_fd(&vars);
-		free(envp);
+		ft_close_fd();
+		free(vars.env);
 		while (waitpid(-1, NULL, 0) != -1)
 			continue ;
 	}

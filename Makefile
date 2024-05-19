@@ -28,6 +28,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
             src/utils/ft_putstr_fd.c \
+			src/utils/lstlast_utils.c \
 			src/utils/lst_new_utils.c \
 			src/utils/lst_new_utils_bis.c \
             src/utils/lst_addback_utils.c \
