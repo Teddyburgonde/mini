@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/19 15:47:59 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:34:08 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,10 @@ t_redirection	*ft_lstnew_redirection(void)
 	if (!tmp)
 		return (NULL);
 	tmp->e_type = STDOUT;
+	tmp->e_position = NONE;
 	tmp->infile_fd = STDIN_FILENO;
 	tmp->outfile_fd = STDOUT_FILENO;
 	tmp->limiter = NULL;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-t_heredoc	*ft_lstnew_heredoc(void)
-{
-	t_heredoc	*tmp;
-
-	tmp = (t_heredoc *)malloc(sizeof(t_heredoc));
-	if (!tmp)
-		return (NULL);
-	tmp->arg = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }

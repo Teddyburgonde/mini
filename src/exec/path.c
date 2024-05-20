@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/15 13:48:36 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:58:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ int	verif_fill_command_paths(t_vars *vars, t_argument_to_expand *tmp_arg, t_env 
 {
 	if (fill_command_paths(vars, tmp_arg, env) == -1)
 	{
-		close(vars->fd_infile);
-		close(vars->fd_outfile);
 		ft_free(vars->path);
 		ft_free_tab_3d(vars);
 		return (1);

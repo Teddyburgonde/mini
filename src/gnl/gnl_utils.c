@@ -6,11 +6,11 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:24:50 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/17 11:48:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:59:10 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../multi_pipe.h"
+#include "../../minishell.h"
 
 char	*ft_strjoin_mod(char *s1, char *s2)
 {

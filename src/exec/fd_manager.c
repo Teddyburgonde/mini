@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:33 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/19 16:52:23 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:57:41 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,24 +104,24 @@ void	ft_close_fd(t_vars *vars, t_redirection **redirect)
 	ft_lstclear_final_redirection(redirect);
 	
 }
-// FAUT LE METTRE ET DEGAGE T_HEREDOC
-void	open_fd_infile(t_vars *vars)
-{
-	vars->fd_infile = open("TMP_HEREDOC", O_RDONLY, 0644);
-	if (!vars->fd_infile)
-	{
-		perror("Error opening files");
-		exit(1);
-	}
-	unlink("TMP_HEREDOC");
-}
+// NORMALEMENT  FAIT V
+// void	open_fd_infile(t_vars *vars)
+// {
+// 	vars->fd_infile = open("TMP_HEREDOC", O_RDONLY, 0644);
+// 	if (!vars->fd_infile)
+// 	{
+// 		perror("Error opening files");
+// 		exit(1);
+// 	}
+// 	unlink("TMP_HEREDOC");
+// }
 
-void	open_hd_w(t_vars *vars)
-{
-	vars->hd_w = open("TMP_HEREDOC", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (vars->hd_w == -1)
-	{
-		perror("Error opening files");
-		exit(1);
-	}
-}
+// void	open_hd_w(t_vars *vars)
+// {
+// 	vars->hd_w = open("TMP_HEREDOC", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	if (vars->hd_w == -1)
+// 	{
+// 		perror("Error opening files");
+// 		exit(1);
+// 	}
+// }

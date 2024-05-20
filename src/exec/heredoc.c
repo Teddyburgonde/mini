@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/19 16:37:19 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:58:29 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,46 +50,65 @@
 // 	open_fd_infile(vars);
 // }
 
-static t_heredoc	*get_heredoc(t_redirection *tmp_redirection)
+t_redirection_to_expand	*is_last(t_command_to_expand *cmd)
 {
-	t_heredoc	*result;
-	t_heredoc	*tmp;
+	t_redirection_to_expand	*result;
+	t_redirection_to_expand	*tmp;
 
-	while (ft_strcmp(tmp->arg, tmp_redirection->limiter) != 0)
+	result = NULL;
+	while (cmd)
 	{
-		tmp = ft_lstnew_heredoc();
-		if (!tmp)
-			return (NULL);
-		tmp->arg = get_next_line(STDIN_FILENO);
-		ft_lstadd_back_heredoc(&result, tmp);
-
+		tmp = cmd->redirections;
+		while (tmp)
+		{
+			if (tmp->e_type == REDIRECTION_HEREDOC)
+				result = tmp;
+			tmp = tmp->next;
+		}
+		cmd = cmd->next;
 	}
 	return (result);
 }
 
-t_heredoc	*ft_heredoc(t_redirection *redirection)
+static void	get_heredoc(t_redirection *tmp_redirection)
 {
-	t_heredoc		*result;
+	char	*buffer;
+
+	buffer = NULL;
+	while (ft_strcmp(buffer, tmp_redirection->limiter) != 0)
+	{
+		if (buffer)
+			free(buffer);
+		write(1, "> ", 2);
+		buffer = get_next_line(STDIN_FILENO);
+		write(tmp_redirection->infile_fd, buffer, ft_strlen(buffer));
+	}
+	if (buffer)
+		free(buffer);
+}
+
+void	ft_heredoc(t_redirection *redirection, t_bool save)
+{
 	t_redirection	*tmp_redirection;
 	char	*tmp;
-	int	fd;
 
 	tmp_redirection = redirection;
 	tmp = NULL;
 	while (tmp_redirection)
 	{
-		if (tmp_redirection->e_position == HERE)
-			result = get_heredoc(tmp_redirection);
+		if (tmp_redirection->e_position == HERE && save == TRUE)
+			get_heredoc(tmp_redirection);
 		while (ft_strcmp(tmp, tmp_redirection->limiter) != 0)
 		{
 			if (tmp)
 				free(tmp);
 			if (tmp_redirection->e_position == HERE)
 				break ;
+			write(1, "> ", 2);
 			tmp = get_next_line(STDIN_FILENO);
 		}
-		free(tmp);
+		if (tmp)
+			free(tmp);
 		tmp_redirection = tmp_redirection->next;
 	}
-	return (result);
 }

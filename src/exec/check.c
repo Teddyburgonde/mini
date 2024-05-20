@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/17 12:01:05 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:57:17 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 		ft_free_tab_3d(vars);
 		ft_free(vars->path);
 		ft_free(vars->full_cmd);
-		close(vars->fd_infile);
-		close(vars->fd_outfile);
 		exit(1);
 	}
 	if (access(vars->full_cmd[0], X_OK) == 0)

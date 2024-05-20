@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/14 15:13:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:42:15 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 int	ft_readline(t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
-	t_argument						*final_parsing;
+	// t_argument						*final_parsing;
 	char							*command_line;
 
 	command_line = NULL;
@@ -42,7 +42,7 @@ int	ft_readline(t_env **env)
 		}
 		ft_cmd_manager(env, parsing_result);
 		ft_lstclear_commands(&parsing_result->commands);
-		ft_lstclear_argument(&final_parsing);
+		// ft_lstclear_argument(&final_parsing);
 		free(parsing_result);
 		free(command_line);
 	}

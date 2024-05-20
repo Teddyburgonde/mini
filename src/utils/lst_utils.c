@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/19 16:43:51 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:43:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,21 +149,6 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 		free(tmp->limiter);
 		close(tmp->outfile_fd);
 		close(tmp->infile_fd);
-		free(tmp);
-	}
-}
-
-void ft_lstclear_heredoc(t_heredoc **lst)
-{
-	t_heredoc *tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		free(tmp->arg);
 		free(tmp);
 	}
 }

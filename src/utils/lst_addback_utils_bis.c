@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:07:59 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/19 15:34:21 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:51:28 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new)
 {
 	t_redirection	*ptr_last_element;
 
+	new->next = NULL;
 	if (!new)
 		return ;
 	if (!*lst)
@@ -55,21 +56,7 @@ void	ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new)
 		*lst = new;
 		return ;
 	}
-	ptr_last_element = ft_lstlast(*lst);
+	ptr_last_element = ft_lstlast_redirection(*lst);
 	ptr_last_element->next = new;
 }
 
-void	ft_lstadd_back_heredoc(t_heredoc **lst, t_heredoc *new)
-{
-	t_heredoc	*ptr_last_element;
-
-	if (!new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	ptr_last_element = ft_lstlast_heredoc(*lst);
-	ptr_last_element->next = new;
-}

@@ -6,11 +6,11 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:48:21 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/17 11:59:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:59:20 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../multi_pipe.h"
+# include "../../minishell.h"
 
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len)
 {
