@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/07 16:31:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:14:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,7 +419,7 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	// Add a head and a tail can't resolve the problem.
 	// Maybe erase and recreate ft_split_argument to be able to think about a new solution.
 	splitted_arguments = NULL;
-	if (argument_with_expanded_vars != NULL)
+	if (args_with_expanded_vars != NULL)
 	{
 		while (tmp != 0)
 			tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
