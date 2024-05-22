@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:33 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/20 12:57:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:35:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,8 @@
 
 void	ft_close_fd(t_vars *vars, t_redirection **redirect)
 {
-	close(vars->tmp_fd);
+	(void)vars;
 	ft_lstclear_final_redirection(redirect);
-	
 }
 // NORMALEMENT  FAIT V
 // void	open_fd_infile(t_vars *vars)

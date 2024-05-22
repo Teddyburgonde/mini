@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/21 15:47:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:57:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-// # include "multi_pipe.h"
 # define NEW_LINE '\n'
 # define SPACE ' '
 # define RIGHT '>'
@@ -32,26 +31,6 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
-
-
-typedef struct s_redirection {
-  int  infile_fd;
-  int  outfile_fd;
-  char	*limiter;
-  enum
-  {
-	HERE,
-	COMING,
-	NONE
-  }	e_position;
-  enum
-  {
-	PIPE_OUT,
-	STDOUT 
-  } e_type;
-  struct s_redirection  *next;
-}  t_redirection;
-
 
 // Va surement degager (e_last)
 typedef struct s_vars{
@@ -66,7 +45,7 @@ typedef struct s_vars{
 	char	***cmd;
 	char	**full_cmd;
 	int		pipe_1[2];
-	int		tmp_fd;
+	int		pipe_2[2];
 	char	**env;
 }	t_vars;
 
@@ -174,6 +153,28 @@ typedef struct s_argument {
 
 	struct s_argument	*next;	
 }	t_argument;
+
+/*
+* Expand redirections
+*/
+
+typedef struct s_redirection {
+  int  infile_fd;
+  int  outfile_fd;
+  char	*limiter;
+  enum
+  {
+	HERE,
+	COMING,
+	NONE
+  }	e_position;
+  enum
+  {
+	PIPE_OUT,
+	STDOUT 
+  } e_type;
+  struct s_redirection  *next;
+}  t_redirection;
 
 /*
 * Utilitaries

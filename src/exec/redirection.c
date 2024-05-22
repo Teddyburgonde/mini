@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/20 14:37:35 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:30:39 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,14 +150,14 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 				{
 					redirection->e_position = HERE;
 					redirection->limiter = tmp_redirection->arg;
-					if (access("TMP_HEREDOC", F_OK) == 0)
-						unlink("TMP_HEREDOC");
-					redirection->infile_fd = open("TMP_HEREDOC", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					if (access("/tmp/.heredoc", F_OK) == 0)
+						unlink("/tmp/.heredoc");
+					redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 					if (redirection->infile_fd != -1)
 					{
 						ft_heredoc(redirection, TRUE);
 						close(redirection->infile_fd);
-						redirection->infile_fd = open("TMP_HEREDOC", O_RDONLY, 0644);
+						redirection->infile_fd = open("/tmp/.heredoc", O_RDONLY, 0644);
 					}
 					else
 						perror("Error opening heredoc files");

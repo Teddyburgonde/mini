@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/21 15:48:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:54:51 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env
 	{
 		final_parsing = ft_expand_argument(tmp->arguments, env);
 		command_line = ft_setup_command(final_parsing);
+		// creer une fonction qui copie un double tableau de command_line puis ft_free command_line
 		vars->full_cmd = command_line;
 		vars->cmd[i] = find_the_accessible_path(vars->path, vars, command_line);
 		if (vars->cmd[i] == NULL)
