@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/21 15:22:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:34:17 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	char	*is_valid_cmd;
 
 	i = 0;	
-	vars->cmd[i] = command_line;
-	if (vars->full_cmd == NULL || vars->full_cmd[0] == NULL
-		|| vars->full_cmd[0][0] == '\0')
+	//vars->cmd[i] = command_line;
+	if (command_line == NULL || command_line[0] == NULL
+		|| command_line[0][0] == '\0')
 	{
 		ft_putstr_fd("Error\nCmd invalid", 2);
 		ft_free_tab_3d(vars);
@@ -79,10 +79,10 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 		// ft_free(vars->full_cmd);
 		exit(1);
 	}
-	if (access(vars->full_cmd[0], X_OK) == 0)
-		return (vars->full_cmd);
-	build_path(path, &bin_path, &is_valid_cmd, vars->full_cmd);
-	return (vars->full_cmd);
+	if (access(command_line[0], X_OK) == 0)
+		return (command_line);
+	build_path(path, &bin_path, &is_valid_cmd, command_line);
+	return (command_line);
 }
 
 void	verif_tab(char *tab)

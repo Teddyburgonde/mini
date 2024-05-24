@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/22 14:53:37 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:02:47 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,8 +184,6 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 		// ft_free_tab_3d(&vars);
 		// ft_close_fd(vars, &redirection);
 		free(vars.env);
-		while (waitpid(-1, NULL, 0) != -1)
-			continue ;
 	}
 	else if (exit != 0)
 		write(2, "Error !\n", 8);

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/22 12:57:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:38:48 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,9 @@
 
 // Va surement degager (e_last)
 typedef struct s_vars{
-	enum{
-		APPEND,
-		OUTFILE,
-		UNASIGN
-	}	e_last;
 	pid_t	child;
 	int		nb_cmd;
+	int		cmd_index;
 	char	**path;
 	char	***cmd;
 	char	**full_cmd;

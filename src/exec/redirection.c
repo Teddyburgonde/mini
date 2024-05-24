@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/22 12:30:39 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:48:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 	tmp_command = list;
 	heredoc = FALSE;
 	result = NULL;
-	if (tmp_command->redirections == NULL)
+	if (tmp_command->next == NULL)
 	{
 		result = ft_lstnew_redirection();
 		if (!result)
@@ -176,5 +176,3 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 	where_are_heredoc(&result, heredoc);
 	return (result);
 }
-
-
