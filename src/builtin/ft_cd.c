@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/26 23:41:05 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:54:12 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,28 +72,26 @@ char	*ft_chdid_and_verif(char *stock)
 	return (stock);
 }
 
-int	ft_cd(char **command, char **envp)
+int	ft_cd(char **command, t_env **env)
 {
 	char	*path_current;
 	char	*stock;
-	t_env	*env;
 	t_env	*current;
 
-	env = NULL;
-	init_env(&env, envp);
-	if (env == NULL)
-		return (1);
-	current = env;
+	current = *env;
 	check_error_ft_cd(command);
-	current = find_env_by_var_name(env, "OLDPWD");
+	current = find_env_by_var_name(*env, "OLDPWD");
 	path_current = getcwd(NULL, 0);
 	free(current->full_path);
 	current->full_path = ft_strjoin("OLDPWD=", path_current);
-	current = env;
-	current = find_env_by_var_name(env, "PWD");
+	free(path_current);
+	current = *env;
+	current = find_env_by_var_name(*env, "PWD");
 	stock = command[1];
 	stock = ft_chdid_and_verif(stock);
 	free(current->full_path);
-	current->full_path = ft_strjoin("PWD=", getcwd(NULL, 0));
+	path_current = getcwd(NULL, 0);
+	current->full_path = ft_strjoin("PWD=", path_current);
+	free(path_current);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 11:20:10 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:36:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,33 @@ static void	ft_close_fd(t_vars *vars)
 	}
 }
 
-int	fork_processes(t_vars *vars, t_redirection **redirect)
+t_bool	is_builtins_parsing(char **str)
+{
+	if (ft_strcmp(str[0], "unset") == 0
+		|| ft_strcmp(str[0], "export") == 0
+		|| ft_strcmp(str[0], "cd") == 0
+		|| ft_strcmp(str[0], "pwd") == 0
+		|| ft_strcmp(str[0], "echo") == 0
+		|| ft_strcmp(str[0], "exit") == 0
+		|| ft_strcmp(str[0], "env") == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool	is_builtins_exec(t_vars *vars)
+{
+	if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "cd") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "pwd") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "echo") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "exit") == 0
+		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "env") == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+int	fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp)
 {
 	t_redirection	*tmp;
 
@@ -299,25 +325,38 @@ int	fork_processes(t_vars *vars, t_redirection **redirect)
 	vars->pipe_2[1] = -1;
 	while (vars->cmd_index <= vars->nb_cmd)
 	{
-		if ((vars->cmd_index - 1) % 2 == 1)
+		if (!is_builtins_exec(vars))
 		{
-			if (pipe(vars->pipe_1) == -1)
+			if ((vars->cmd_index - 1) % 2 == 1)
 			{
-				close(vars->pipe_2[0]);
-				close(vars->pipe_2[1]);
-				return (EXIT_FAILURE);
+				if (pipe(vars->pipe_1) == -1)
+				{
+					close(vars->pipe_2[0]);
+					close(vars->pipe_2[1]);
+					return (EXIT_FAILURE);
+				}
+			}
+			if ((vars->cmd_index - 1) % 2 == 0)
+			{
+				if (pipe(vars->pipe_2) == -1)
+				{
+					close(vars->pipe_1[0]);
+					close(vars->pipe_1[1]);
+					return (EXIT_FAILURE);
+				}
+			}
+			parent_process(vars, tmp);
+		}
+		else
+		{
+			cmd_selector(&envp, vars->cmd[vars->cmd_index - 1]);
+			if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
+				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)
+			{
+				ft_free(vars->env);
+				vars->env = env_to_char(envp);
 			}
 		}
-		if ((vars->cmd_index - 1) % 2 == 0)
-		{
-			if (pipe(vars->pipe_2) == -1)
-			{
-				close(vars->pipe_1[0]);
-				close(vars->pipe_1[1]);
-				return (EXIT_FAILURE);
-			}
-		}
-		parent_process(vars, tmp);
 		tmp = tmp->next;
 		vars->cmd_index++;
 	}
