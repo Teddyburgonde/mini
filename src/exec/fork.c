@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 12:36:32 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 15:58:42 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,14 +200,25 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 static int	child_process(t_vars *vars, t_redirection *redirect
 		, char **actual_cmd)
 {
-	
 	ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
 	{
 		perror("Error opening files");
 		exit(1);
 	}
+	if (vars->pipe_1[0] != -1)
+		close(vars->pipe_1[0]);
+	if (vars->pipe_1[1] != -1)
+		close(vars->pipe_1[1]);
+	if (vars->pipe_2[0] != -1)
+		close(vars->pipe_2[0]);
+	if (vars->pipe_2[1] != -1)
+		close(vars->pipe_2[1]);
 	execve(actual_cmd[0], actual_cmd, vars->env);
+	if (redirect->infile_fd != -1)
+		close(redirect->infile_fd);
+	if (redirect->outfile_fd != -1)
+		close(redirect->outfile_fd);
 	perror("Execve");
 	ft_free(vars->path);
 	ft_free_tab_3d(vars);
