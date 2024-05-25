@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 11:20:37 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:24:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
 */
 
 void	export(t_env **env, char **cmd);
-int		ft_cd(char **command, char **envp);
+int		ft_cd(char **command, t_env **env);
 void	ft_echo(char **command);
 int		ft_pwd(void);
 void	unset(t_env **env, char *name);
@@ -369,11 +369,16 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
 void	build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
 void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
 int		verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env);
-int		fork_processes(t_vars *vars, t_redirection **redirect);
+int		fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp);
+int		cmd_selector(t_env **env, char **command_line);
 void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);
 void	open_hd_w(t_vars *vars);
 void	verif_tab(char *tab);
+
+
+t_bool	is_builtins_exec(t_vars *vars);
+t_bool	is_builtins_parsing(char **str);
 
 
 /*
