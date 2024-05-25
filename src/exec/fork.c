@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 11:06:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 11:20:10 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,28 +263,65 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 	return (0);
 }
 
+static void	ft_close_fd(t_vars *vars)
+{
+	if (vars->pipe_1[0] != -1)
+	{
+		close(vars->pipe_1[0]);
+		vars->pipe_1[0] = -1;
+	}
+	if (vars->pipe_1[1] != -1)
+	{
+		close(vars->pipe_1[1]);
+		vars->pipe_1[1] = -1;
+	}
+	if (vars->pipe_2[0] != -1)
+	{
+		close(vars->pipe_2[0]);
+		vars->pipe_2[0] = -1;
+	}
+	if (vars->pipe_2[1] != -1)
+	{
+		close(vars->pipe_2[1]);
+		vars->pipe_2[1] = -1;
+	}
+}
+
 int	fork_processes(t_vars *vars, t_redirection **redirect)
 {
 	t_redirection	*tmp;
 
 	tmp = *redirect;
 	vars->cmd_index = 1;
+	vars->pipe_1[0] = -1;
+	vars->pipe_1[1] = -1;
+	vars->pipe_2[0] = -1;
+	vars->pipe_2[1] = -1;
 	while (vars->cmd_index <= vars->nb_cmd)
 	{
 		if ((vars->cmd_index - 1) % 2 == 1)
 		{
 			if (pipe(vars->pipe_1) == -1)
+			{
+				close(vars->pipe_2[0]);
+				close(vars->pipe_2[1]);
 				return (EXIT_FAILURE);
+			}
 		}
 		if ((vars->cmd_index - 1) % 2 == 0)
 		{
 			if (pipe(vars->pipe_2) == -1)
+			{
+				close(vars->pipe_1[0]);
+				close(vars->pipe_1[1]);
 				return (EXIT_FAILURE);
+			}
 		}
 		parent_process(vars, tmp);
 		tmp = tmp->next;
 		vars->cmd_index++;
 	}
+	ft_close_fd(vars);
 	ft_lstclear_final_redirection(redirect);
 	ft_free_tab_3d(vars);
 	return (0);
