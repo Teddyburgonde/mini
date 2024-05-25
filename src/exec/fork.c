@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/24 17:07:59 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/25 10:49:16 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ char	*ft_itoa(int n)
 
 static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 {
+	// printf("%i\n", vars->cmd_index);
 	// Si premiere commande mais pas la derniere alors STDOUT -> Ecriture pipe et Le STDIN reste tel quel.
-	if (vars->cmd_index == 0 && redirect->next != NULL)
+	if (vars->cmd_index == 1 && redirect->next != NULL)
 	{
 		if (redirect->infile_fd > 2)
 		{
@@ -105,7 +106,7 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 		}
 	}
 	// Redirige les commandes dans les pipes pour les placer en stdin de la commande suivante
-	else if (vars->cmd_index != 0 && redirect->next != NULL)
+	else if (vars->cmd_index != 1 && redirect->next != NULL)
 	{
 		if (vars->cmd_index % 2 == 1)
 		{
@@ -246,10 +247,12 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 	return (0);
 }
 
-int	fork_processes(t_vars *vars, t_command_to_expand *tmp, t_redirection *redirect)
+int	fork_processes(t_vars *vars, t_redirection **redirect)
 {
-	vars->cmd_index = 1;
+	t_redirection	*tmp;
 
+	tmp = *redirect;
+	vars->cmd_index = 1;
 	while (vars->cmd_index <= vars->nb_cmd)
 	{
 		if ((vars->cmd_index - 1) % 2 == 1)
@@ -262,10 +265,11 @@ int	fork_processes(t_vars *vars, t_command_to_expand *tmp, t_redirection *redire
 			if (pipe(vars->pipe_2) == -1)
 				return (EXIT_FAILURE);
 		}
-		parent_process(vars, redirect);
+		parent_process(vars, tmp);
 		tmp = tmp->next;
-		redirect = redirect->next;
 		vars->cmd_index++;
 	}
+	ft_lstclear_final_redirection(redirect);
+	ft_free_tab_3d(vars);
 	return (0);
 }
