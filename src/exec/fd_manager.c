@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_manager.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:22:33 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/22 14:35:36 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/25 11:03:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,6 @@
 // 	return (0);
 // }
 
-void	ft_close_fd(t_vars *vars, t_redirection **redirect)
-{
-	(void)vars;
-	ft_lstclear_final_redirection(redirect);
-}
 // NORMALEMENT  FAIT V
 // void	open_fd_infile(t_vars *vars)
 // {

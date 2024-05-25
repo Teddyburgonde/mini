@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/20 12:43:43 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/25 11:06:01 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	ft_lstclear_argument(t_argument **lst)
 
 void ft_lstclear_final_redirection(t_redirection **lst)
 {
-	t_redirection *tmp;
+	t_redirection	*tmp;
 
 	if (!*lst)
 		return ;
@@ -147,8 +147,16 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 		tmp = *lst;
 		*lst = (*lst)->next;
 		free(tmp->limiter);
-		close(tmp->outfile_fd);
-		close(tmp->infile_fd);
+		if (tmp->outfile_fd != 1)
+		{
+			close(tmp->outfile_fd);
+			tmp->outfile_fd = -1;
+		}
+		if (tmp->infile_fd != -1)
+		{
+			close(tmp->infile_fd);
+			tmp->infile_fd = -1;
+		}
 		free(tmp);
 	}
 }

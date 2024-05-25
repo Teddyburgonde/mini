@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 10:49:16 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 11:06:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,13 +234,29 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 	}
 	if ((vars->cmd_index - 1) % 2 == 1)
 	{
-		close(vars->pipe_1[1]);
-		close(vars->pipe_2[0]);
+		if (vars->pipe_1[1] != -1)
+		{
+			close(vars->pipe_1[1]);
+			vars->pipe_1[1] = -1;
+		}
+		if (vars->pipe_2[0] != -1)
+		{
+			close(vars->pipe_2[0]);
+			vars->pipe_2[0] = -1;
+		}
 	}
 	else if ((vars->cmd_index - 1) % 2 == 0)
 	{
-		//close(vars->pipe_1[0]);
-		close(vars->pipe_2[1]);
+		if (vars->pipe_1[0] != -1)
+		{
+			close(vars->pipe_1[0]);
+			vars->pipe_1[0] = -1;
+		}
+		if (vars->pipe_2[1] != -1)
+		{
+			close(vars->pipe_2[1]);
+			vars->pipe_2[1] = -1;
+		}
 	}
 	while (waitpid(-1, NULL, 0) != -1)
 		continue ;
