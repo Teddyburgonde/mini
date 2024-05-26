@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/20 14:42:15 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/26 11:36:46 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 int	ft_readline(t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
-	// t_argument						*final_parsing;
 	char							*command_line;
 
 	command_line = NULL;
@@ -38,11 +37,12 @@ int	ft_readline(t_env **env)
 		parsing_result = ft_parse_command_line(command_line);
 		if (!parsing_result->did_succeed)
 		{
-			// handle error
+			free(command_line);
+			ft_lstclear_commands(&parsing_result->commands);
+			free(parsing_result);
 		}
 		ft_cmd_manager(env, parsing_result);
 		ft_lstclear_commands(&parsing_result->commands);
-		// ft_lstclear_argument(&final_parsing);
 		free(parsing_result);
 		free(command_line);
 	}

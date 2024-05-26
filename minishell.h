@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 12:24:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/25 16:19:37 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 // Va surement degager (e_last)
 typedef struct s_vars{
 	pid_t	child;
+	pid_t	last_child;
 	int		nb_cmd;
 	int		cmd_index;
 	char	**path;

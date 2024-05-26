@@ -6,73 +6,36 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 15:58:42 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 11:21:36 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <unistd.h>
 
-// Sa degage V
-
-static size_t	search_leng(int n)
+static void	ft_close_fd(t_vars *vars)
 {
-	size_t	len;
-
-	len = 0;
-	if (n == 0)
-		return (1);
-	if (n < 0)
-		len++;
-	while (n)
+	if (vars->pipe_1[0] != -1)
 	{
-		n = n / 10;
-		len++;
+		close(vars->pipe_1[0]);
+		vars->pipe_1[0] = -1;
 	}
-	return (len);
-}
-
-static void	fill_str(char *str, int n, size_t len)
-{
-	size_t	i;
-
-	str[len] = '\0';
-	i = 0;
-	if (n < 0)
+	if (vars->pipe_1[1] != -1)
 	{
-		str[0] = '-';
-		i = 1;
+		close(vars->pipe_1[1]);
+		vars->pipe_1[1] = -1;
 	}
-	while (len > i)
+	if (vars->pipe_2[0] != -1)
 	{
-		len--;
-		if (n < 0)
-		{
-			str[len] = n % 10 * (-1) + '0';
-			n = n / 10;
-		}
-		else
-		{
-			str[len] = n % 10 + '0';
-			n = n / 10;
-		}
+		close(vars->pipe_2[0]);
+		vars->pipe_2[0] = -1;
+	}
+	if (vars->pipe_2[1] != -1)
+	{
+		close(vars->pipe_2[1]);
+		vars->pipe_2[1] = -1;
 	}
 }
-
-char	*ft_itoa(int n)
-{
-	char	*str;
-	size_t	len;
-
-	len = search_leng(n);
-	str = malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (NULL);
-	fill_str(str, n, len);
-	return (str);
-}
-
-// Sa degage /\bitch
 
 /*
 * Utilisation de deux pipes.
@@ -127,7 +90,7 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 			}
 			else
 			{
-				if (dup2(vars->pipe_1[1], STDOUT_FILENO) < 0)
+				if (dup2(vars->pipe_2[1], STDOUT_FILENO) < 0)
 					perror("dup2");
 			}
 		}
@@ -150,7 +113,7 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 			}
 			else
 			{
-				if (dup2(vars->pipe_2[1], STDOUT_FILENO) < 0)
+				if (dup2(vars->pipe_1[1], STDOUT_FILENO) < 0)
 					perror("dup2");
 			}
 		}
@@ -206,19 +169,19 @@ static int	child_process(t_vars *vars, t_redirection *redirect
 		perror("Error opening files");
 		exit(1);
 	}
-	if (vars->pipe_1[0] != -1)
-		close(vars->pipe_1[0]);
-	if (vars->pipe_1[1] != -1)
-		close(vars->pipe_1[1]);
-	if (vars->pipe_2[0] != -1)
-		close(vars->pipe_2[0]);
-	if (vars->pipe_2[1] != -1)
-		close(vars->pipe_2[1]);
+	ft_close_fd(vars);
 	execve(actual_cmd[0], actual_cmd, vars->env);
+	ft_close_fd(vars);
 	if (redirect->infile_fd != -1)
+	{
 		close(redirect->infile_fd);
+		redirect->infile_fd = -1;
+	}
 	if (redirect->outfile_fd != -1)
+	{
 		close(redirect->outfile_fd);
+		redirect->outfile_fd = -1;
+	}
 	perror("Execve");
 	ft_free(vars->path);
 	ft_free_tab_3d(vars);
@@ -269,34 +232,11 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 			vars->pipe_2[1] = -1;
 		}
 	}
-	while (waitpid(-1, NULL, 0) != -1)
-		continue ;
+	if (vars->cmd_index == vars->nb_cmd)
+		vars->last_child = vars->child;
 	return (0);
 }
 
-static void	ft_close_fd(t_vars *vars)
-{
-	if (vars->pipe_1[0] != -1)
-	{
-		close(vars->pipe_1[0]);
-		vars->pipe_1[0] = -1;
-	}
-	if (vars->pipe_1[1] != -1)
-	{
-		close(vars->pipe_1[1]);
-		vars->pipe_1[1] = -1;
-	}
-	if (vars->pipe_2[0] != -1)
-	{
-		close(vars->pipe_2[0]);
-		vars->pipe_2[0] = -1;
-	}
-	if (vars->pipe_2[1] != -1)
-	{
-		close(vars->pipe_2[1]);
-		vars->pipe_2[1] = -1;
-	}
-}
 
 t_bool	is_builtins_parsing(char **str)
 {
@@ -324,6 +264,30 @@ t_bool	is_builtins_exec(t_vars *vars)
 	return (FALSE);
 }
 
+/*
+* Wait the last process will getting the exit code of the last process.
+*/
+
+static int	wait_process(t_vars *vars)
+{
+	int		wstatus;
+	int		exit_status;
+	pid_t	pid;
+
+	wstatus = 0;
+	pid = 0;
+	while (pid != -1)
+	{
+		pid = wait(&wstatus);
+		if (pid == vars->last_child)
+		{
+			exit_status = WEXITSTATUS(wstatus);
+			return (exit_status);
+		}
+	}
+	return (0);
+}
+
 int	fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp)
 {
 	t_redirection	*tmp;
@@ -334,6 +298,7 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp)
 	vars->pipe_1[1] = -1;
 	vars->pipe_2[0] = -1;
 	vars->pipe_2[1] = -1;
+	vars->last_child = -2;
 	while (vars->cmd_index <= vars->nb_cmd)
 	{
 		if (!is_builtins_exec(vars))
@@ -371,6 +336,7 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp)
 		tmp = tmp->next;
 		vars->cmd_index++;
 	}
+	wait_process(vars);
 	ft_close_fd(vars);
 	ft_lstclear_final_redirection(redirect);
 	ft_free_tab_3d(vars);
