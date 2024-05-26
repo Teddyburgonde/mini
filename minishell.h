@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 16:19:37 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 16:42:02 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ int		ft_cd(char **command, t_env **env);
 void	ft_echo(char **command);
 int		ft_pwd(void);
 void	unset(t_env **env, char *name);
+int		ft_exit(char **command);
 
 /*
 * Chain list

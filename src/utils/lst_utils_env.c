@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/05 14:48:16 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:13:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@ t_env	*lst_search_env(char *s, t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->var_name, &s[1]) == 0)
-			return (tmp);
+		if (s[0] == '$')
+		{
+			if (ft_strcmp(tmp->var_name, &s[1]) == 0)
+				return (tmp);
+		}
+		else
+		{
+			if (ft_strcmp(tmp->var_name, s) == 0)
+				return (tmp);
+		}
 		tmp = tmp->next;
 	}
 	return (NULL);
