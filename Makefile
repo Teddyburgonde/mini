@@ -18,7 +18,6 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/parsing/parsing_expand.c \
 			src/parsing/redirection_expand.c \
 			src/exec/check.c \
-			src/exec/fd_manager.c \
 			src/exec/redirection.c \
 			src/exec/fork.c \
 			src/exec/heredoc.c \
