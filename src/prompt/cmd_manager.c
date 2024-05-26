@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 10:37:32 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 12:21:46 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,12 @@ int	cmd_selector(t_env **env, char **command_line)
 		return (0);
 	}
 	else if (ft_strcmp(command_line[0], "exit") == 0)
-		return (atoi(command_line[1]));
+	{
+		if (command_line[1] != NULL)
+			exit(atoi(command_line[1]));
+		else
+			exit(0);
+	}
 	return (0);
 }
 
@@ -163,33 +168,26 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	t_argument_to_expand			*tmp_arg;
 	t_redirection					*redirection;
 	char							**command_line;
-	int								exit;
 	int								i;
 
 	tmp = cmd->commands;
 	tmp_redir = tmp->redirections;
 	tmp_arg = tmp->arguments;
 	vars.env = NULL;
-	exit = 666;
 	command_line = NULL;
-	// exit = cmd_selector(env, command_line);
-	if (exit == 666 && env)
+	if (env)
 	{
 		i = 0;
 		ft_expand_redirections(tmp_redir, *env);
-		// check_infile(tmp->redirections);
 		redirection = stock_redirection(tmp);
 		vars.nb_cmd = ft_lstsize_command(cmd->commands);
 		vars.path = ft_split(lst_search_env("$PATH", *env)->var, ':');
 		vars.cmd = ft_calloc(vars.nb_cmd + 1, sizeof(char **));
-		// Mettre les built-ins V
 		verif_fill_command_paths(&vars, tmp, *env);
 		ft_free(vars.path);
 		vars.env = env_to_char(*env);
 		fork_processes(&vars, &redirection, *env);
 		free(vars.env);
 	}
-	else if (exit != 0)
-		write(2, "Error !\n", 8);
 	return (0);
 }
