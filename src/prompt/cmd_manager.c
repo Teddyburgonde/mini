@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 12:21:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 12:31:10 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,17 +167,13 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	t_redirection_to_expand			*tmp_redir;
 	t_argument_to_expand			*tmp_arg;
 	t_redirection					*redirection;
-	char							**command_line;
-	int								i;
 
 	tmp = cmd->commands;
 	tmp_redir = tmp->redirections;
 	tmp_arg = tmp->arguments;
 	vars.env = NULL;
-	command_line = NULL;
 	if (env)
 	{
-		i = 0;
 		ft_expand_redirections(tmp_redir, *env);
 		redirection = stock_redirection(tmp);
 		vars.nb_cmd = ft_lstsize_command(cmd->commands);
