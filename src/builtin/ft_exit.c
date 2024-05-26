@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 16:55:50 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 17:51:46 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <limits.h>
-
-// static int	is_whitespace(char c)
-// {
-// 	if ((c >= 9 && c <= 13) || c == 32)
-// 		return (1);
-// 	return (0);
-// }
-
-// static unsigned char	ft_char_to_unsigned_char(const char *nptr)
-// {
-// 	int	i;
-// 	int	a;
-// 	int	sign;
-
-// 	i = 0;
-// 	a = 0;
-// 	sign = 1;
-// 	while (is_whitespace(nptr[i]))
-// 		i++;
-// 	while (nptr[i] == '+' || nptr[i] == '-')
-// 	{
-// 		if (nptr[i] == '-')
-// 			sign *= -1;
-// 		i++;
-// 	}
-// 	while (nptr[i] >= '0' && nptr[i] <= '9')
-// 	{
-// 		a = a * 10 + (nptr[i] - '0');
-// 		i++;
-// 	}
-// 	return (a * sign);
-// }
 
 static int	ft_isdigit(int c)
 {
@@ -79,35 +46,6 @@ static long	ft_atol(const char *nptr)
 		i++;
 	}
 	return (minus * nb);
-}
-
-static void	ft_exit_message_0(void)
-{
-	printf("exit\n");
-	exit (0);
-}
-
-static void	ft_exit_message_2(char *command)
-{
-	ft_putstr_fd("exit\nbash: exit: ", 2);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(2);
-}
-
-static void	ft_exit_message_too_many_arguments(void)
-{
-	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("bash: exit: too many arguments\n", 2);
-	exit (1);
-}
-
-static void	ft_exit_message_argument_required(char *command)
-{
-	ft_putstr_fd("exit\nbash: exit: ", 2);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(2);
 }
 
 int	ft_exit(char **command)

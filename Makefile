@@ -43,6 +43,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/len_utils.c \
 			src/utils/ft_strncmp.c \
 			src/utils/ft_strlcpy.c \
+			src/utils/error_message_for_exit.c \
 			src/error_free/free_error.c \
 
 

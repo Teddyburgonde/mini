@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 16:42:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/26 17:48:56 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <limits.h>
 # define NEW_LINE '\n'
 # define SPACE ' '
 # define RIGHT '>'
@@ -195,8 +196,11 @@ int	ft_lstsize_command(t_command_to_expand *cmd);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 int	ft_lstsize_env(t_env *env);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
-
 int	ft_strcspn2(const char *s, char *reject);
+void	ft_exit_message_0(void);
+void	ft_exit_message_2(char *command);
+void	ft_exit_message_too_many_arguments(void);
+void	ft_exit_message_argument_required(char *command);
 
 /*
 * Env
