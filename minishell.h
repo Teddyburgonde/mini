@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 17:48:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:35:19 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,7 +375,8 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
 void	build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
 void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
 int		verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env);
-int		fork_processes(t_vars *vars, t_redirection **redirect, t_env *envp);
+int		fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp);
+void end_fork(t_vars * vars, t_redirection ** redirect);
 int		cmd_selector(t_env **env, char **command_line);
 void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 17:04:34 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/27 13:16:00 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*make_var_name(char *str)
 	int		i;
 
 	i = 0;
-	result = malloc(sizeof(char) * ft_strcspn(str, "="));
+	result = malloc(sizeof(char) * (ft_strcspn(str, "=") + 1));
 	if (!result || !str)
 		return (NULL);
 	while (str[i] != '=')
@@ -36,7 +36,8 @@ static char	*make_var(char *str)
 	int		i;
 
 	i = 0;
-	result = malloc(sizeof(char) * ft_strlen(&str[ft_strcspn(str, "=") + 1]));
+	result = malloc(sizeof(char)
+			* (ft_strlen(&str[ft_strcspn(str, "=") + 1]) + 2));
 	if (!result || !str)
 		return (NULL);
 	while (str[i] != '=')
@@ -58,7 +59,6 @@ void	export(t_env **env, char **cmd)
 	tmp_env = lst_search_env(var_name, *env);
 	if (!cmd[1])
 	{
-		// SEGFAULT
 		tmp = *env;
 		while (tmp)
 		{

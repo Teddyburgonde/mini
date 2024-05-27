@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:06:33 by rgobet            #+#    #+#             */
-/*   Updated: 2024/04/30 11:28:00 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/27 13:31:17 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*copy(char *s)
 	int		i;
 	char	*tmp;
 
+	if (!s)
+		return (NULL);
 	tmp = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!tmp)
 		return (NULL);

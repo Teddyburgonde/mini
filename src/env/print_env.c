@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:58:59 by rgobet            #+#    #+#             */
-/*   Updated: 2024/03/17 11:33:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:12:47 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_env(t_env *envp)
 {
 	while (envp)
 	{
-		printf("Name: %s, var: %s\n", envp->var_name, envp->var);
+		printf("%s=%s\n", envp->var_name, envp->var);
 		envp = envp->next;
 	}
 }

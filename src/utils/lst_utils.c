@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 12:10:13 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/27 12:58:52 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 			tmp->infile_fd = -1;
 		if (tmp->outfile_fd == STDIN_FILENO || tmp->outfile_fd == STDOUT_FILENO)
 			tmp->outfile_fd = -1;
-		if (tmp->outfile_fd != 1)
+		if (tmp->outfile_fd != -1)
 		{
 			close(tmp->outfile_fd);
 			tmp->outfile_fd = -1;

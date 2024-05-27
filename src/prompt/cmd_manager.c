@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 16:42:32 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/27 12:36:16 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 		verif_fill_command_paths(&vars, tmp, *env);
 		ft_free(vars.path);
 		vars.env = env_to_char(*env);
-		fork_processes(&vars, &redirection, *env);
+		fork_processes(&vars, &redirection, env);
 		free(vars.env);
 	}
 	return (0);

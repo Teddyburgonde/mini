@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_to_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:44:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/15 14:44:29 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:16:17 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	**env_to_char(t_env *env)
 	i = 0;
 	while (env)
 	{
-		tmp[i] = env->full_path;
+		tmp[i] = copy(env->full_path);
+		// tmp[i] = env->full_path;
 		env = env->next;
 		i++;
 	}

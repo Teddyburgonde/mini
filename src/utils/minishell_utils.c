@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:41:21 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/03 11:38:43 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:22:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_strlen(char const *str)
 {
 	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str && str[i])
 		i++;
