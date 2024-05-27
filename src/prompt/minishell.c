@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/14 14:43:51 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:33:31 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av, char *envp[])
 	if (ft_readline(&env) == 1)
 	{
 		ft_lstclear_env(&env);
+		//exit code 130
 		return (1);
 	}
 	ft_lstclear_env(&env);

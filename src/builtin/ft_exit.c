@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 17:51:46 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:02:45 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int	ft_exit(char **command)
 		ft_exit_message_argument_required(command[1]);
 	tmp = ft_atol(command[1]) % 256;
 	printf("exit\n");
+	//exit code 0 cependant la tu peux quitter le programme
 	exit(tmp);
 }

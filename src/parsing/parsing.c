@@ -6,12 +6,15 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/06 16:25:58 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:51:23 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+
+
+//exit code synstax error exit code 2 
 t_argument_parsing_result	*parse_quote(const char *remaining_line,
 	t_argument_parsing_result *result)
 {

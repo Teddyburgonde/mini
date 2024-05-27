@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/26 17:53:55 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:20:40 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	unset(t_env **env, char *name)
 
 	tmp = *env;
 	prev = *env;
+	//exit code 1 si cas d'erreur 
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->var_name, name) == 0)

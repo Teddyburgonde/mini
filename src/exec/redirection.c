@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/24 16:48:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:32:48 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 		if (!result)
 			return (NULL);
 	}
+	// si fd = -1 exit code 1 
 	while (tmp_command)
 	{
 		redirection = ft_lstnew_redirection();
@@ -174,5 +175,6 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 		tmp_command = tmp_command->next;
 	}
 	where_are_heredoc(&result, heredoc);
+	// exit code 0 si tout se passe bien
 	return (result);
 }

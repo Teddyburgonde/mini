@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 00:07:22 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 13:29:06 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/27 11:34:17 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_ctrl_c(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	// exit code 386
 	exit_status = 130;
 }
 
@@ -30,6 +31,7 @@ void	ctrl_d(int signal)
 
 	(void)signal;
 	ft_putstr_fd("exit\n", 1);
+	//exit code 0
 	exit(exit_status);
 }
 

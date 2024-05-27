@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:39:20 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 17:42:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:02:01 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_exit_message_0(void)
 {
 	printf("exit\n");
+	//exit code 0 cependant la tu peux quitter le programme
 	exit (0);
 }
 
@@ -30,6 +31,7 @@ void	ft_exit_message_too_many_arguments(void)
 {
 	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("bash: exit: too many arguments\n", 2);
+	//exit code 1 cependant la tu peux quitter le programme
 	exit (1);
 }
 
