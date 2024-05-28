@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/27 15:16:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:00:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,7 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)
 			{
 				if (vars->env)
-					ft_free(vars->env);
+					free(vars->env);
 				// Impossible de export, le lst_addback ne fonctionne pas ????
 				vars->env = env_to_char(*envp);
 			}

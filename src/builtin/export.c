@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 14:05:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:01:50 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*make_var(char *str)
 			* (ft_strlen(&str[ft_strcspn(str, "=") + 1]) + 2));
 	if (!result || !str)
 		return (NULL);
-	while (str[i] != '=')
+	while (str[ft_strcspn(str, "=") + i + 1])
 	{
 		result[i] = str[ft_strcspn(str, "=") + i + 1];
 		i++;
@@ -111,6 +111,49 @@ static char	*remove_plus(char *str)
 	return (result);
 }
 
+static int	verif_export(char *str)
+{
+	int		i;
+	int		len_mid;
+	t_bool	append;
+
+	i = 0;
+	append = TRUE;
+	if (str[0] == 0 || str[0] == '_')
+		return (1);
+	len_mid = ft_strcspn(str, "=");
+	if (len_mid == ft_strlen(str))
+		return (2);
+	if (str[len_mid - 1] == '+')
+		len_mid--;
+	else
+		append = FALSE;
+	while (str[i])
+	{
+		if (str[i] < 48
+			|| (str[i] > 57 && str[i] < 65)
+			|| (str[i] > 90 && str[i] < 97)
+			|| str[i] > 122)
+		{
+			if ((i != len_mid && append == FALSE)
+				|| (i != len_mid + 1 && append == TRUE)
+				|| (i != len_mid && append == TRUE))
+			{
+				if (str[i] != '_')
+				{
+					ft_putstr_fd(
+						"minishell: syntax error near unexpected token `", 2);
+					write(2, &str[i], 1);
+					write(2, "'\n", 2);
+					return (1);
+				}
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
@@ -119,7 +162,7 @@ void	export(t_env **env, char **cmd)
 	char	*value;
 	int		i;
 
-	i = 0;
+	i = 1;
 	if (!cmd[1])
 	{
 		tmp = *env;
@@ -127,36 +170,23 @@ void	export(t_env **env, char **cmd)
 		{
 			printf("declare -x %s\n", tmp->full_path);
 			tmp = tmp->next;
+			// Affiche en ordre décroissant
 		}
 	}
-	while (cmd[i + 1] != NULL)
+	while (cmd[i] != NULL)
 	{
-		var_name = make_var_name(cmd[1]);
-		value = make_var(cmd[1]);
-		tmp_env = lst_search_env(var_name, *env);
-		if (!tmp_env)
+		if (verif_export(cmd[i]) == 1)
+			break ;
+		if (verif_export(cmd[i]) == 0)
 		{
-			tmp = ft_lstnew_env();
-			tmp->full_path = copy(cmd[i + 1]);
-			tmp->var_name = var_name;
-			tmp->var = value;
-			tmp->next = NULL;
-			if (tmp->var != 0)
-				ft_lstadd_back_env(env, tmp);
-			else
-			{
-				free(tmp->var_name);
-				free(tmp->var);
-				free(tmp);
-			}
-		}
-		else if (var_name[ft_strlen(var_name)] == '+')
-		{
+			var_name = make_var_name(cmd[i]);
+			value = make_var(cmd[i]);
+			tmp_env = lst_search_env(var_name, *env);
 			if (!tmp_env)
 			{
 				tmp = ft_lstnew_env();
-				tmp->full_path = remove_plus(cmd[i + 1]);
-				tmp->var_name = ft_substr(var_name, 0, ft_strlen(var_name) - 1);
+				tmp->full_path = copy(cmd[i]);
+				tmp->var_name = var_name;
 				tmp->var = value;
 				tmp->next = NULL;
 				if (tmp->var != 0)
@@ -168,24 +198,44 @@ void	export(t_env **env, char **cmd)
 					free(tmp);
 				}
 			}
+			else if (var_name[ft_strlen(var_name)] == '+')
+			{
+				if (!tmp_env)
+				{
+					tmp = ft_lstnew_env();
+					tmp->full_path = remove_plus(cmd[i]);
+					tmp->var_name = ft_substr(
+							var_name, 0, ft_strlen(var_name) - 1);
+					tmp->var = value;
+					tmp->next = NULL;
+					if (tmp->var != 0)
+						ft_lstadd_back_env(env, tmp);
+					else
+					{
+						free(tmp->var_name);
+						free(tmp->var);
+						free(tmp);
+					}
+				}
+				else
+				{
+					free(tmp->full_path);
+					tmp->full_path = remove_plus(cmd[i]);
+					tmp_env->var = ft_strjoin_mod(tmp_env->var, value);
+					free(value);
+				}
+			}
 			else
 			{
-				free(tmp->full_path);
-				tmp->full_path = remove_plus(cmd[i + 1]);
-				tmp_env->var = ft_strjoin_mod(tmp_env->var, value);
-				free(value);
+				tmp_env = *env;
+				while (!ft_strcmp(tmp_env->var_name, var_name))
+					tmp_env = tmp_env->next;
+				free(tmp_env->var);
+				tmp_env->var = value;
+				tmp->full_path = copy(cmd[i]);
 			}
-		}
-		else
-		{
-			tmp_env = *env;
-			while (!ft_strcmp(tmp_env->var_name, var_name))
-				tmp_env = tmp_env->next;
-			free(tmp_env->var);
-			tmp_env->var = value;
-			tmp->full_path = copy(cmd[i + 1]);
 		}
 		i++;
 	}
-	// Tri ordre décroissant
+	// Tri ordre décroissant pour env
 }
