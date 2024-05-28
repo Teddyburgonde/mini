@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:01:50 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:05:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,14 +187,14 @@ void	export(t_env **env, char **cmd)
 				tmp = ft_lstnew_env();
 				tmp->full_path = copy(cmd[i]);
 				tmp->var_name = var_name;
-				tmp->var = value;
+				tmp->value = value;
 				tmp->next = NULL;
-				if (tmp->var != 0)
+				if (tmp->value != 0)
 					ft_lstadd_back_env(env, tmp);
 				else
 				{
 					free(tmp->var_name);
-					free(tmp->var);
+					free(tmp->value);
 					free(tmp);
 				}
 			}
@@ -206,14 +206,14 @@ void	export(t_env **env, char **cmd)
 					tmp->full_path = remove_plus(cmd[i]);
 					tmp->var_name = ft_substr(
 							var_name, 0, ft_strlen(var_name) - 1);
-					tmp->var = value;
+					tmp->value = value;
 					tmp->next = NULL;
-					if (tmp->var != 0)
+					if (tmp->value != 0)
 						ft_lstadd_back_env(env, tmp);
 					else
 					{
 						free(tmp->var_name);
-						free(tmp->var);
+						free(tmp->value);
 						free(tmp);
 					}
 				}
@@ -221,7 +221,7 @@ void	export(t_env **env, char **cmd)
 				{
 					free(tmp->full_path);
 					tmp->full_path = remove_plus(cmd[i]);
-					tmp_env->var = ft_strjoin_mod(tmp_env->var, value);
+					tmp_env->value = ft_strjoin_mod(tmp_env->value, value);
 					free(value);
 				}
 			}
@@ -230,8 +230,8 @@ void	export(t_env **env, char **cmd)
 				tmp_env = *env;
 				while (!ft_strcmp(tmp_env->var_name, var_name))
 					tmp_env = tmp_env->next;
-				free(tmp_env->var);
-				tmp_env->var = value;
+				free(tmp_env->value);
+				tmp_env->value = value;
 				tmp->full_path = copy(cmd[i]);
 			}
 		}

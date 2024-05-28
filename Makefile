@@ -5,7 +5,6 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/prompt/setup_command.c \
 			src/prompt/cmd_manager.c \
             src/env/init_env.c \
-            src/env/print_env.c \
 			src/env/env_to_char.c \
             src/signal/signal.c \
 			src/builtin/export.c \

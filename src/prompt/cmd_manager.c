@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/27 12:36:16 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:07:07 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 		ft_expand_redirections(tmp_redir, *env);
 		redirection = stock_redirection(tmp);
 		vars.nb_cmd = ft_lstsize_command(cmd->commands);
-		vars.path = ft_split(lst_search_env("$PATH", *env)->var, ':');
+		vars.path = ft_split(lst_search_env("$PATH", *env)->value, ':');
 		vars.cmd = ft_calloc(vars.nb_cmd + 1, sizeof(char **));
 		verif_fill_command_paths(&vars, tmp, *env);
 		ft_free(vars.path);

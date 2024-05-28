@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/21 15:14:30 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:06:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ static t_argument	*ft_expand_vars_in_argument(
 			if (lst_search_env(var_name, env))
 			{
 				var = lst_search_env(var_name, env);
-				while (var->var[j])
+				while (var->value[j])
 				{
 					tmp = lst_new_char_list();
 					if (!tmp)
 						return (NULL);
-					tmp->value = var->var[j];
+					tmp->value = var->value[j];
 					tmp->was_in_a_variable = TRUE;
 					ft_lstadd_back_char_list(&arg->chars, tmp);
 					j++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/17 15:34:26 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:06:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_strlen_ultime(t_redirection_to_expand *tmp, t_env *env)
 			if (lst_search_env(var_name, env))
 			{
 				node = lst_search_env(var_name, env);
-				while (node->var[j])
+				while (node->value[j])
 				{
 					count++;
 					j++;
@@ -99,9 +99,9 @@ t_redirection_to_expand	*expand_redirection(t_redirection_to_expand *redirection
 			if (lst_search_env(var_name, env))
 			{
 				node = lst_search_env(var_name, env);
-				while (env->var[j])
+				while (env->value[j])
 				{
-					tmp->arg[i + j] = node->var[j];
+					tmp->arg[i + j] = node->value[j];
 					j++;
 				}
 			}

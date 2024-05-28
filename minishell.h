@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/28 10:46:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:08:43 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef enum s_bool {
 */
 
 typedef struct s_env{
-	char			*var;
 	char			*var_name;
+	char			*value;
 	char			*full_path;
 	struct s_env	*next;
 }	t_env;
@@ -208,7 +208,6 @@ void	ft_exit_message_argument_required(char *command);
 
 void	init_env(t_env **env, char **envp);
 char	**env_to_char(t_env *env);
-void	print_env(t_env *envp);
 
 /*
 * Signal

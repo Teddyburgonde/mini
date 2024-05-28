@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:04:31 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 12:58:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:06:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void	init_env(t_env **env, char **envp)
 		new = ft_lstnew_env();
 		new->var_name = get_name(envp[i], j);
 		if (ft_strcmp(new->var_name, "SHLVL") == 0)
-			new->var = update_shlvl(atoi(&envp[i][j + 1]) + 1);
+			new->value = update_shlvl(atoi(&envp[i][j + 1]) + 1);
 		else
-			new->var = copy(&envp[i][j + 1]);
+			new->value = copy(&envp[i][j + 1]);
 		if (ft_strcmp(new->var_name, "SHLVL") == 0)
 		{
 			tmp = ft_strjoin(new->var_name, "=");
-			new->full_path = ft_strjoin_mod(tmp, new->var);
+			new->full_path = ft_strjoin_mod(tmp, new->value);
 		}
 		else
 			new->full_path = copy(envp[i]);

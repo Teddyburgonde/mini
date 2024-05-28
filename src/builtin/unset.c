@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/27 11:20:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:05:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	unset(t_env **env, char *name)
 		{
 			prev->next = tmp->next;
 			free(tmp->var_name);
-			free(tmp->var);
+			free(tmp->value);
 			free(tmp);
 			break ;
 		}

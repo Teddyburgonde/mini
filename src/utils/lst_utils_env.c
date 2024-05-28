@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/27 12:38:34 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:07:13 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_lstclear_env(t_env **lst)
 		*lst = (*lst)->next;
 		free(tmp->full_path);
 		free(tmp->var_name);
-		free(tmp->var);
+		free(tmp->value);
 		free(tmp);
 	}
 }
