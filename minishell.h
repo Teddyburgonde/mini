@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/28 16:08:43 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 17:11:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,16 @@
 #  define BUFFER_SIZE 1
 # endif
 
+typedef enum s_bool {
+	TRUE = 1,
+	FALSE = 0
+}	t_bool;
+
+/*
+* Global variables
+*/
 // Va surement degager (e_last)
-typedef struct s_vars{
+typedef struct s_vars {
 	pid_t	child;
 	pid_t	last_child;
 	int		nb_cmd;
@@ -47,19 +55,16 @@ typedef struct s_vars{
 	char	**env;
 }	t_vars;
 
-typedef enum s_bool {
-	TRUE = 1,
-	FALSE = 0
-}	t_bool;
-
 /*
 * Environment
 */
 
-typedef struct s_env{
+typedef struct s_env {
+	int				index;
 	char			*var_name;
 	char			*value;
 	char			*full_path;
+	t_bool			print;
 	struct s_env	*next;
 }	t_env;
 

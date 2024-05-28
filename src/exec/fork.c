@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/28 16:00:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:15:08 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,7 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 		}
 		else
 		{
+			// Tri ordre décroissant pour env
 			cmd_selector(envp, vars->cmd[vars->cmd_index - 1]);
 			if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
 				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)

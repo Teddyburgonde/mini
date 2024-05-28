@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:05:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/28 17:24:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,25 +154,80 @@ static int	verif_export(char *str)
 	return (0);
 }
 
+static int	char_sum(char *str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		count += str[i];
+		i++;
+	}
+	return (count);
+}
+
+static t_env	*ft_min_weight(t_env **env)
+{
+	t_env	*min;
+	t_env	*tmp;
+
+	min = NULL;
+	tmp = *env;
+	while (tmp)
+	{
+		if ((min == NULL || tmp->index < min->index)
+			&& tmp->print == FALSE)
+			min = tmp;
+		tmp = tmp->next;
+	}
+	min->print = TRUE;
+	return (min);
+}
+
+// t_env	*ft_max(t_env **env)
+// {
+// 	t_env	*max;
+// 	t_env	*tmp;
+
+// 	max = NULL;
+// 	tmp = *env;
+// 	while (tmp)
+// 	{
+// 		if ((max == NULL || tmp->index > max->index)
+// 			&& tmp->print == FALSE)
+// 			max = tmp;
+// 		tmp = tmp->next;
+// 	}
+// 	max->print = TRUE;
+// 	return (max);
+// }
+
+static void	print_env_crescent(t_env **env)
+{
+	t_env	*print;
+
+	print = ft_min_weight(env);
+	while (print)
+	{
+		printf("declare -x %s\n", print->full_path);
+		print = ft_min_weight(env);
+	}
+	// reset_print(env);
+}
+
 void	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
-	t_env	*tmp;
 	char	*var_name;
 	char	*value;
 	int		i;
 
 	i = 1;
 	if (!cmd[1])
-	{
-		tmp = *env;
-		while (tmp)
-		{
-			printf("declare -x %s\n", tmp->full_path);
-			tmp = tmp->next;
-			// Affiche en ordre décroissant
-		}
-	}
+		print_env_crescent(env);
 	while (cmd[i] != NULL)
 	{
 		if (verif_export(cmd[i]) == 1)
@@ -181,61 +236,61 @@ void	export(t_env **env, char **cmd)
 		{
 			var_name = make_var_name(cmd[i]);
 			value = make_var(cmd[i]);
+			// Si value est NULL l'ajouter mais mettre la value a NULL
 			tmp_env = lst_search_env(var_name, *env);
 			if (!tmp_env)
 			{
-				tmp = ft_lstnew_env();
-				tmp->full_path = copy(cmd[i]);
-				tmp->var_name = var_name;
-				tmp->value = value;
-				tmp->next = NULL;
-				if (tmp->value != 0)
-					ft_lstadd_back_env(env, tmp);
+				tmp_env = ft_lstnew_env();
+				tmp_env->print = FALSE;
+				tmp_env->full_path = copy(cmd[i]);
+				tmp_env->var_name = var_name;
+				tmp_env->value = value;
+				tmp_env->next = NULL;
+				if (tmp_env->value != 0)
+					ft_lstadd_back_env(env, tmp_env);
 				else
 				{
-					free(tmp->var_name);
-					free(tmp->value);
-					free(tmp);
+					free(tmp_env->var_name);
+					free(tmp_env->value);
+					free(tmp_env);
 				}
 			}
 			else if (var_name[ft_strlen(var_name)] == '+')
 			{
 				if (!tmp_env)
 				{
-					tmp = ft_lstnew_env();
-					tmp->full_path = remove_plus(cmd[i]);
-					tmp->var_name = ft_substr(
+					tmp_env = ft_lstnew_env();
+					tmp_env->print = FALSE;
+					tmp_env->full_path = remove_plus(cmd[i]);
+					tmp_env->var_name = ft_substr(
 							var_name, 0, ft_strlen(var_name) - 1);
-					tmp->value = value;
-					tmp->next = NULL;
-					if (tmp->value != 0)
-						ft_lstadd_back_env(env, tmp);
+					tmp_env->value = value;
+					tmp_env->next = NULL;
+					if (tmp_env->value != 0)
+						ft_lstadd_back_env(env, tmp_env);
 					else
 					{
-						free(tmp->var_name);
-						free(tmp->value);
-						free(tmp);
+						free(tmp_env->var_name);
+						free(tmp_env->value);
+						free(tmp_env);
 					}
 				}
 				else
 				{
-					free(tmp->full_path);
-					tmp->full_path = remove_plus(cmd[i]);
+					free(tmp_env->full_path);
+					tmp_env->full_path = remove_plus(cmd[i]);
 					tmp_env->value = ft_strjoin_mod(tmp_env->value, value);
 					free(value);
 				}
 			}
 			else
 			{
-				tmp_env = *env;
-				while (!ft_strcmp(tmp_env->var_name, var_name))
-					tmp_env = tmp_env->next;
 				free(tmp_env->value);
 				tmp_env->value = value;
-				tmp->full_path = copy(cmd[i]);
+				tmp_env->full_path = copy(cmd[i]);
 			}
+			tmp_env->index = char_sum(cmd[i]);
 		}
 		i++;
 	}
-	// Tri ordre décroissant pour env
 }
