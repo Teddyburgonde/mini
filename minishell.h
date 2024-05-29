@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/28 17:11:53 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:55:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_vars {
 
 typedef struct s_env {
 	int				index;
+	int				weight;
 	char			*var_name;
 	char			*value;
 	char			*full_path;
@@ -197,15 +198,16 @@ int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
-int	ft_lstsize_command(t_command_to_expand *cmd);
+int		ft_lstsize_command(t_command_to_expand *cmd);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-int	ft_lstsize_env(t_env *env);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-int	ft_strcspn2(const char *s, char *reject);
+int		ft_lstsize_env(t_env *env);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcspn2(const char *s, char *reject);
 void	ft_exit_message_0(void);
 void	ft_exit_message_2(char *command);
 void	ft_exit_message_too_many_arguments(void);
 void	ft_exit_message_argument_required(char *command);
+int		ft_isdigit(int c);
 
 /*
 * Env
@@ -277,7 +279,7 @@ char	**ft_setup_command(t_argument *arg);
 */
 
 int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
-
+int		cmd_selector(t_env **env, char **command_line, char **envp);
 
 /*
 * Builtins
@@ -380,7 +382,6 @@ void	build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_c
 void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
 int		verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env);
 int		fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp);
-int 	cmd_selector(t_env **env, char **command_line);
 void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);
 void	open_hd_w(t_vars *vars);

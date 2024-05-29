@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:07:07 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:31:17 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,23 @@
 // 	}
 // }
 
+// Met des " " après premier '='
+// Affiche toutes les vars
+// Cache les vars avec value=NULL dans cmd env
 
+static void	print_env(char **env)
+{
+	int	i;
 
-int	cmd_selector(t_env **env, char **command_line)
+	i = 0;
+	while (env && env[i])
+	{
+		printf("declare -x %s\n", env[i]);
+		i++;
+	}
+}
+
+int	cmd_selector(t_env **env, char **command_line, char **envp)
 {
 	t_env	*tmp;
 
@@ -120,7 +134,10 @@ int	cmd_selector(t_env **env, char **command_line)
 	}
 	else if (ft_strcmp(command_line[0], "export") == 0)
 	{
-		export(env, command_line);
+		if (command_line[1])
+			export(env, command_line);
+		else
+			print_env(envp);
 		return (0);
 	}
 	else if (ft_strcmp(command_line[0], "cd") == 0)

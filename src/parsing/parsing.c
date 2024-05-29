@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/27 11:51:23 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:54:48 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_argument_parsing_result	*parse_quote(const char *remaining_line,
 		result->argument->content = ft_strjoin_quoted_arg(
 				result->argument->content, remaining_line, "\'");
 		remaining_line = skip_quote(remaining_line, '\'', result);
+		result->remaining_line = remaining_line;
 		if (result->did_succeed == FALSE)
 			return (result);
 	}
@@ -31,6 +32,7 @@ t_argument_parsing_result	*parse_quote(const char *remaining_line,
 		result->argument->content = ft_strjoin_quoted_arg(
 				result->argument->content, remaining_line, "\"");
 		remaining_line = skip_quote(remaining_line, '"', result);
+		result->remaining_line = remaining_line;
 		if (result->did_succeed == FALSE)
 			return (result);
 	}
@@ -201,6 +203,8 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line)
 		return (result);
 	}
 	result = parsing_command(remaining_line, result, command_parsing_result);
+	if (result->did_succeed == FALSE)
+		return (result);
 	result->did_succeed = TRUE;
 	return (result);
 }

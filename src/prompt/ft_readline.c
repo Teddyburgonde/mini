@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/26 11:36:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:53:56 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,47 @@
 // dans un selecteur de buit-in. Le selecteur execute le built-in en question.
 // Si se n'est pas un built-in on creer un fork ... (pipex_bonus)
 
-int	ft_readline(t_env **env)
+static void	process_successful_command(t_command_line_parsing_result
+*parsing_result, t_env **env, char *command_line)
+{
+	ft_cmd_manager(env, parsing_result);
+	ft_lstclear_commands(&parsing_result->commands);
+	free(parsing_result);
+	free(command_line);
+}
+
+static void	verif_command_line(char *command_line
+, t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
+
+	if (command_line != NULL && command_line[0] != '\0')
+	{
+		add_history(command_line);
+		parsing_result = ft_parse_command_line(command_line);
+		if (!parsing_result->did_succeed)
+		{
+			free(command_line);
+			ft_lstclear_commands(&parsing_result->commands);
+			free(parsing_result);
+		}
+		else if (command_line[0] == '|')
+		{
+			write (2, "Error: too much pipe or in a wrong position !\n", 46);
+			free(command_line);
+		}
+		else if (command_line[0] == '"')
+		{
+			write(2, "Command '' not found, but can be installed with\n", 48);
+			free(command_line);
+		}
+		else
+			process_successful_command(parsing_result, env, command_line);
+	}
+}
+
+int	ft_readline(t_env **env)
+{
 	char							*command_line;
 
 	command_line = NULL;
@@ -33,18 +71,7 @@ int	ft_readline(t_env **env)
 			free(command_line);
 			break ;
 		}
-		add_history(command_line);
-		parsing_result = ft_parse_command_line(command_line);
-		if (!parsing_result->did_succeed)
-		{
-			free(command_line);
-			ft_lstclear_commands(&parsing_result->commands);
-			free(parsing_result);
-		}
-		ft_cmd_manager(env, parsing_result);
-		ft_lstclear_commands(&parsing_result->commands);
-		free(parsing_result);
-		free(command_line);
+		verif_command_line(command_line, env);
 	}
 	return (0);
 }

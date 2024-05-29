@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:04:31 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 17:12:08 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:24:11 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ char	*update_shlvl(int shlvl)
 	return (result);
 }
 
+// Faire un char ** et sort dessus
+// Pour env il faut print t_env
+
 void	init_env(t_env **env, char **envp)
 {
 	t_env	*new;
@@ -87,8 +90,6 @@ void	init_env(t_env **env, char **envp)
 		while (envp[i][j] != '=')
 			j++;
 		new = ft_lstnew_env();
-		new->index = -1;
-		new->print = FALSE;
 		new->var_name = get_name(envp[i], j);
 		if (ft_strcmp(new->var_name, "SHLVL") == 0)
 			new->value = update_shlvl(atoi(&envp[i][j + 1]) + 1);

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 17:24:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:01:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,13 @@ static int	verif_export(char *str)
 
 	i = 0;
 	append = TRUE;
-	if (str[0] == 0 || str[0] == '_')
+	if (str[0] == '_' || ft_isdigit(str[0]) || str[0] == '=')
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		write (2, str, ft_strlen(str));
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);
+	}
 	len_mid = ft_strcspn(str, "=");
 	if (len_mid == ft_strlen(str))
 		return (2);
@@ -154,70 +159,6 @@ static int	verif_export(char *str)
 	return (0);
 }
 
-static int	char_sum(char *str)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		count += str[i];
-		i++;
-	}
-	return (count);
-}
-
-static t_env	*ft_min_weight(t_env **env)
-{
-	t_env	*min;
-	t_env	*tmp;
-
-	min = NULL;
-	tmp = *env;
-	while (tmp)
-	{
-		if ((min == NULL || tmp->index < min->index)
-			&& tmp->print == FALSE)
-			min = tmp;
-		tmp = tmp->next;
-	}
-	min->print = TRUE;
-	return (min);
-}
-
-// t_env	*ft_max(t_env **env)
-// {
-// 	t_env	*max;
-// 	t_env	*tmp;
-
-// 	max = NULL;
-// 	tmp = *env;
-// 	while (tmp)
-// 	{
-// 		if ((max == NULL || tmp->index > max->index)
-// 			&& tmp->print == FALSE)
-// 			max = tmp;
-// 		tmp = tmp->next;
-// 	}
-// 	max->print = TRUE;
-// 	return (max);
-// }
-
-static void	print_env_crescent(t_env **env)
-{
-	t_env	*print;
-
-	print = ft_min_weight(env);
-	while (print)
-	{
-		printf("declare -x %s\n", print->full_path);
-		print = ft_min_weight(env);
-	}
-	// reset_print(env);
-}
-
 void	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
@@ -226,8 +167,6 @@ void	export(t_env **env, char **cmd)
 	int		i;
 
 	i = 1;
-	if (!cmd[1])
-		print_env_crescent(env);
 	while (cmd[i] != NULL)
 	{
 		if (verif_export(cmd[i]) == 1)
@@ -241,7 +180,6 @@ void	export(t_env **env, char **cmd)
 			if (!tmp_env)
 			{
 				tmp_env = ft_lstnew_env();
-				tmp_env->print = FALSE;
 				tmp_env->full_path = copy(cmd[i]);
 				tmp_env->var_name = var_name;
 				tmp_env->value = value;
@@ -260,7 +198,6 @@ void	export(t_env **env, char **cmd)
 				if (!tmp_env)
 				{
 					tmp_env = ft_lstnew_env();
-					tmp_env->print = FALSE;
 					tmp_env->full_path = remove_plus(cmd[i]);
 					tmp_env->var_name = ft_substr(
 							var_name, 0, ft_strlen(var_name) - 1);
@@ -289,7 +226,6 @@ void	export(t_env **env, char **cmd)
 				tmp_env->value = value;
 				tmp_env->full_path = copy(cmd[i]);
 			}
-			tmp_env->index = char_sum(cmd[i]);
 		}
 		i++;
 	}
