@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 13:08:21 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:13:10 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
 			{
 				if (redirection->outfile_fd != STDOUT_FILENO
-					|| redirection->outfile_fd != -1)
+					&& redirection->outfile_fd != -1)
 				{
 					close(redirection->outfile_fd);
 					redirection->outfile_fd = -1;
@@ -140,7 +140,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			if (tmp_redirection->e_type == REDIRECTION_INFILE)
 			{
 				if (redirection->infile_fd != STDIN_FILENO
-					|| redirection->infile_fd != -1)
+					&& redirection->infile_fd != -1)
 				{
 					close(redirection->infile_fd);
 					redirection->infile_fd = -1;
@@ -150,7 +150,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			if (tmp_redirection->e_type == REDIRECTION_APPEND)
 			{
 				if (redirection->outfile_fd != STDOUT_FILENO
-					|| redirection->outfile_fd != -1)
+					&& redirection->outfile_fd != -1)
 				{
 					close(redirection->outfile_fd);
 					redirection->outfile_fd = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:06:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:46:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,5 +277,6 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirec
 			tmp_split->arg = ft_remove_simple_quote(tmp_split->arg);
 		tmp_split = tmp_split->next;
 	}
+	ft_lstclear_redirections(&expand_redirections);
 	return (splitted_redirections);
 }

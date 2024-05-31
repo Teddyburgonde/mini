@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_to_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:44:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 12:46:19 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:17:29 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ char	**env_to_char(t_env *env)
 	int		i;
 
 	len = ft_lstsize_env(env);
-	printf("%i\n", len);
 	len -= count_hidden_var(env);
-	printf("%i\n", len);
 	tmp = malloc((len + 1) * sizeof(char *));
 	if (!tmp)
 		return (NULL);

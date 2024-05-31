@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 12:30:37 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:49:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ static int	child_process(t_vars *vars, t_redirection *redirect
 	ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
 	{
+		printf("test");
 		perror("Error opening files");
 		exit(1);
 	}
