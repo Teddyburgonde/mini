@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/29 15:55:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 11:12:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ typedef struct s_vars {
 */
 
 typedef struct s_env {
-	int				index;
-	int				weight;
 	char			*var_name;
 	char			*value;
 	char			*full_path;
-	t_bool			print;
 	struct s_env	*next;
 }	t_env;
 
