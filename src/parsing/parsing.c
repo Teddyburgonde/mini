@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/29 16:54:48 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:12:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ t_command_line_parsing_result	*parsing_command(
 			}
 		}
 	}
+	result->did_succeed = TRUE;
 	return (result);
 }
 

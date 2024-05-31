@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 11:12:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:03:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_env {
 	char			*var_name;
 	char			*value;
 	char			*full_path;
+	t_bool			hide;
 	struct s_env	*next;
 }	t_env;
 
@@ -159,6 +160,8 @@ typedef struct s_argument {
 * Expand redirections
 */
 
+// e_type va peut-etre sauter
+
 typedef struct s_redirection {
   int  infile_fd;
   int  outfile_fd;
@@ -212,6 +215,7 @@ int		ft_isdigit(int c);
 
 void	init_env(t_env **env, char **envp);
 char	**env_to_char(t_env *env);
+char	**env_to_char_export(t_env *env);
 
 /*
 * Signal
@@ -276,7 +280,7 @@ char	**ft_setup_command(t_argument *arg);
 */
 
 int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
-int		cmd_selector(t_env **env, char **command_line, char **envp);
+int		cmd_selector(t_env **env, char **command_line);
 
 /*
 * Builtins

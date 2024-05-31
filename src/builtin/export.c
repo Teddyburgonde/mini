@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/29 16:01:20 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:41:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,27 @@ static char	*make_var_name(char *str)
 	result = malloc(sizeof(char) * (ft_strcspn(str, "=") + 1));
 	if (!result || !str)
 		return (NULL);
-	while (str[i] != '=')
+	if (ft_strlen(str) == ft_strcspn(str, "="))
 	{
-		result[i] = str[i];
-		i++;
+		while (str[i])
+		{
+			result[i] = str[i];
+			i++;
+		}
+	}
+	else
+	{
+		while (str[i] != '=')
+		{
+			result[i] = str[i];
+			i++;
+		}
 	}
 	result[i] = 0;
 	return (result);
 }
+
+// A modif si pas de value invalid write
 
 static char	*make_var(char *str)
 {
@@ -164,53 +177,43 @@ void	export(t_env **env, char **cmd)
 	t_env	*tmp_env;
 	char	*var_name;
 	char	*value;
+	int		export_status;
 	int		i;
 
 	i = 1;
 	while (cmd[i] != NULL)
 	{
-		if (verif_export(cmd[i]) == 1)
+		export_status = verif_export(cmd[i]);
+		if (export_status == 1)
 			break ;
-		if (verif_export(cmd[i]) == 0)
+		var_name = make_var_name(cmd[i]);
+		tmp_env = lst_search_env(var_name, *env);
+		if (export_status == 0)
 		{
-			var_name = make_var_name(cmd[i]);
 			value = make_var(cmd[i]);
 			// Si value est NULL l'ajouter mais mettre la value a NULL
-			tmp_env = lst_search_env(var_name, *env);
 			if (!tmp_env)
 			{
 				tmp_env = ft_lstnew_env();
+				tmp_env->hide = FALSE;
 				tmp_env->full_path = copy(cmd[i]);
 				tmp_env->var_name = var_name;
 				tmp_env->value = value;
 				tmp_env->next = NULL;
-				if (tmp_env->value != 0)
-					ft_lstadd_back_env(env, tmp_env);
-				else
-				{
-					free(tmp_env->var_name);
-					free(tmp_env->value);
-					free(tmp_env);
-				}
+				ft_lstadd_back_env(env, tmp_env);
 			}
 			else if (var_name[ft_strlen(var_name)] == '+')
 			{
 				if (!tmp_env)
 				{
 					tmp_env = ft_lstnew_env();
+					tmp_env->hide = FALSE;
 					tmp_env->full_path = remove_plus(cmd[i]);
 					tmp_env->var_name = ft_substr(
 							var_name, 0, ft_strlen(var_name) - 1);
 					tmp_env->value = value;
 					tmp_env->next = NULL;
-					if (tmp_env->value != 0)
-						ft_lstadd_back_env(env, tmp_env);
-					else
-					{
-						free(tmp_env->var_name);
-						free(tmp_env->value);
-						free(tmp_env);
-					}
+					ft_lstadd_back_env(env, tmp_env);
 				}
 				else
 				{
@@ -225,6 +228,29 @@ void	export(t_env **env, char **cmd)
 				free(tmp_env->value);
 				tmp_env->value = value;
 				tmp_env->full_path = copy(cmd[i]);
+			}
+		}
+		else if (export_status == 2)
+		{
+			// Add quote
+			if (!tmp_env)
+			{
+				tmp_env = ft_lstnew_env();
+				tmp_env->hide = TRUE;
+				tmp_env->full_path = copy(cmd[i]);
+				tmp_env->var_name = var_name;
+				tmp_env->value = NULL;
+				tmp_env->next = NULL;
+				ft_lstadd_back_env(env, tmp_env);
+			}
+			else
+			{
+				if (tmp_env->value)
+					free(tmp_env->value);
+				tmp_env->hide = TRUE;
+				tmp_env->full_path = copy(cmd[i]);
+				tmp_env->var_name = var_name;
+				tmp_env->value = NULL;
 			}
 		}
 		i++;

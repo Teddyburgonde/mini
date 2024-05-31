@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/29 16:53:56 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:47:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,19 @@ static void	verif_command_line(char *command_line
 		}
 		else if (command_line[0] == '"')
 		{
-			write(2, "Command '' not found, but can be installed with\n", 48);
+			// A revoir et add simple quote
+			// Conditionnal jump
+// 			Conditional jump or move depends on uninitialised value(s)
+// ==16383==    at 0x403D98: ft_parse_command_line (parsing.c:206)
+// ==16383==    by 0x40145C: verif_command_line (ft_readline.c:39)
+// ==16383==    by 0x40140C: ft_readline (ft_readline.c:74)
+// ==16383==    by 0x40137B: main (minishell.c:33)
+// ==16383== 
+// ==16383== Conditional jump or move depends on uninitialised value(s)
+// ==16383==    at 0x401468: verif_command_line (ft_readline.c:40)
+// ==16383==    by 0x40140C: ft_readline (ft_readline.c:74)
+// ==16383==    by 0x40137B: main (minishell.c:33)
+			write(2, "Command '' not found, but can be installed with !\n", 50);
 			free(command_line);
 		}
 		else

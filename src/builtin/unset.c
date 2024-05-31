@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:05:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:45:10 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	unset(t_env **env, char *name)
 		{
 			prev->next = tmp->next;
 			free(tmp->var_name);
+			free(tmp->full_path);
 			free(tmp->value);
 			free(tmp);
 			break ;

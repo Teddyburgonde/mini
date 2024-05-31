@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/29 16:31:17 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:18:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,13 @@ static void	print_env(char **env)
 	}
 }
 
-int	cmd_selector(t_env **env, char **command_line, char **envp)
+int	cmd_selector(t_env **env, char **command_line)
 {
 	t_env	*tmp;
+	char	**envp;
 
 	tmp = *env;
+	envp = NULL;
 	if (ft_strcmp(command_line[0], "echo") == 0)
 	{
 		ft_echo(command_line);
@@ -137,7 +139,11 @@ int	cmd_selector(t_env **env, char **command_line, char **envp)
 		if (command_line[1])
 			export(env, command_line);
 		else
+		{
+			envp = env_to_char_export(*env);
 			print_env(envp);
+			ft_free(envp);
+		}
 		return (0);
 	}
 	else if (ft_strcmp(command_line[0], "cd") == 0)

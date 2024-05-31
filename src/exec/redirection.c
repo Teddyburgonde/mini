@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/27 11:32:48 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:08:21 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,13 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 	tmp_command = list;
 	heredoc = FALSE;
 	result = NULL;
-	if (tmp_command->next == NULL)
-	{
-		result = ft_lstnew_redirection();
-		if (!result)
-			return (NULL);
-	}
+	// Why ??????
+	// if (tmp_command->next == NULL)
+	// {
+	// 	result = ft_lstnew_redirection();
+	// 	if (!result)
+	// 		return (NULL);
+	// }
 	// si fd = -1 exit code 1 
 	while (tmp_command)
 	{
@@ -128,20 +129,32 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 		{
 			if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
 			{
-				if (redirection->outfile_fd != STDOUT_FILENO)
+				if (redirection->outfile_fd != STDOUT_FILENO
+					|| redirection->outfile_fd != -1)
+				{
 					close(redirection->outfile_fd);
+					redirection->outfile_fd = -1;
+				}
 				redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 			}
 			if (tmp_redirection->e_type == REDIRECTION_INFILE)
 			{
-				if (redirection->infile_fd != STDIN_FILENO)
+				if (redirection->infile_fd != STDIN_FILENO
+					|| redirection->infile_fd != -1)
+				{
 					close(redirection->infile_fd);
+					redirection->infile_fd = -1;
+				}
 				redirection->infile_fd = open(tmp_redirection->arg, O_RDONLY, 0644);
 			}
 			if (tmp_redirection->e_type == REDIRECTION_APPEND)
 			{
-				if (redirection->outfile_fd != STDOUT_FILENO)
+				if (redirection->outfile_fd != STDOUT_FILENO
+					|| redirection->outfile_fd != -1)
+				{
 					close(redirection->outfile_fd);
+					redirection->outfile_fd = -1;
+				}
 				redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 			}
 			if (tmp_redirection->e_type == REDIRECTION_HEREDOC
@@ -158,6 +171,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						ft_heredoc(redirection, TRUE);
 						close(redirection->infile_fd);
+						redirection->infile_fd = -1;
 						redirection->infile_fd = open("/tmp/.heredoc", O_RDONLY, 0644);
 					}
 					else
