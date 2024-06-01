@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 13:49:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 11:19:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static void	ft_close_fd(t_vars *vars)
 
 static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 {
-	// printf("%i\n", vars->cmd_index);
-	// Si premiere commande mais pas la derniere alors STDOUT -> Ecriture pipe et Le STDIN reste tel quel.
 	if (vars->cmd_index == 1 && redirect->next != NULL)
 	{
 		if (redirect->infile_fd > 2)
@@ -68,7 +66,6 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 				perror("dup2");
 		}
 	}
-	// Redirige les commandes dans les pipes pour les placer en stdin de la commande suivante
 	else if (vars->cmd_index != 1 && redirect->next != NULL)
 	{
 		if (vars->cmd_index % 2 == 1)
@@ -128,13 +125,14 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 				if (dup2(redirect->infile_fd, STDIN_FILENO) < 0)
 					perror("dup2");
 			}
-			else
+			else if (vars->pipe_1[0] != -1)
 			{
 				if (dup2(vars->pipe_1[0], STDIN_FILENO) < 0)
 					perror("dup2");
 			}
 			if (redirect->outfile_fd > 2)
 			{
+				printf("JE PASSE IIIIIICIII\n");
 				if (dup2(redirect->outfile_fd, STDOUT_FILENO) < 0)
 					perror("dup2");
 			}
@@ -146,7 +144,7 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 				if (dup2(redirect->infile_fd, STDIN_FILENO) < 0)
 					perror("dup2");
 			}
-			else
+			else if (vars->pipe_2[0] != -1)
 			{
 				if (dup2(vars->pipe_2[0], STDIN_FILENO) < 0)
 					perror("dup2");
@@ -171,6 +169,16 @@ static int	child_process(t_vars *vars, t_redirection *redirect
 		exit(1);
 	}
 	ft_close_fd(vars);
+	// if (redirect->outfile_fd != -1 && redirect->outfile_fd != STDOUT_FILENO)
+	// {
+	// 	close(redirect->outfile_fd);
+	// 	redirect->outfile_fd = -1;
+	// }
+	// if (redirect->infile_fd != -1 && redirect->infile_fd != STDIN_FILENO)
+	// {
+	// 	close(redirect->infile_fd);
+	// 	redirect->infile_fd = -1;
+	// }
 	execve(actual_cmd[0], actual_cmd, vars->env);
 	ft_close_fd(vars);
 	if (redirect->infile_fd != -1)
@@ -207,7 +215,7 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 		perror("fork");
 		return (EXIT_FAILURE);
 	}
-	if ((vars->cmd_index - 1) % 2 == 1)
+	if ((vars->cmd_index - 1) % 2 == 1 && vars->nb_cmd > 1)
 	{
 		if (vars->pipe_1[1] != -1)
 		{
@@ -220,7 +228,7 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 			vars->pipe_2[0] = -1;
 		}
 	}
-	else if ((vars->cmd_index - 1) % 2 == 0)
+	else if ((vars->cmd_index - 1) % 2 == 0 && vars->nb_cmd > 1)
 	{
 		if (vars->pipe_1[0] != -1)
 		{
@@ -324,8 +332,10 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 		else
 		{
 			// Tri ordre décroissant pour env
-			// ft_flow_redirection(vars, tmp);
+			ft_flow_redirection(vars, tmp);
 			cmd_selector(envp, vars->cmd[vars->cmd_index - 1]);
+			close(tmp->outfile_fd);
+			tmp->outfile_fd = -1;
 			if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
 				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)
 			{
