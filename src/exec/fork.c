@@ -6,11 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 19:14:09 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 20:14:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <readline/readline.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 static void	ft_close_fd(t_vars *vars)
@@ -165,42 +167,55 @@ static int	wait_process(t_vars *vars)
 	return (exit_status);
 }
 
-int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
+void	initialize_vars(t_vars *vars)
 {
-    t_redirection    *tmp;
-
-    tmp = *redirect;
-    vars->cmd_index = 1;
+	vars->cmd_index = 1;
     vars->pipe_1[0] = -1;
     vars->pipe_1[1] = -1;
     vars->pipe_2[0] = -1;
     vars->pipe_2[1] = -1;
     vars->last_child = -2;
+}
+
+int	setup_pipe(int *pipe_fd)
+{
+	if (pipe(pipe_fd) == -1)
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		return (1);
+	}
+	return (0);
+}
+
+int	choice_pipe_setup(t_vars *vars)
+{
+	if ((vars->cmd_index - 1) % 2 == 1)
+		return (setup_pipe(vars->pipe_1));
+	else
+	 	return (setup_pipe(vars->pipe_2));
+}
+
+void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
+{
+	t_redirection *tmp;
+
+	tmp = *redirect;
     while (vars->cmd_index <= vars->nb_cmd)
     {
-        if ((vars->cmd_index - 1) % 2 == 1)
-        {
-            if (pipe(vars->pipe_1) == -1)
-            {
-                close(vars->pipe_2[0]);
-                close(vars->pipe_2[1]);
-                return (EXIT_FAILURE);
-            }
-        }
-        if ((vars->cmd_index - 1) % 2 == 0)
-        {
-            if (pipe(vars->pipe_2) == -1)
-            {
-                close(vars->pipe_1[0]);
-                close(vars->pipe_1[1]);
-                return (EXIT_FAILURE);
-            }
-        }
+        if(choice_pipe_setup(vars) == 1)
+			return ;
         if (vars->nb_cmd >= 2 || tmp->infile_fd > 2 || tmp->outfile_fd > 2 || is_builtins_exec(vars) == 0)
             parent_process(vars, tmp, envp);
-        tmp = tmp->next;
-        vars->cmd_index++;
-    }
+		tmp = tmp->next;
+		vars->cmd_index++;
+	}
+}
+
+int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
+{
+	initialize_vars(vars);
+	process_commands(vars, redirect, envp);
     wait_process(vars);
     ft_close_fd(vars);
     ft_lstclear_final_redirection(redirect);
