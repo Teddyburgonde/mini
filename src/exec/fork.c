@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 16:09:06 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:14:09 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,34 @@ static void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 	}
 }
 
-static int	child_process(t_vars *vars, t_redirection *redirect
-		, char **actual_cmd)
+static int    child_process(t_vars *vars, t_redirection *redirect
+        , char **actual_cmd, t_env **envp)
 {
-	ft_flow_redirection(vars, redirect);
-	if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
-	{
-		perror("Error opening files");
-		exit(1);
-	}
-	ft_close_fd(vars);
-	execve(actual_cmd[0], actual_cmd, vars->env);
-	ft_close_fd(vars);
-	if (redirect->infile_fd != -1)
-	{
-		close(redirect->infile_fd);
-		redirect->infile_fd = -1;
-	}
-	if (redirect->outfile_fd != -1)
-	{
-		close(redirect->outfile_fd);
-		redirect->outfile_fd = -1;
-	}
-	perror("Execve");
-	return (1);
+    ft_flow_redirection(vars, redirect);
+    if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
+    {
+        perror("Error opening files");
+        exit(1);
+    }
+    ft_close_fd(vars);
+    if (is_builtins_exec(vars) == 1) {
+        cmd_selector(envp, vars->cmd[vars->cmd_index - 1]);
+        exit(0);
+    }
+    execve(actual_cmd[0], actual_cmd, vars->env);
+    ft_close_fd(vars);
+    if (redirect->infile_fd != -1)
+    {
+        close(redirect->infile_fd);
+        redirect->infile_fd = -1;
+    }
+    if (redirect->outfile_fd != -1)
+    {
+        close(redirect->outfile_fd);
+        redirect->outfile_fd = -1;
+    }
+    perror("Execve");
+    return (1);
 }
 
 /*
@@ -98,11 +102,11 @@ static int	child_process(t_vars *vars, t_redirection *redirect
 * dans le pipe si redirect->e_type == PIPE_OUT
 */
 
-static	int	parent_process(t_vars *vars, t_redirection *redirect)
+static	int	parent_process(t_vars *vars, t_redirection *redirect, t_env **envp)
 {
 	vars->child = fork();
 	if (vars->child == 0)
-		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1]);
+		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1], envp);
 	else if (vars->child < 0)
 	{
 		perror("fork");
@@ -140,32 +144,6 @@ static	int	parent_process(t_vars *vars, t_redirection *redirect)
 }
 
 
-// t_bool	is_builtins_parsing(char **str)
-// {
-// 	if (ft_strcmp(str[0], "unset") == 0
-// 		|| ft_strcmp(str[0], "export") == 0
-// 		|| ft_strcmp(str[0], "cd") == 0
-// 		|| ft_strcmp(str[0], "pwd") == 0
-// 		|| ft_strcmp(str[0], "echo") == 0
-// 		|| ft_strcmp(str[0], "exit") == 0
-// 		|| ft_strcmp(str[0], "env") == 0)
-// 		return (TRUE);
-// 	return (FALSE);
-// }
-
-// t_bool	is_builtins_exec(t_vars *vars)
-// {
-// 	if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "cd") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "pwd") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "echo") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "exit") == 0
-// 		|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "env") == 0)
-// 		return (TRUE);
-// 	return (FALSE);
-// }
-
 /*
 * Wait the last process will getting the exit code of the last process.
 */
@@ -187,63 +165,45 @@ static int	wait_process(t_vars *vars)
 	return (exit_status);
 }
 
-int	fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
+int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
-	t_redirection	*tmp;
+    t_redirection    *tmp;
 
-	tmp = *redirect;
-	vars->cmd_index = 1;
-	vars->pipe_1[0] = -1;
-	vars->pipe_1[1] = -1;
-	vars->pipe_2[0] = -1;
-	vars->pipe_2[1] = -1;
-	vars->last_child = -2;
-	while (vars->cmd_index <= vars->nb_cmd)
-	{
-		if (!is_builtins_exec(vars))
-		{
-			if ((vars->cmd_index - 1) % 2 == 1)
-			{
-				if (pipe(vars->pipe_1) == -1)
-				{
-					close(vars->pipe_2[0]);
-					close(vars->pipe_2[1]);
-					return (EXIT_FAILURE);
-				}
-			}
-			if ((vars->cmd_index - 1) % 2 == 0)
-			{
-				if (pipe(vars->pipe_2) == -1)
-				{
-					close(vars->pipe_1[0]);
-					close(vars->pipe_1[1]);
-					return (EXIT_FAILURE);
-				}
-			}
-			parent_process(vars, tmp);
-		}
-		else
-		{
-			// Tri ordre décroissant pour env
-			// ft_flow_redirection(vars, tmp);
-			cmd_selector(envp, vars->cmd[vars->cmd_index - 1]);
-			// close(tmp->outfile_fd);
-			// tmp->outfile_fd = -1;
-			if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
-				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)
-			{
-				if (vars->env)
-					free(vars->env);
-				// Impossible de export, le lst_addback ne fonctionne pas ????
-				vars->env = env_to_char(*envp);
-			}
-		}
-		tmp = tmp->next;
-		vars->cmd_index++;
-	}
-	wait_process(vars);
-	ft_close_fd(vars);
-	ft_lstclear_final_redirection(redirect);
-	ft_free_tab_3d(vars);
-	return (0);
+    tmp = *redirect;
+    vars->cmd_index = 1;
+    vars->pipe_1[0] = -1;
+    vars->pipe_1[1] = -1;
+    vars->pipe_2[0] = -1;
+    vars->pipe_2[1] = -1;
+    vars->last_child = -2;
+    while (vars->cmd_index <= vars->nb_cmd)
+    {
+        if ((vars->cmd_index - 1) % 2 == 1)
+        {
+            if (pipe(vars->pipe_1) == -1)
+            {
+                close(vars->pipe_2[0]);
+                close(vars->pipe_2[1]);
+                return (EXIT_FAILURE);
+            }
+        }
+        if ((vars->cmd_index - 1) % 2 == 0)
+        {
+            if (pipe(vars->pipe_2) == -1)
+            {
+                close(vars->pipe_1[0]);
+                close(vars->pipe_1[1]);
+                return (EXIT_FAILURE);
+            }
+        }
+        if (vars->nb_cmd >= 2 || tmp->infile_fd > 2 || tmp->outfile_fd > 2 || is_builtins_exec(vars) == 0)
+            parent_process(vars, tmp, envp);
+        tmp = tmp->next;
+        vars->cmd_index++;
+    }
+    wait_process(vars);
+    ft_close_fd(vars);
+    ft_lstclear_final_redirection(redirect);
+    ft_free_tab_3d(vars);
+    return (0);
 }
