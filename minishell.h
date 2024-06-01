@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 12:08:37 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 20:57:56 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,12 @@ void	ft_exit_message_argument_required(char *command);
 int		ft_isdigit(int c);
 t_bool	is_builtins_exec(t_vars *vars);
 t_bool	is_builtins_parsing(char **str);
+void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp);
+int		choice_pipe_setup(t_vars *vars);
+int		setup_pipe(int *pipe_fd);
+void	initialize_vars(t_vars *vars);
+int		wait_process(t_vars *vars);
+int		parent_process(t_vars *vars, t_redirection *redirect, t_env **envp);
 
 /*
 * Env
