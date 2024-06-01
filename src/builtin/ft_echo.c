@@ -6,13 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:16:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/23 14:18:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 10:41:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	is_there_an_option_n(char **command)
+static int	is_there_an_option_n(char **command)
 {
 	int	i;
 	int	option;
@@ -33,46 +33,39 @@ int	is_there_an_option_n(char **command)
 	return (option);
 }
 
-void	is_option_1(char **command)
+static void	is_option_1(char **command)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	j = 2;
-	while (command[j])
+	i = 2;
+	while (command[i])
 	{
-		while (command[j][i])
+		j = 0;
+		while (command[i][j])
 		{
-			write (2, &command[j][i], 1);
-			i++;
+			write (1, &command[i][j], 1);
+			j++;
 		}
-		if (command[j + 1])
-			write (2, " ", 1);
-		i = 0;
-		j++;
+		if (command[i][j] == '\0')
+			break ;
+		printf(" ");
+		i++;
 	}
 }
 
-void	is_option_0(char **command)
+static void	is_option_0(char **command)
 {
 	int	i;
-	int	j;
 
-	i = 0;
-	j = 1;
-	while (command[j])
+	i = 1;
+	while (command[i])
 	{
-		while (command[j][i])
-		{
-			write (2, &command[j][i], 1);
-			i++;
-		}
-		write (2, " ", 1);
-		i = 0;
-		j++;
+		printf("%s", command[i]);
+		printf(" ");
+		i++;
 	}
-	write (2, "\n", 1);
+	printf("\n");
 }
 
 void	ft_echo(char **command)
