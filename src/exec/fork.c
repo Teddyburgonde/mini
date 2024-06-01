@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 12:08:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 16:09:06 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,10 +225,10 @@ int	fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 		else
 		{
 			// Tri ordre décroissant pour env
-			ft_flow_redirection(vars, tmp);
+			// ft_flow_redirection(vars, tmp);
 			cmd_selector(envp, vars->cmd[vars->cmd_index - 1]);
-			close(tmp->outfile_fd);
-			tmp->outfile_fd = -1;
+			// close(tmp->outfile_fd);
+			// tmp->outfile_fd = -1;
 			if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0
 				|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0)
 			{

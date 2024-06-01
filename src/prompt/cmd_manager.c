@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/01 12:08:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 16:25:06 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ int	cmd_selector(t_env **env, char **command_line)
 			export(env, command_line);
 		else
 		{
-			envp = env_to_char_export(*env);
+			envp = env_to_char_export(tmp);
 			print_env(envp);
-			ft_free(envp);
+			if (envp)
+				free(envp);
 		}
 	}
 	else if (ft_strcmp(command_line[0], "cd") == 0)

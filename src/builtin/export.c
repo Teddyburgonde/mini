@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/31 12:41:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 16:13:23 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ static int	verif_export(char *str)
 				|| (i != len_mid + 1 && append == TRUE)
 				|| (i != len_mid && append == TRUE))
 			{
-				if (str[i] != '_')
+				if (str[i] != '_' && i != len_mid + 1 && i != len_mid)
 				{
 					ft_putstr_fd(
 						"minishell: syntax error near unexpected token `", 2);
@@ -172,6 +172,88 @@ static int	verif_export(char *str)
 	return (0);
 }
 
+static void	hide_and_update_env_var(t_env *tmp_env, char *cmd, char *var_name)
+{
+	if (tmp_env->value)
+		free(tmp_env->value);
+	tmp_env->hide = TRUE;
+	tmp_env->full_path = copy(cmd);
+	tmp_env->var_name = var_name;
+	tmp_env->value = NULL;
+}
+
+static void	update_env_var(t_env *tmp_env, char *cmd, char *value)
+{
+	free(tmp_env->value);
+	tmp_env->value = value;
+	tmp_env->full_path = copy(cmd);
+}
+
+static void	free_full_path(t_env *tmp_env, char *cmd, char *value)
+{
+	free(tmp_env->full_path);
+	tmp_env->full_path = remove_plus(cmd);
+	tmp_env->value = ft_strjoin_mod(tmp_env->value, value);
+	free(value);
+}
+
+static void	add_modified_env_var(t_env **env, char *cmd, char *var_name, char *value)
+{
+	t_env	*tmp_env;
+
+	tmp_env = ft_lstnew_env();
+	tmp_env->hide = FALSE;
+	tmp_env->full_path = remove_plus(cmd);
+	tmp_env->var_name = ft_substr(
+			var_name, 0, ft_strlen(var_name) - 1);
+	tmp_env->value = value;
+	tmp_env->next = NULL;
+	ft_lstadd_back_env(env, tmp_env);
+}
+
+static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value, int hide)
+{
+	t_env	*tmp_env;
+	 
+	tmp_env = ft_lstnew_env();
+	tmp_env->hide = hide;
+	tmp_env->full_path = copy(cmd);
+	tmp_env->var_name = var_name;
+	tmp_env->value = value;
+	tmp_env->next = NULL;
+	ft_lstadd_back_env(env, tmp_env);
+}
+static void	handle_export_status_0(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
+{
+	if (!tmp_env)
+	{
+		add_new_env_var(env, cmd, var_name, value, FALSE);
+		tmp_env = lst_search_env(var_name, *env);
+		tmp_env->value = value;
+	}	
+	else if (var_name[ft_strlen(var_name) - 1] == '+')
+	{
+		if (!tmp_env)
+			add_modified_env_var(env, cmd, var_name, value);
+		else
+			free_full_path(tmp_env, cmd, value);
+	}
+	else
+		update_env_var(tmp_env, cmd, value);
+}
+
+static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
+{
+	// Add quote
+	if (!tmp_env)
+	{
+		add_new_env_var(env, cmd, var_name, value, FALSE);
+		tmp_env = lst_search_env(var_name, *env);
+		tmp_env->value = NULL;
+	}
+	else
+		hide_and_update_env_var(tmp_env, cmd, var_name);
+}
 void	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
@@ -188,71 +270,15 @@ void	export(t_env **env, char **cmd)
 			break ;
 		var_name = make_var_name(cmd[i]);
 		tmp_env = lst_search_env(var_name, *env);
+
+		
 		if (export_status == 0)
 		{
 			value = make_var(cmd[i]);
-			// Si value est NULL l'ajouter mais mettre la value a NULL
-			if (!tmp_env)
-			{
-				tmp_env = ft_lstnew_env();
-				tmp_env->hide = FALSE;
-				tmp_env->full_path = copy(cmd[i]);
-				tmp_env->var_name = var_name;
-				tmp_env->value = value;
-				tmp_env->next = NULL;
-				ft_lstadd_back_env(env, tmp_env);
-			}
-			else if (var_name[ft_strlen(var_name)] == '+')
-			{
-				if (!tmp_env)
-				{
-					tmp_env = ft_lstnew_env();
-					tmp_env->hide = FALSE;
-					tmp_env->full_path = remove_plus(cmd[i]);
-					tmp_env->var_name = ft_substr(
-							var_name, 0, ft_strlen(var_name) - 1);
-					tmp_env->value = value;
-					tmp_env->next = NULL;
-					ft_lstadd_back_env(env, tmp_env);
-				}
-				else
-				{
-					free(tmp_env->full_path);
-					tmp_env->full_path = remove_plus(cmd[i]);
-					tmp_env->value = ft_strjoin_mod(tmp_env->value, value);
-					free(value);
-				}
-			}
-			else
-			{
-				free(tmp_env->value);
-				tmp_env->value = value;
-				tmp_env->full_path = copy(cmd[i]);
-			}
+			handle_export_status_0(env, tmp_env, cmd[i], var_name, value);
 		}
 		else if (export_status == 2)
-		{
-			// Add quote
-			if (!tmp_env)
-			{
-				tmp_env = ft_lstnew_env();
-				tmp_env->hide = TRUE;
-				tmp_env->full_path = copy(cmd[i]);
-				tmp_env->var_name = var_name;
-				tmp_env->value = NULL;
-				tmp_env->next = NULL;
-				ft_lstadd_back_env(env, tmp_env);
-			}
-			else
-			{
-				if (tmp_env->value)
-					free(tmp_env->value);
-				tmp_env->hide = TRUE;
-				tmp_env->full_path = copy(cmd[i]);
-				tmp_env->var_name = var_name;
-				tmp_env->value = NULL;
-			}
-		}
+			handle_export_status_2((env), tmp_env, cmd[i], var_name, value);
 		i++;
 	}
 }
