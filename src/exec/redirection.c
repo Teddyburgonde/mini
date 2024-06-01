@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 13:13:10 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:24:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,26 @@
 
 // Trouve le dernier heredoc de TOUTES LES CMDS
 // Return le dernier node qui est de e_type == REDIRECTION_HEREDOC
+
+void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
+{
+	if (vars->cmd_index == 1 && redirect->next != NULL)
+		first_command_redirection(vars, redirect);
+	else if (vars->cmd_index != 1 && redirect->next != NULL)
+	{
+		if (vars->cmd_index % 2 == 1)
+			pipe_command_redirection_odd(redirect, vars);
+		else
+			pipe_command_redirection_even(redirect, vars);
+	}
+	else if (redirect->next == NULL)
+	{
+		if (vars->cmd_index % 2 == 1)
+			last_command_redirection_odd(redirect, vars);
+		else
+			last_command_redirection_even(redirect, vars);
+	}
+}
 
 static t_bool	is_last_infile(t_redirection_to_expand *tmp_redirection)
 {

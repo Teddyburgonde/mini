@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 20:58:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:21:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
         if(choice_pipe_setup(vars) == 1)
 			return ;
         if (vars->nb_cmd >= 2 || tmp->infile_fd > 2 || tmp->outfile_fd > 2 || is_builtins_exec(vars) == 0)
-            parent_process(vars, tmp, envp);
+            process(vars, tmp, envp);
 		tmp = tmp->next;
 		vars->cmd_index++;
 	}

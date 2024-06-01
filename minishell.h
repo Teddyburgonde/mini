@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 20:57:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:31:16 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,10 @@ int		choice_pipe_setup(t_vars *vars);
 int		setup_pipe(int *pipe_fd);
 void	initialize_vars(t_vars *vars);
 int		wait_process(t_vars *vars);
-int		parent_process(t_vars *vars, t_redirection *redirect, t_env **envp);
+int		process(t_vars *vars, t_redirection *redirect, t_env **envp);
+void	handle_pipe_closing(t_vars *vars);
+int    child_process(t_vars *vars, t_redirection *redirect, char **actual_cmd, t_env **envp);
+void	ft_close_fd(t_vars *vars);
 
 /*
 * Env
@@ -400,10 +403,9 @@ void pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars);
 void last_command_redirection_odd(t_redirection *redirect, t_vars *vars);
 void first_command_redirection(t_vars *vars, t_redirection *redirect);
 void last_command_redirection_even(t_redirection *redirect, t_vars *vars);
-
-
 t_bool	is_builtins_exec(t_vars *vars);
 t_bool is_builtins_parsing(char **str);
+void	ft_flow_redirection(t_vars *vars, t_redirection *redirect);
 
  /*
 * GNL
