@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/31 13:20:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/01 12:08:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,26 @@
 // Met des " " après premier '='
 // Affiche toutes les vars
 // Cache les vars avec value=NULL dans cmd env
+
+static void	exec_env(char **command_line, t_env *tmp)
+{
+	if (ft_strcmp(command_line[0], "env") == 0 && command_line[1] != NULL
+			&& access(command_line[1], F_OK) == 0)
+	{
+		ft_putstr_fd("env: ‘", 2);
+		ft_putstr_fd(command_line[1], 2);
+		ft_putstr_fd("‘: No such file or directory", 2);
+	}
+	else if (ft_strcmp(command_line[0], "env") == 0
+		&& command_line[1] == NULL)
+	{
+		while (tmp)
+		{
+			printf("%s\n", tmp->full_path);
+			tmp = tmp->next;
+		}
+	}
+}
 
 static void	print_env(char **env)
 {
@@ -36,20 +56,11 @@ int	cmd_selector(t_env **env, char **command_line)
 	tmp = *env;
 	envp = NULL;
 	if (ft_strcmp(command_line[0], "echo") == 0)
-	{
 		ft_echo(command_line);
-		return (0);
-	}
 	else if (ft_strcmp(command_line[0], "pwd") == 0)
-	{
 		ft_pwd();
-		return (0);
-	}
 	else if (ft_strcmp(command_line[0], "unset") == 0)
-	{
 		unset(env, command_line[1]);
-		return (0);
-	}
 	else if (ft_strcmp(command_line[0], "export") == 0)
 	{
 		if (command_line[1])
@@ -60,35 +71,12 @@ int	cmd_selector(t_env **env, char **command_line)
 			print_env(envp);
 			ft_free(envp);
 		}
-		return (0);
 	}
 	else if (ft_strcmp(command_line[0], "cd") == 0)
-	{
-
 		ft_cd(command_line, env);
-		return (0);
-	}
 	else if (ft_strcmp(command_line[0], "printenv") == 0
 		|| ft_strcmp(command_line[0], "env") == 0)
-	{
-		if (ft_strcmp(command_line[0], "env") == 0 && command_line[1] != NULL
-			&& access(command_line[1], F_OK) == 0)
-		{
-			ft_putstr_fd("env: ‘", 2);
-			ft_putstr_fd(command_line[1], 2);
-			ft_putstr_fd("‘: No such file or directory", 2);
-		}
-		else if (ft_strcmp(command_line[0], "env") == 0
-			&& command_line[1] == NULL)
-		{
-			while (tmp)
-			{
-				printf("%s\n", tmp->full_path);
-				tmp = tmp->next;
-			}
-		}
-		return (0);
-	}
+		exec_env(command_line, tmp);
 	else if (ft_strcmp(command_line[0], "exit") == 0)
 		ft_exit(command_line);
 	return (0);

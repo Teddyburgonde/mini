@@ -21,6 +21,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/exec/fork.c \
 			src/exec/heredoc.c \
 			src/exec/path.c \
+			src/exec/flow_redirections.c \
 			src/gnl/gnl_utils.c \
 			src/gnl/gnl.c \
 			src/utils/parse_command_utils.c \
@@ -42,6 +43,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/len_utils.c \
 			src/utils/ft_strncmp.c \
 			src/utils/ft_strlcpy.c \
+			src/utils/builtins_utils.c \
 			src/utils/error_message_for_exit.c \
 			src/error_free/free_error.c \
 

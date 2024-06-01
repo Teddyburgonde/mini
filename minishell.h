@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 13:03:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 12:08:37 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,8 @@ void	ft_exit_message_2(char *command);
 void	ft_exit_message_too_many_arguments(void);
 void	ft_exit_message_argument_required(char *command);
 int		ft_isdigit(int c);
+t_bool	is_builtins_exec(t_vars *vars);
+t_bool	is_builtins_parsing(char **str);
 
 /*
 * Env
@@ -387,20 +389,24 @@ void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);
 void	open_hd_w(t_vars *vars);
 void	verif_tab(char *tab);
+void pipe_command_redirection_even(t_redirection *redirect, t_vars *vars);
+void pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars);
+void last_command_redirection_odd(t_redirection *redirect, t_vars *vars);
+void first_command_redirection(t_vars *vars, t_redirection *redirect);
+void last_command_redirection_even(t_redirection *redirect, t_vars *vars);
 
 
 t_bool	is_builtins_exec(t_vars *vars);
-t_bool	is_builtins_parsing(char **str);
+t_bool is_builtins_parsing(char **str);
 
-
-/*
+ /*
 * GNL
 */
 
-char	*ft_strjoin_mod(char *s1, char *s2);
-char	*read_loop(char *buf, char *stock, int *len, int fd);
-char	*ft_strchr_rl(const char *s, int c);
-char	*read_line(int fd, char *stock);
+char *ft_strjoin_mod(char *s1, char *s2);
+char *read_loop(char *buf, char *stock, int *len, int fd);
+char *ft_strchr_rl(const char *s, int c);
+char *read_line(int fd, char *stock);
 char	*ft_strdup_gnl(const char *s);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*extract_line(char *stock);

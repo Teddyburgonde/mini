@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/29 15:55:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/01 12:27:10 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,24 @@ int	ft_exit(char **command)
 	if (command[1] == NULL || command[1][0] == '\0'
 		|| ft_strncmp(command[1], "-9223372036854775808", 21) == 0)
 		ft_exit_message_0();
-	if (ft_isdigit(command[1][i]) == 1)
-	{
-		while (command[1][i])
-		{
-			if (ft_isdigit(command[1][i]))
-				i++;
-			else
-				ft_exit_message_2(command[1]);
-		}
-	}
-	if (command[2] != NULL)
+	if (ft_isdigit(command[1][i]) == 1 && command[2] != NULL)
+	{	
 		ft_exit_message_too_many_arguments();
+		return (1);
+	}
+	while (command[1][i])
+	{
+		if (!ft_isdigit(command[1][i]))
+		{
+			ft_exit_message_2(command[1]);
+			exit (1);
+		}
+		i++;
+	}
 	if (ft_atol(command[1]) == 0)
 		ft_exit_message_argument_required(command[1]);
 	tmp = ft_atol(command[1]) % 256;
 	printf("exit\n");
 	//exit code 0 cependant la tu peux quitter le programme
-	exit(tmp);
+	return (0);
 }
