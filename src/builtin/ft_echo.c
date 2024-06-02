@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:16:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 10:41:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 07:05:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,19 @@ static int	is_there_an_option_n(char **command)
 	return (option);
 }
 
-static void	is_option_1(char **command)
+static void	print_with_option_n(char **command)
 {
 	int	i;
-	int	j;
 
 	i = 2;
 	while (command[i])
 	{
-		j = 0;
-		while (command[i][j])
-		{
-			write (1, &command[i][j], 1);
-			j++;
-		}
-		if (command[i][j] == '\0')
-			break ;
-		printf(" ");
+		printf("%s", command[i]);
 		i++;
 	}
 }
 
-static void	is_option_0(char **command)
+static void	print_not_option_n(char **command)
 {
 	int	i;
 
@@ -62,7 +53,8 @@ static void	is_option_0(char **command)
 	while (command[i])
 	{
 		printf("%s", command[i]);
-		printf(" ");
+		if (command[i + 1] != NULL)
+			printf(" ");
 		i++;
 	}
 	printf("\n");
@@ -74,7 +66,7 @@ void	ft_echo(char **command)
 
 	option = is_there_an_option_n(command);
 	if (option == 1)
-		is_option_1(command);
+		print_with_option_n(command);
 	if (option == 0)
-		is_option_0(command);
+		print_not_option_n(command);
 }
