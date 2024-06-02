@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 11:44:38 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/02 14:30:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,9 +214,11 @@ int		choice_pipe_setup(t_vars *vars);
 int		setup_pipe(int *pipe_fd);
 void	initialize_vars(t_vars *vars);
 int		wait_process(t_vars *vars);
-int		process(t_vars *vars, t_redirection *redirect, t_env **envp);
+int		process(t_vars *vars, t_redirection *redirect);
 void	handle_pipe_closing(t_vars *vars);
-int    child_process(t_vars *vars, t_redirection *redirect, char **actual_cmd, t_env **envp);
+int		child_process(t_vars *vars, t_redirection *redirect,
+			char **actual_cmd);
+void	error_close_files(t_redirection *redirect);
 void	ft_close_fd(t_vars *vars);
 
 /*
