@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 11:01:33 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 11:22:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	fill_tmp_content(char **tmp_content, t_redirection *redirection, int fd_tmp
 
 void	open_fd_tmp_for_heredoc(int *fd_tmp)
 {
-	*fd_tmp = open("tmp_heredoc", O_TRUNC | O_CREAT | O_WRONLY, 0777);
+	*fd_tmp = open("tmp_heredoc", O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if(*fd_tmp < 0)
 	{
 		perror("Error opening file\n");
