@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 21:33:51 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:30:34 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@
 * dans le pipe si redirect->e_type == PIPE_OUT
 */
 
-int	process(t_vars *vars, t_redirection *redirect, t_env **envp)
+int	process(t_vars *vars, t_redirection *redirect)
 {
 	vars->child = fork();
 	if (vars->child == 0)
-		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1], envp);
+		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1]);
 	else if (vars->child < 0)
 	{
 		perror("fork");
@@ -55,9 +55,9 @@ int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
 	initialize_vars(vars);
 	process_commands(vars, redirect, envp);
-    wait_process(vars);
-    ft_close_fd(vars);
-    ft_lstclear_final_redirection(redirect);
-    ft_free_tab_3d(vars);
-    return (0);
+	wait_process(vars);
+	ft_close_fd(vars);
+	ft_lstclear_final_redirection(redirect);
+	ft_free_tab_3d(vars);
+	return (0);
 }

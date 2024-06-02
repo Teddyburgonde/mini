@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/01 16:25:06 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:29:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static void	exec_env(char **command_line, t_env *tmp)
 {
 	if (ft_strcmp(command_line[0], "env") == 0 && command_line[1] != NULL
-			&& access(command_line[1], F_OK) == 0)
+		&& access(command_line[1], F_OK) == 0)
 	{
 		ft_putstr_fd("env: ‘", 2);
 		ft_putstr_fd(command_line[1], 2);
@@ -30,7 +30,8 @@ static void	exec_env(char **command_line, t_env *tmp)
 	{
 		while (tmp)
 		{
-			printf("%s\n", tmp->full_path);
+			if (tmp->hide == FALSE)
+				printf("%s\n", tmp->full_path);
 			tmp = tmp->next;
 		}
 	}
@@ -80,6 +81,8 @@ int	cmd_selector(t_env **env, char **command_line)
 		exec_env(command_line, tmp);
 	else if (ft_strcmp(command_line[0], "exit") == 0)
 		ft_exit(command_line);
+	else
+		return (1);
 	return (0);
 }
 
