@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/01 16:13:23 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 15:24:02 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ static void	add_modified_env_var(t_env **env, char *cmd, char *var_name, char *v
 static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value, int hide)
 {
 	t_env	*tmp_env;
-	 
+
 	tmp_env = ft_lstnew_env();
 	tmp_env->hide = hide;
 	tmp_env->full_path = copy(cmd);
@@ -230,7 +230,7 @@ static void	handle_export_status_0(t_env **env, t_env *tmp_env, char *cmd, char 
 		add_new_env_var(env, cmd, var_name, value, FALSE);
 		tmp_env = lst_search_env(var_name, *env);
 		tmp_env->value = value;
-	}	
+	}
 	else if (var_name[ft_strlen(var_name) - 1] == '+')
 	{
 		if (!tmp_env)
@@ -250,6 +250,7 @@ static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char 
 		add_new_env_var(env, cmd, var_name, value, FALSE);
 		tmp_env = lst_search_env(var_name, *env);
 		tmp_env->value = NULL;
+		tmp_env->hide = TRUE;
 	}
 	else
 		hide_and_update_env_var(tmp_env, cmd, var_name);
@@ -270,8 +271,6 @@ void	export(t_env **env, char **cmd)
 			break ;
 		var_name = make_var_name(cmd[i]);
 		tmp_env = lst_search_env(var_name, *env);
-
-		
 		if (export_status == 0)
 		{
 			value = make_var(cmd[i]);

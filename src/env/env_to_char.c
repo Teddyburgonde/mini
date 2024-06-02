@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:44:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 14:06:41 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/02 15:24:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,9 @@ char	**env_to_char(t_env *env)
 	while (env)
 	{
 		if (env->hide == FALSE)
-		{
 			tmp[i] = env->full_path;
+		else
 			i--;
-		}
 		env = env->next;
 		i++;
 	}
