@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 16:23:29 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:03:47 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	process_successful_command(t_command_line_parsing_result
 }
 
 static void	verif_command_line(char *command_line
-, t_env **env)
+	, t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
 
@@ -48,9 +48,9 @@ static void	verif_command_line(char *command_line
 			write (2, "Error: too much pipe or in a wrong position !\n", 46);
 			free(command_line);
 		}
-		else if (command_line[0] == '"')
+		else if (ft_strcmp(command_line, "''") == 0
+			|| ft_strcmp(command_line, "\"\"") == 0)
 		{
-			// A revoir et add simple quote
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			free(command_line);
 		}

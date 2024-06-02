@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 11:38:35 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:18:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
-		ft_putstr_fd("Error\nCmd invalid", 2);
 		ft_free_tab_3d(vars);
 		ft_free(vars->path);
 		// ft_free(vars->full_cmd);
-		exit(1);
 	}
 	if (access(command_line[0], X_OK) == 0)
 		return (command_line);

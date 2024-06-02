@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 13:33:24 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 15:37:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int	fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env
 		vars->cmd[i] = copy_double_array(vars->cmd[i]); */
 		if (!is_builtins_parsing(command_line))
 		{
-			vars->full_cmd = find_the_accessible_path(vars->path, vars, command_line);
+			vars->full_cmd = find_the_accessible_path(
+					vars->path, vars, command_line);
 			vars->cmd[i] = copy_double_array(vars->full_cmd);
 			if (vars->cmd[i] == NULL)
 			{
