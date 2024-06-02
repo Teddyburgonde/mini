@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/02 14:29:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/02 14:43:58 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 // Affiche toutes les vars
 // Cache les vars avec value=NULL dans cmd env
 
-static void	exec_env(char **command_line, t_env *tmp)
+static void	exec_env(char **command_line, t_vars *vars)
 {
+	int	i;
+
+	i = 0;
 	if (ft_strcmp(command_line[0], "env") == 0 && command_line[1] != NULL
 		&& access(command_line[1], F_OK) == 0)
 	{
@@ -28,11 +31,10 @@ static void	exec_env(char **command_line, t_env *tmp)
 	else if (ft_strcmp(command_line[0], "env") == 0
 		&& command_line[1] == NULL)
 	{
-		while (tmp)
+		while (vars->env[i])
 		{
-			if (tmp->hide == FALSE)
-				printf("%s\n", tmp->full_path);
-			tmp = tmp->next;
+			printf("%s\n", vars->env[i]);
+			i++;
 		}
 	}
 }
@@ -49,7 +51,7 @@ static void	print_env(char **env)
 	}
 }
 
-int	cmd_selector(t_env **env, char **command_line)
+int	cmd_selector(t_env **env, char **command_line, t_vars *vars)
 {
 	t_env	*tmp;
 	char	**envp;
@@ -78,7 +80,7 @@ int	cmd_selector(t_env **env, char **command_line)
 		ft_cd(command_line, env);
 	else if (ft_strcmp(command_line[0], "printenv") == 0
 		|| ft_strcmp(command_line[0], "env") == 0)
-		exec_env(command_line, tmp);
+		exec_env(command_line, vars);
 	else if (ft_strcmp(command_line[0], "exit") == 0)
 		ft_exit(command_line);
 	else
