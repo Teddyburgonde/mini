@@ -6,11 +6,12 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/27 11:31:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/02 11:01:33 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../minishell.h"
+#include <unistd.h>
 
 // void	ft_get_nb_hd(t_vars *vars, t_redirection_to_expand *redir)
 // {
@@ -50,65 +51,58 @@
 // 	open_fd_infile(vars);
 // }
 
-t_redirection_to_expand	*is_last(t_command_to_expand *cmd)
+void	fill_tmp_content(char **tmp_content, t_redirection *redirection, int fd_tmp)
 {
-	t_redirection_to_expand	*result;
-	t_redirection_to_expand	*tmp;
+	t_redirection *tmp_redirection;
+	tmp_redirection = redirection;
 
-	result = NULL;
-	while (cmd)
+	*tmp_content = readline("> ");
+	if (*tmp_content == NULL)
 	{
-		tmp = cmd->redirections;
-		while (tmp)
-		{
-			if (tmp->e_type == REDIRECTION_HEREDOC)
-				result = tmp;
-			tmp = tmp->next;
-		}
-		cmd = cmd->next;
+		perror("Error readline\n");
+		return ;
 	}
-	return (result);
+	if (ft_strcmp(*tmp_content, tmp_redirection->limiter) == 0)
+	{
+		ft_putstr_fd(*tmp_content, fd_tmp);
+		ft_putstr_fd("\n", fd_tmp);
+		free(*tmp_content);
+		*tmp_content = NULL;
+		close(fd_tmp);
+		unlink("tmp_heredoc");
+		return ;
+	}
 }
 
-static void	get_heredoc(t_redirection *tmp_redirection)
+void	open_fd_tmp_for_heredoc(int *fd_tmp)
 {
-	char	*buffer;
-
-	buffer = NULL;
-	while (ft_strcmp(buffer, tmp_redirection->limiter) != 0)
+	*fd_tmp = open("tmp_heredoc", O_TRUNC | O_CREAT | O_WRONLY, 0777);
+	if(*fd_tmp < 0)
 	{
-		if (buffer)
-			free(buffer);
-		write(1, "> ", 2);
-		buffer = get_next_line(STDIN_FILENO);
-		write(tmp_redirection->infile_fd, buffer, ft_strlen(buffer));
+		perror("Error opening file\n");
+		return ;
 	}
-	if (buffer)
-		free(buffer);
 }
 
 void	ft_heredoc(t_redirection *redirection, t_bool save)
 {
-	t_redirection	*tmp_redirection;
-	char	*tmp;
+	t_redirection *tmp_redirection;
+	int	fd_tmp;
+	char *tmp_content;
 
+	tmp_content = NULL;
 	tmp_redirection = redirection;
-	tmp = NULL;
-	while (tmp_redirection)
+	if (tmp_redirection->e_position == HERE && save == TRUE)
 	{
-		if (tmp_redirection->e_position == HERE && save == TRUE)
-			get_heredoc(tmp_redirection);
-		while (ft_strcmp(tmp, tmp_redirection->limiter) != 0)
+		open_fd_tmp_for_heredoc(&fd_tmp);
+		if (fd_tmp < 0)
+			return ;
+		while (1)
 		{
-			if (tmp)
-				free(tmp);
-			if (tmp_redirection->e_position == HERE)
-				break ;
-			write(1, "> ", 2);
-			tmp = get_next_line(STDIN_FILENO);
+			fill_tmp_content(&tmp_content, redirection, fd_tmp);
+			if (tmp_content == NULL)
+				return;
 		}
-		if (tmp)
-			free(tmp);
-		tmp_redirection = tmp_redirection->next;
+		close(fd_tmp);
 	}
 }
