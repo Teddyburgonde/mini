@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/28 16:06:45 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/02 16:51:36 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,20 @@ static int	ft_split_argument(t_argument *argument_to_split,
 
 
 
-
+static t_bool	empty_quote_verif(t_char_list *tmp)
+{
+	if (tmp->value == '"')
+	{
+		if (tmp->next->value == '"' && tmp->next->next == NULL)
+			return (TRUE);
+	}
+	else if (tmp->value == '\'')
+	{
+		if (tmp->next->value == '\'' && tmp->next->next == NULL)
+			return (TRUE);
+	}
+	return (FALSE);
+}
 
 
 
@@ -352,6 +365,14 @@ static void	ft_remove_quotes(t_argument **src)
 			in_double = TRUE;
 		else
 			in_double = FALSE;
+		if (empty_quote_verif((*src)->chars) == TRUE)
+		{
+			(*src)->chars->value = 0;
+			free((*src)->chars->next);
+			(*src)->chars->next = NULL;
+			*src = (*src)->next;
+			continue ;
+		}
 		if (in_simple == TRUE || in_double == TRUE)
 		{
 			tmp_char = (*src)->chars;
