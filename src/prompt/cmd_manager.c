@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/03 14:29:27 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/03 11:35:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	cmd_selector(t_env **env, char **command_line, t_vars *vars)
 			envp = env_to_char_export(tmp);
 			print_env(envp);
 			if (envp)
-				free(envp);
+				ft_free(envp);
 		}
 	}
 	else if (ft_strcmp(command_line[0], "cd") == 0)

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/02 15:24:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:32:35 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,23 +104,27 @@ static char	*remove_plus(char *str)
 {
 	int		len;
 	int		i;
+	int		j;
 	char	*result;
 
 	i = 0;
+	j = 0;
 	if (!str)
 		return (NULL);
 	len = ft_strcspn(str, "+");
 	len += ft_strlen(&str[len + 2]);
-	result = malloc(sizeof(char) * (len + 1));
+	result = malloc(sizeof(char) * (len + 2));
 	if (!result)
 		return (NULL);
-	while (result[i])
+	while (str[i])
 	{
-		if (result[i] != '+' && result[i] != '=')
-			result[i] = str[i];
+		if (str[i + 1] && str[i] == '+' && str[i + 1] == '=')
+			i++;
+		result[j] = str[i];
 		i++;
+		j++;
 	}
-	result[i] = 0;
+	result[j] = 0;
 	return (result);
 }
 
@@ -157,7 +161,17 @@ static int	verif_export(char *str)
 				|| (i != len_mid + 1 && append == TRUE)
 				|| (i != len_mid && append == TRUE))
 			{
-				if (str[i] != '_' && i != len_mid + 1 && i != len_mid)
+				if (append == FALSE && str[i] != '_'
+					&& i <= len_mid)
+				{
+					ft_putstr_fd(
+						"minishell: syntax error near unexpected token `", 2);
+					write(2, &str[i], 1);
+					write(2, "'\n", 2);
+					return (1);
+				}
+				else if (append == TRUE && str[i] != '_'
+					&& i <= len_mid + 1)
 				{
 					ft_putstr_fd(
 						"minishell: syntax error near unexpected token `", 2);
@@ -185,10 +199,17 @@ static void	hide_and_update_env_var(t_env *tmp_env, char *cmd, char *var_name)
 static void	update_env_var(t_env *tmp_env, char *cmd, char *value)
 {
 	free(tmp_env->value);
+	if (value == NULL || value[0] == 0)
+		tmp_env->hide = TRUE;
+	else
+		tmp_env->hide = FALSE;
 	tmp_env->value = value;
+	free(tmp_env->full_path);
 	tmp_env->full_path = copy(cmd);
 }
 
+
+// ?????????
 static void	free_full_path(t_env *tmp_env, char *cmd, char *value)
 {
 	free(tmp_env->full_path);
@@ -200,12 +221,18 @@ static void	free_full_path(t_env *tmp_env, char *cmd, char *value)
 static void	add_modified_env_var(t_env **env, char *cmd, char *var_name, char *value)
 {
 	t_env	*tmp_env;
+	char	*tmp;
 
 	tmp_env = ft_lstnew_env();
-	tmp_env->hide = FALSE;
+	if (value == NULL || value[0] == 0)
+		tmp_env->hide = TRUE;
+	else
+		tmp_env->hide = FALSE;
 	tmp_env->full_path = remove_plus(cmd);
-	tmp_env->var_name = ft_substr(
+	tmp = ft_substr(
 			var_name, 0, ft_strlen(var_name) - 1);
+	free(var_name);
+	tmp_env->var_name = tmp;
 	tmp_env->value = value;
 	tmp_env->next = NULL;
 	ft_lstadd_back_env(env, tmp_env);
@@ -216,7 +243,10 @@ static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value,
 	t_env	*tmp_env;
 
 	tmp_env = ft_lstnew_env();
-	tmp_env->hide = hide;
+	if (value == NULL || value[0] == 0)
+		tmp_env->hide = TRUE;
+	else
+		tmp_env->hide = hide;
 	tmp_env->full_path = copy(cmd);
 	tmp_env->var_name = var_name;
 	tmp_env->value = value;
@@ -225,26 +255,35 @@ static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value,
 }
 static void	handle_export_status_0(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
 {
-	if (!tmp_env)
+	if (!tmp_env && var_name[ft_strlen(var_name) - 1] != '+')
 	{
-		add_new_env_var(env, cmd, var_name, value, FALSE);
-		tmp_env = lst_search_env(var_name, *env);
-		tmp_env->value = value;
+		if (!tmp_env)
+			add_new_env_var(env, cmd, var_name, value, FALSE);
+		else
+		{
+			update_env_var(tmp_env, cmd, value);
+			free(var_name);
+		}
 	}
 	else if (var_name[ft_strlen(var_name) - 1] == '+')
 	{
 		if (!tmp_env)
 			add_modified_env_var(env, cmd, var_name, value);
 		else
+		{
 			free_full_path(tmp_env, cmd, value);
+			free(var_name);
+		}
 	}
 	else
+	{
+		free(var_name);
 		update_env_var(tmp_env, cmd, value);
+	}
 }
 
 static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
 {
-	// Add quote
 	if (!tmp_env)
 	{
 		add_new_env_var(env, cmd, var_name, value, FALSE);

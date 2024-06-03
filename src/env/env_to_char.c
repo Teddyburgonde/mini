@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:44:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 15:24:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/03 12:07:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,47 @@ static char	**sort_env(char **env)
 	return (env);
 }
 
+static char	*setup_full_path(char *str)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str) + 3;
+	if (ft_strchr(str, '=') == 0)
+		len -= 2;
+	result = malloc(len * sizeof(char *));
+	if (!result)
+		return (NULL);
+	while (str[i])
+	{
+		if (j == i && i > 0 && str[i - 1] == '=')
+			result[j] = '"';
+		else
+		{
+			result[j] = str[i];
+			i++;
+		}
+		j++;
+	}
+	if (str[i - 1] == '=')
+	{
+		result[j] = '"';
+		j++;
+	}
+	if (ft_strchr(str, '=') != 0)
+		result[j] = '"';
+	if (ft_strchr(str, '=') != 0)
+		j++;
+	result[j] = 0;
+	return (result);
+}
+
 char	**env_to_char_export(t_env *env)
 {
 	char	**tmp;
@@ -50,7 +91,7 @@ char	**env_to_char_export(t_env *env)
 	i = 0;
 	while (env)
 	{
-		tmp[i] = env->full_path;
+		tmp[i] = setup_full_path(env->full_path);
 		env = env->next;
 		i++;
 	}
