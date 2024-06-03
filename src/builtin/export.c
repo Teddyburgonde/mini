@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/03 12:53:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:32:35 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,17 @@ static int	verif_export(char *str)
 				|| (i != len_mid + 1 && append == TRUE)
 				|| (i != len_mid && append == TRUE))
 			{
-				if (str[i] != '_' && i != len_mid + 1 && i != len_mid)
+				if (append == FALSE && str[i] != '_'
+					&& i <= len_mid)
+				{
+					ft_putstr_fd(
+						"minishell: syntax error near unexpected token `", 2);
+					write(2, &str[i], 1);
+					write(2, "'\n", 2);
+					return (1);
+				}
+				else if (append == TRUE && str[i] != '_'
+					&& i <= len_mid + 1)
 				{
 					ft_putstr_fd(
 						"minishell: syntax error near unexpected token `", 2);
@@ -194,6 +204,7 @@ static void	update_env_var(t_env *tmp_env, char *cmd, char *value)
 	else
 		tmp_env->hide = FALSE;
 	tmp_env->value = value;
+	free(tmp_env->full_path);
 	tmp_env->full_path = copy(cmd);
 }
 
@@ -245,16 +256,30 @@ static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value,
 static void	handle_export_status_0(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
 {
 	if (!tmp_env && var_name[ft_strlen(var_name) - 1] != '+')
-		add_new_env_var(env, cmd, var_name, value, FALSE);
+	{
+		if (!tmp_env)
+			add_new_env_var(env, cmd, var_name, value, FALSE);
+		else
+		{
+			update_env_var(tmp_env, cmd, value);
+			free(var_name);
+		}
+	}
 	else if (var_name[ft_strlen(var_name) - 1] == '+')
 	{
 		if (!tmp_env)
 			add_modified_env_var(env, cmd, var_name, value);
 		else
+		{
 			free_full_path(tmp_env, cmd, value);
+			free(var_name);
+		}
 	}
 	else
+	{
+		free(var_name);
 		update_env_var(tmp_env, cmd, value);
+	}
 }
 
 static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
