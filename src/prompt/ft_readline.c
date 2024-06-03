@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/03 11:19:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:15:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static void	verif_command_line(char *command_line
 			free(parsing_result);
 			free(command_line);
 		}
-		else if (ft_strcmp(parsing_result->commands->arguments->content,
+		else if (parsing_result->commands->arguments != NULL && (ft_strcmp(parsing_result->commands->arguments->content,
 				"\"\"") == 0
 			|| ft_strcmp(parsing_result->commands->arguments->content,
-				"''") == 0)
+				"''") == 0))
 		{
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
