@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 11:25:13 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/04 15:13:42 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum s_bool {
 /*
 * Global variables
 */
-// Va surement degager (e_last)
+
 typedef struct s_vars {
 	pid_t	child;
 	pid_t	last_child;
@@ -52,6 +52,8 @@ typedef struct s_vars {
 	int		pipe_1[2];
 	int		pipe_2[2];
 	char	**env;
+	int		exit_code;
+	int		exit_code_signal;
 }	t_vars;
 
 /*
