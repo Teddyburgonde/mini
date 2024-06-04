@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 09:43:53 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:01:15 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	ft_heredoc(t_redirection *redirection, t_bool save)
 			fill_tmp_content(&tmp_content, redirection, redirection->infile_fd);
 			if (tmp_content == NULL)
 				return ;
+			else
+				free(tmp_content);
 		}
 		// close(fd_tmp);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 10:22:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:25:51 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 	str = skip_one_character(str);
 	str = skip_spaces(str);
 	redirection_result->redirection->arg = ft_strjoin_file(
-			str, redirection_result->redirection->arg);
+			str);
 	str = ft_skip_arg(str, " \"'\n\t|><");
 	redirection_result->remaining_line = str;
 	return (redirection_result);
