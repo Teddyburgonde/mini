@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 14:30:34 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/04 07:06:15 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	process(t_vars *vars, t_redirection *redirect)
 int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
 	initialize_vars(vars);
-	process_commands(vars, redirect, envp);
+	if (vars->cmd[vars->cmd_index - 1] != NULL)
+        process_commands(vars, redirect, envp);
 	wait_process(vars);
 	ft_close_fd(vars);
 	ft_lstclear_final_redirection(redirect);
