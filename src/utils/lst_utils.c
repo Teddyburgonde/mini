@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/02 17:23:00 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/04 09:01:49 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	ft_lstclear_commands(t_command_to_expand **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		if (tmp->redirections)
-			ft_lstclear_redirections(&tmp->redirections);
+		// if (tmp->redirections)
+		// 	ft_lstclear_redirections(&tmp->redirections);
 		if (tmp->arguments)
 			ft_lstclear_arguments(&tmp->arguments);
 		free(tmp);

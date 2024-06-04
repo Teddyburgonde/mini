@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/31 12:12:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/04 10:22:04 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_command_parsing_result	*ft_redirections_arguments(char **remaining_line,
 	t_redirection_parsing_result *redirection_result,
 	t_argument_parsing_result *argument_result)
 {
-	if (*remaining_line[0] == '>' || *remaining_line[0] == '<')
+	if ((*remaining_line)[0] == '>' || (*remaining_line)[0] == '<')
 	{
 		result = redirections(result, *remaining_line, redirection_result);
 		*remaining_line = (char *)result->remaining_line;
