@@ -6,13 +6,13 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/04 14:50:40 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/05 12:12:14 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_strlen_ultime(t_redirection_to_expand *tmp, t_env *env)
+static int	ft_strlen_ultime(t_redirection_to_expand *tmp, t_env *env)
 {
 	int		i;
 	int		count;
@@ -220,27 +220,6 @@ int	ft_strlen_ultime(t_redirection_to_expand *tmp, t_env *env)
 // 	return (1);
 // }
 
-char	*ft_remove_simple_quote(char *src)
-{
-	char	*dest;
-	int		i;
-	int		j;
-
-	i = 1;
-	j = 0;
-
-	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
-	while (src[i])
-	{
-		dest[j] = src[i];
-		i++;
-		j++;
-		if (src[i + 1] == '\0')
-			break ;
-	}
-	dest[j] = '\0';
-	return (dest);
-}
 
 // Redirection avec expand peut faire un erreur :
 // bash: $file: ambiguous redirect
@@ -296,12 +275,37 @@ char	*ft_remove_simple_quote(char *src)
 * si la variable a un nom incorrect !
 */
 
+static char	*ft_remove_simple_quote(char *src)
+{
+	char	*dest;
+	int		i;
+	int		j;
+
+	i = 1;
+	j = 0;
+
+	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
+	while (src[i])
+	{
+		dest[j] = src[i];
+		i++;
+		j++;
+		if (src[i + 1] == '\0')
+			break ;
+	}
+	dest[j] = '\0';
+	return (dest);
+}
+
 static void	refresh_quotes_status(t_bool *in_quote, char current)
 {
-	if (in_quote == TRUE && current == '\'')
-		in_quote = FALSE;
-	else if (in_quote == FALSE && current == '\'')
-		in_quote = TRUE;
+	if (current != 0)
+	{
+		if (*in_quote && *in_quote == TRUE && current == '\'')
+			*in_quote = FALSE;
+		else if (*in_quote && *in_quote == FALSE && current == '\'')
+			*in_quote = TRUE;
+	}
 }
 
 static int	need_to_be_expand(t_redirection_to_expand *redirection,
@@ -335,30 +339,62 @@ static int	need_to_be_expand(t_redirection_to_expand *redirection,
 	return (FALSE);
 }
 
-t_redirection_to_expand	*expand_redirection(t_redirection_to_expand *redirect, t_env *env)
+t_redirection_to_expand	*expand_redirection(
+	t_redirection_to_expand *redirect, t_env *env)
 {
 	int						i;
 	int						j;
 	char					*var_name;
+	t_bool					in_quote;
 	t_redirection_to_expand	*final;
 	t_redirection_to_expand	*tmp;
+	t_env					*var;
 
 	var_name = NULL;
 	final = NULL;
 	while (redirect)
 	{
+		in_quote = FALSE;
 		i = 0;
 		j = 0;
 		tmp = lst_new_redirection_parsing_result();
 		if (!tmp)
 			return (NULL);
-		tmp->arg = malloc(sizeof(char) * ft_strlen_ultime(
-					redirect, env) + 1);
+		// Condition inexacte si plusieurs expand a voir si on laisse X
+		if (need_to_be_expand(redirect, env) > 0
+			&& redirect->e_type != REDIRECTION_HEREDOC)
+		{
+			// Faire second malloc si non expand
+			tmp->arg = ft_calloc(sizeof(char) * ft_strlen_ultime(
+						redirect, env) + 2, 1);
+		}
+		if (!tmp->arg)
+			return (NULL);
 		tmp->e_type = redirect->e_type;
-		
-
-
-
+		if (need_to_be_expand(redirect, env) > 0
+			&& tmp->e_type != REDIRECTION_HEREDOC)
+		{
+			while (redirect->arg[i])
+			{
+				refresh_quotes_status(&in_quote, redirect->arg[i]);
+				if (in_quote == FALSE && redirect->arg[i] == '$')
+				{
+					var_name = get_var_name(&redirect->arg[i]);
+					var = lst_search_env(var_name, env);
+					while (var->value[j])
+					{
+						tmp->arg[ft_strlen(tmp->arg)] = var->value[j];
+						j++;
+					}
+					i += ft_strlen(var_name) - 1;
+				}
+				else
+					tmp->arg[ft_strlen(tmp->arg)] = redirect->arg[i];
+				i++;
+			}
+		}
+		else
+			tmp->arg = copy(redirect->arg);
 		ft_redirection_to_expand_addback(&final, tmp);
 		redirect = redirect->next;
 	}
@@ -369,13 +405,10 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirec
 		t_env *env)
 {
 	t_redirection_to_expand	*expand_redirections;
-	t_redirection_to_expand	*final_redirections;
 	t_redirection_to_expand	*tmp;
 
 	//redirection = NULL;
-	tmp = 1;
 	expand_redirections = NULL;
-	final_redirections = NULL;
 	expand_redirections = expand_redirection(redirection, env);
 	if (expand_redirections)
 	{
@@ -388,6 +421,6 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirec
 			tmp = tmp->next;
 		}
 	}
-	ft_lstclear_redirections(&expand_redirections);
-	return (final_redirections);
+	ft_lstclear_redirections(&redirection);
+	return (expand_redirections);
 }
