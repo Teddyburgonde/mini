@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/05 12:12:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:28:19 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,9 +367,15 @@ t_redirection_to_expand	*expand_redirection(
 			// Faire second malloc si non expand
 			tmp->arg = ft_calloc(sizeof(char) * ft_strlen_ultime(
 						redirect, env) + 2, 1);
+			if (!tmp->arg)
+				return (NULL);
 		}
-		if (!tmp->arg)
-			return (NULL);
+		// else if (redirect->e_type == UNASIGNED
+		// 	|| redirect->e_type == REDIRECTION_HEREDOC)
+		// {
+		// 	tmp->arg = ft_calloc(
+		// 		sizeof(char) * ft_strlen(redirect->arg) + 1, 1);
+		// }
 		tmp->e_type = redirect->e_type;
 		if (need_to_be_expand(redirect, env) > 0
 			&& tmp->e_type != REDIRECTION_HEREDOC)
