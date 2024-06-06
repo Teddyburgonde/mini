@@ -59,6 +59,8 @@ RM=rm -f
 CC=cc
 FLAGS=-Wall -Werror -Wextra -g
 
+MAKEFLAGS += --no-print-directory
+
 all: $(NAME)
 
 %.o: %.c
