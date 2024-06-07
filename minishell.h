@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 11:25:13 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/05 14:37:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,8 @@ char	**ft_setup_command(t_argument *arg);
 */
 
 int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
-int		cmd_selector(t_env **env, char **command_line, t_vars *vars);
+int	cmd_selector(t_env **env, char **command_line,
+		t_vars *vars, t_redirection *redirect);
 
 /*
 * Builtins
@@ -300,7 +301,7 @@ int		cmd_selector(t_env **env, char **command_line, t_vars *vars);
 
 void	export(t_env **env, char **cmd);
 int		ft_cd(char **command, t_env **env);
-void	ft_echo(char **command);
+void	ft_echo(char **command, t_vars *vars, t_redirection *redirect);
 int		ft_pwd(void);
 void	unset(t_env **env, char *name);
 int		ft_exit(char **command);
