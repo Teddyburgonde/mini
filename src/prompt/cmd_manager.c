@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/05 15:56:35 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/07 13:19:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,18 @@ static void	print_env(char **env)
 	}
 }
 
-int	cmd_selector(t_env **env, char **command_line, t_vars *vars)
+int	cmd_selector(t_env **env, char **command_line,
+		t_vars *vars, t_redirection *redirect)
 {
 	t_env	*tmp;
 	char	**envp;
 
 	tmp = *env;
 	envp = NULL;
+	if (vars->cmd[1] != NULL || vars->child != 0)
+		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0)
-		ft_echo(command_line);
+		ft_echo(command_line, vars, redirect);
 	else if (ft_strcmp(command_line[0], "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(command_line[0], "unset") == 0)
