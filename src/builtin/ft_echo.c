@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:16:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/07 13:20:08 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:56:50 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,18 @@ void	ft_echo(char **command, t_vars *vars, t_redirection *redirect)
 	int	option;
 
 	option = is_there_an_option_n(command);
-	// if (vars->nb_cmd == 1)
-	// {
+	if (vars->nb_cmd == 1)
+	{
 		if (option == 1)
 			print_with_option_n_fd(command, redirect->outfile_fd);
 		if (option == 0)
 			print_not_option_n_fd(command, redirect->outfile_fd);
-	// }
-	// else
-	// {
-	// 	if (option == 1)
-	// 		print_with_option_n(command);
-	// 	if (option == 0)
-	// 		print_not_option_n(command);
-	// }
+	}
+	else
+	{
+		if (option == 1)
+			print_with_option_n(command);
+		if (option == 0)
+			print_not_option_n(command);
+	}
 }

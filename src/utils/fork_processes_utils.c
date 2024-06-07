@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/05 15:59:00 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:42:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	initialize_vars(t_vars *vars)
     vars->pipe_1[1] = -1;
     vars->pipe_2[0] = -1;
     vars->pipe_2[1] = -1;
-    vars->last_child = -2;
+    vars->last_child = 0;
+	vars->child = 0;
 }
 
 int	setup_pipe(int *pipe_fd)
@@ -58,7 +59,7 @@ int	choice_pipe_setup(t_vars *vars)
 		return (setup_pipe(vars->pipe_2));
 }
 
-void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
+void	 process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
 	t_redirection	*tmp;
 
@@ -68,9 +69,7 @@ void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
 		if (choice_pipe_setup(vars) == 1)
 			return ;
 		if (vars->nb_cmd >= 2
-			|| tmp->infile_fd > 2
-			|| tmp->outfile_fd > 2
-			|| cmd_selector(envp, vars->cmd[vars->cmd_index - 1], vars) == 1)
+			|| cmd_selector(envp, vars->cmd[vars->cmd_index - 1], vars, *redirect) == 1)
 			process(vars, tmp);
 		if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
 			|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0)

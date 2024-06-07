@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/07 13:19:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/07 14:38:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	cmd_selector(t_env **env, char **command_line,
 
 	tmp = *env;
 	envp = NULL;
-	if (vars->cmd[1] != NULL || vars->child != 0)
+	if (vars->nb_cmd > 1 || vars->child != 0)
 		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0)
 		ft_echo(command_line, vars, redirect);
