@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 09:43:37 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:31:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,87 +147,94 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 	t_redirection			*redirection;
 	t_redirection			*result;
 	t_bool					heredoc;
+	int	save;
 
 	tmp_command = list;
 	heredoc = FALSE;
 	result = NULL;
 	// Why ??????
-	// if (tmp_command->next == NULL)
-	// {
-	// 	result = ft_lstnew_redirection();
-	// 	if (!result)
-	// 		return (NULL);
-	// }
 	// si fd = -1 exit code 1 
-	while (tmp_command)
+	if (tmp_command)
 	{
-		redirection = ft_lstnew_redirection();
-		if (!redirection)
-			return (NULL);
-		tmp_redirection = tmp_command->redirections;
-		while (tmp_redirection)
+		while (tmp_command)
 		{
-			if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
+			redirection = ft_lstnew_redirection();
+			if (!redirection)
+				return (NULL);
+			tmp_redirection = tmp_command->redirections;
+			save = 0;
+			while (tmp_redirection)
 			{
-				if (redirection->outfile_fd != STDOUT_FILENO
-					&& redirection->outfile_fd != -1)
+				if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
 				{
-					close(redirection->outfile_fd);
-					redirection->outfile_fd = -1;
-				}
-				redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-			}
-			if (tmp_redirection->e_type == REDIRECTION_INFILE)
-			{
-				if (redirection->infile_fd != STDIN_FILENO
-					&& redirection->infile_fd != -1)
-				{
-					close(redirection->infile_fd);
-					redirection->infile_fd = -1;
-				}
-				redirection->infile_fd = open(tmp_redirection->arg, O_RDONLY, 0644);
-			}
-			if (tmp_redirection->e_type == REDIRECTION_APPEND)
-			{
-				if (redirection->outfile_fd != STDOUT_FILENO
-					&& redirection->outfile_fd != -1)
-				{
-					close(redirection->outfile_fd);
-					redirection->outfile_fd = -1;
-				}
-				redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-			}
-			if (tmp_redirection->e_type == REDIRECTION_HEREDOC
-				&& is_last(list) == tmp_redirection)
-			{
-				if (is_last_infile(tmp_redirection) == TRUE)
-				{
-					redirection->e_position = HERE;
-					redirection->limiter = tmp_redirection->arg;
-					if (access("/tmp/.heredoc", F_OK) == 0)
-						unlink("/tmp/.heredoc");
-					redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-					if (redirection->infile_fd != -1)
+					if (redirection->outfile_fd != STDOUT_FILENO
+						&& redirection->outfile_fd != -1)
 					{
-						ft_heredoc(redirection, TRUE);
+						close(redirection->outfile_fd);
+						redirection->outfile_fd = -1;
+					}
+					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+				}
+				if (tmp_redirection->e_type == REDIRECTION_INFILE)
+				{
+					if (redirection->infile_fd != STDIN_FILENO
+						&& redirection->infile_fd != -1)
+					{
 						close(redirection->infile_fd);
 						redirection->infile_fd = -1;
-						redirection->infile_fd = open("/tmp/.heredoc", O_RDONLY, 0644);
+					}
+					redirection->infile_fd = open(tmp_redirection->arg, O_RDONLY, 0644);
+				}
+				if (tmp_redirection->e_type == REDIRECTION_APPEND)
+				{
+					if (redirection->outfile_fd != STDOUT_FILENO
+						&& redirection->outfile_fd != -1)
+					{
+						close(redirection->outfile_fd);
+						redirection->outfile_fd = -1;
+					}
+					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+				}
+				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
+					&& is_last(list) == tmp_redirection)
+				{
+					if (is_last_infile(tmp_redirection) == TRUE)
+					{
+						redirection->e_position = HERE;
+						redirection->limiter = tmp_redirection->arg;
+						if (access("/tmp/.heredoc", F_OK) == 0)
+							unlink("/tmp/.heredoc");
+						redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+						if (redirection->infile_fd != -1)
+						{
+							ft_heredoc(redirection, TRUE);
+							close(redirection->infile_fd);
+							redirection->infile_fd = -1;
+							redirection->infile_fd = open("/tmp/.heredoc", O_RDONLY, 0644);
+						}
+						else
+							perror("Error opening heredoc files");
 					}
 					else
-						perror("Error opening heredoc files");
+						ft_heredoc(redirection, FALSE);
+					heredoc = TRUE;
 				}
-				else
-					ft_heredoc(redirection, FALSE);
-				heredoc = TRUE;
+				tmp_redirection = tmp_redirection->next;
+				save++;
 			}
-			tmp_redirection = tmp_redirection->next;
+			if (tmp_command->next != NULL)
+				redirection->e_type = PIPE_OUT;
+			if (tmp_redirection == NULL && save == 0)
+			{
+				result = ft_lstnew_redirection();
+				if (!result)
+					return (NULL);
+			}
+			ft_lstadd_back_redirection(&result, redirection);
+			tmp_command = tmp_command->next;
 		}
-		if (tmp_command->next != NULL)
-			redirection->e_type = PIPE_OUT;
-		ft_lstadd_back_redirection(&result, redirection);
-		tmp_command = tmp_command->next;
 	}
+
 	where_are_heredoc(&result, heredoc);
 	// exit code 0 si tout se passe bien
 	return (result);
