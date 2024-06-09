@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:03:40 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 11:06:05 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_WRONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
-					&& is_last(list) == tmp_redirection)
+					&& is_last(tmp_redirection) == tmp_redirection)
 				{
 					if (is_last_infile(tmp_redirection) == TRUE)
 					{
@@ -198,7 +198,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						redirection->limiter = tmp_redirection->arg;
 						if (access("/tmp/.heredoc", F_OK) == 0)
 							unlink("/tmp/.heredoc");
-						redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+						redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT , 0644);
 						if (redirection->infile_fd != -1)
 						{
 							ft_heredoc(redirection, TRUE);

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:03:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 11:05:35 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,7 +390,7 @@ void 	ft_lstclear_final_redirection(t_redirection **lst);
 
 int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
 t_redirection	*stock_redirection(t_command_to_expand *list);
-t_redirection_to_expand	*is_last(t_command_to_expand *cmd);
+t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
 void	ft_heredoc(t_redirection *redirection, t_bool save);
 int	check_infile(t_redirection_to_expand *redir);
 int	open_files(t_vars *vars, t_redirection_to_expand *redir);
