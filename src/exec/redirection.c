@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 12:55:04 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 13:58:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						redirection->nb_heredoc++;
 						redirection->e_position = HERE;
-						redirection->limiter = tmp_redirection->arg;
+						redirection->limiter = copy(tmp_redirection->arg);
 						redirection->file_heredoc = ft_itoa(
 								redirection->nb_heredoc);
 						redirection->file_heredoc = ft_strjoin_free_s2(
@@ -294,6 +294,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			where_are_heredoc(&result, heredoc);
 			tmp_command = tmp_command->next;
 		}
+		ft_lstclear_redirections(&list->redirections);
 	}
 
 	// exit code 0 si tout se passe bien
