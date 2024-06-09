@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/03 14:15:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:10:11 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ static void	verif_command_line(char *command_line
 			free(parsing_result);
 			free(command_line);
 		}
-		else if (parsing_result->commands->arguments != NULL && (ft_strcmp(parsing_result->commands->arguments->content,
-				"\"\"") == 0
-			|| ft_strcmp(parsing_result->commands->arguments->content,
-				"''") == 0))
+		else if (parsing_result->commands->arguments != NULL && (ft_strcmp(
+					parsing_result->commands->arguments->content, "\"\"") == 0
+				|| ft_strcmp(parsing_result->commands->arguments->content,
+					"''") == 0) && parsing_result->commands->next == NULL)
 		{
+			printf("erfe");
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);

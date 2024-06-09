@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/04 09:01:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/09 13:59:43 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 		*lst = (*lst)->next;
 		if (tmp->limiter)
 			free(tmp->limiter);
+		if (tmp->file_heredoc)
+			free(tmp->file_heredoc);
 		if (tmp->infile_fd == STDIN_FILENO || tmp->infile_fd == STDOUT_FILENO)
 			tmp->infile_fd = -1;
 		if (tmp->outfile_fd == STDIN_FILENO || tmp->outfile_fd == STDOUT_FILENO)

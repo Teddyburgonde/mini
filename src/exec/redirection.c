@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:44:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 13:58:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@
 // }
 
 
-// Trouve le dernier heredoc de TOUTES LES CMDS
 // Return le dernier node qui est de e_type == REDIRECTION_HEREDOC
 
 t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp)
@@ -134,57 +133,61 @@ static void	where_are_heredoc(t_redirection **list, t_bool exist)
 	}
 }
 
-static int	ft_intlen(int *n, int *sg)
+static size_t	search_leng(int n)
 {
-	int	i;
-	int	temp;
+	size_t	len;
 
-	i = 0;
-	temp = *n;
-	if (*n == 0)
+	len = 0;
+	if (n == 0)
 		return (1);
-	if (*n < 0)
+	if (n < 0)
+		len++;
+	while (n)
 	{
-		*n *= -1;
-		*sg = 1;
-		temp *= -1;
-		i++;
+		n = n / 10;
+		len++;
 	}
-	while (temp > 0)
+	return (len);
+}
+
+static void	fill_str(char *str, int n, size_t len)
+{
+	size_t	i;
+
+	str[len] = '\0';
+	i = 0;
+	if (n < 0)
 	{
-		i++;
-		temp /= 10;
+		str[0] = '-';
+		i = 1;
 	}
-	return (i);
+	while (len > i)
+	{
+		len--;
+		if (n < 0)
+		{
+			str[len] = n % 10 * (-1) + '0';
+			n = n / 10;
+		}
+		else
+		{
+			str[len] = n % 10 + '0';
+			n = n / 10;
+		}
+	}
 }
 
 char	*ft_itoa(int n)
 {
-	char	*tab;
-	int		i;
-	int		sg;
+	char	*str;
+	size_t	len;
 
-	sg = 0;
-	i = ft_intlen(&n, &sg);
-	i--;
-	tab = ft_calloc(sizeof(char), (i + 1));
-	if (tab == 0)
-		return (0);
-	if (n == -2147483648)
-	{
-		free(tab);
-		tab = copy("-2147483648");
-		return (tab);
-	}
-	while (n > 9)
-	{
-		tab[i--] = (n % 10) + '0';
-		n /= 10;
-	}
-	tab[i] = n + '0';
-	if (sg == 1)
-		tab[0] = '-';
-	return (tab);
+	len = search_leng(n);
+	str = malloc(sizeof(char) * len + 1);
+	if (!str)
+		return (NULL);
+	fill_str(str, n, len);
+	return (str);
 }
 
 t_redirection	*stock_redirection(t_command_to_expand *list)
@@ -244,8 +247,8 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
 					}
-					redirection->outfile_fd = open(
-							tmp_redirection->arg, O_CREAT | O_APPEND | O_WRONLY, 0644);
+					redirection->outfile_fd = open(tmp_redirection->arg,
+							O_CREAT | O_APPEND | O_WRONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
 					&& is_last(tmp_redirection) == tmp_redirection)
@@ -254,28 +257,28 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						redirection->nb_heredoc++;
 						redirection->e_position = HERE;
-						redirection->limiter = tmp_redirection->arg;
+						redirection->limiter = copy(tmp_redirection->arg);
 						redirection->file_heredoc = ft_itoa(
 								redirection->nb_heredoc);
 						redirection->file_heredoc = ft_strjoin_free_s2(
 								"/tmp/.heredoc", redirection->file_heredoc);
-						if (access("/tmp/.heredoc", F_OK) == 0)
-							unlink("/tmp/.heredoc");
-						redirection->infile_fd = open("/tmp/.heredoc",
-								O_WRONLY | O_TRUNC | O_CREAT , 0644);
+						if (access(redirection->file_heredoc, F_OK) == 0)
+							unlink(redirection->file_heredoc);
+						redirection->infile_fd = open(redirection->file_heredoc,
+								O_WRONLY | O_TRUNC | O_CREAT, 0644);
 						if (redirection->infile_fd != -1)
 						{
-							ft_heredoc(redirection, TRUE);
+							ft_heredoc(redirection, tmp_command->redirections, TRUE);
 							close(redirection->infile_fd);
 							redirection->infile_fd = -1;
 							redirection->infile_fd = open(
-									"/tmp/.heredoc", O_RDONLY, 0644);
+									redirection->file_heredoc, O_RDONLY, 0644);
 						}
 						else
 							perror("Error opening heredoc files");
 					}
 					else
-						ft_heredoc(redirection, FALSE);
+						ft_heredoc(redirection, tmp_command->redirections, FALSE);
 					heredoc = TRUE;
 				}
 				tmp_redirection = tmp_redirection->next;
@@ -291,6 +294,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			where_are_heredoc(&result, heredoc);
 			tmp_command = tmp_command->next;
 		}
+		ft_lstclear_redirections(&list->redirections);
 	}
 
 	// exit code 0 si tout se passe bien

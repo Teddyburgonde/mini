@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/05 14:36:25 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/09 12:55:43 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,45 @@ void	fill_tmp_content(char **tmp_content, t_redirection *redirection, int fd_tmp
 // 	}
 // }
 
-void	ft_heredoc(t_redirection *redirection, t_bool save)
+void	ft_heredoc(t_redirection *redirection,
+		t_redirection_to_expand *all, t_bool save)
 {
-	t_redirection	*tmp_redirection;
 	char			*tmp_content;
+	int				count;
 
 	tmp_content = NULL;
-	tmp_redirection = redirection;
-	if (tmp_redirection->e_position == HERE && save == TRUE)
+	while (all && save == TRUE)
 	{
-		// open_fd_tmp_for_heredoc(&fd_tmp);
-		// if (fd_tmp < 0)
-		// 	return ;
-		while (1)
+		if (all->e_type == REDIRECTION_HEREDOC)
 		{
-			fill_tmp_content(&tmp_content, redirection, redirection->infile_fd);
-			if (tmp_content == NULL)
-				return ;
-			else
-				free(tmp_content);
+			count = 0;
+			while (ft_strcmp(tmp_content, all->arg) != 0 || count == 0)
+			{
+				if (redirection->e_position == HERE && save == TRUE && is_last(all) == all)
+				{
+					// open_fd_tmp_for_heredoc(&fd_tmp);
+					// if (fd_tmp < 0)
+					// 	return ;
+					while (1)
+					{
+						fill_tmp_content(&tmp_content, redirection, redirection->infile_fd);
+						if (tmp_content == NULL)
+							return ;
+						else
+							free(tmp_content);
+					}
+					// close(fd_tmp);
+				}
+				else
+				{
+					if (tmp_content)
+						free(tmp_content);
+					tmp_content = NULL;
+					tmp_content = readline("> ");
+				}
+				count++;
+			}
 		}
-		// close(fd_tmp);
+		all = all->next;
 	}
 }
