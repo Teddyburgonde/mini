@@ -46,6 +46,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/fork_processes_utils.c \
 			src/utils/process_utils.c \
 			src/utils/close_fd.c \
+			src/utils/exit_status.c \
 			src/error_free/free_error.c \
 
 

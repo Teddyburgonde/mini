@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:34:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 15:08:51 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,13 @@ typedef enum s_bool {
 	FALSE = 0
 }	t_bool;
 
+
+
 /*
 * Global variables
 */
+
+extern int		g_sig;
 
 typedef struct s_vars {
 	pid_t	child;
@@ -54,6 +58,7 @@ typedef struct s_vars {
 	char	**env;
 	int		exit_code;
 	int		exit_code_signal;
+	int		*pids;
 }	t_vars;
 
 /*
@@ -351,6 +356,12 @@ void	ft_free_vars_input(char *command_line, char **env);
 void	ft_free_tab_3d(t_vars *vars);
 void 	ft_lstclear_final_redirection(t_redirection **lst);
 
+
+/*
+* Exit_status
+*/
+void	wait_pids(t_vars *vars);
+void	set_interactive_mode(int	set);
 
 // ici 
 
