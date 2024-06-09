@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/05 15:31:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/09 11:03:40 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,16 @@
 // Trouve le dernier heredoc de TOUTES LES CMDS
 // Return le dernier node qui est de e_type == REDIRECTION_HEREDOC
 
-t_redirection_to_expand	*is_last(t_command_to_expand *cmd)
+t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp)
 {
 	t_redirection_to_expand	*result;
-	t_redirection_to_expand	*tmp;
 
 	result = NULL;
-	while (cmd)
+	while (tmp)
 	{
-		tmp = cmd->redirections;
-		while (tmp)
-		{
-			if (tmp->e_type == REDIRECTION_HEREDOC)
-				result = tmp;
-			tmp = tmp->next;
-		}
-		cmd = cmd->next;
+		if (tmp->e_type == REDIRECTION_HEREDOC)
+			result = tmp;
+		tmp = tmp->next;
 	}
 	return (result);
 }
@@ -193,7 +187,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
 					}
-					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_WRONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
 					&& is_last(list) == tmp_redirection)
@@ -230,12 +224,12 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 				if (!result)
 					return (NULL);
 			}
+			where_are_heredoc(&redirection, heredoc);
 			ft_lstadd_back_redirection(&result, redirection);
 			tmp_command = tmp_command->next;
 		}
 	}
 
-	where_are_heredoc(&result, heredoc);
 	// exit code 0 si tout se passe bien
 	return (result);
 }

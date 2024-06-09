@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/05 14:37:59 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 11:03:26 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,9 @@ typedef struct s_argument {
 // e_type va peut-etre sauter
 
 typedef struct s_redirection {
-  int  infile_fd;
-  int  outfile_fd;
+  int	infile_fd;
+  int	outfile_fd;
+  int	nb_heredoc;
   char	*limiter;
   enum
   {
