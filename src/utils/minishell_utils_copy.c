@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:06:33 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/27 13:31:17 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/08 11:05:52 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,33 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (result * mult);
+}
+
+char	*ft_strjoin_mod(char *s1, char *s2)
+{
+	char	*tab;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	i = 0;
+	j = 0;
+	tab = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!tab)
+		return (NULL);
+	while (s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		tab[i + j] = s2[j];
+		j++;
+	}
+	tab[i + j] = '\0';
+	free(s1);
+	s1 = NULL;
+	return (tab);
 }

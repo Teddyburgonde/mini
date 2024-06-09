@@ -22,8 +22,6 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/exec/heredoc.c \
 			src/exec/path.c \
 			src/exec/flow_redirections.c \
-			src/gnl/gnl_utils.c \
-			src/gnl/gnl.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
