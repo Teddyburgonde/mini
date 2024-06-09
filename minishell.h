@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:05:35 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 11:34:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,23 +164,19 @@ typedef struct s_argument {
 // e_type va peut-etre sauter
 
 typedef struct s_redirection {
-  int	infile_fd;
-  int	outfile_fd;
-  int	nb_heredoc;
-  char	*limiter;
-  enum
-  {
-	HERE,
-	COMING,
-	NONE
-  }	e_position;
-  enum
-  {
-	PIPE_OUT,
-	STDOUT 
-  } e_type;
-  struct s_redirection  *next;
-}  t_redirection;
+	int						infile_fd;
+	int						outfile_fd;
+	int						nb_heredoc;
+	char					*file_heredoc;
+	char					*limiter;
+	enum
+	{
+		HERE,
+		COMING,
+		NONE
+	}	e_position;
+	struct s_redirection	*next;
+}	t_redirection;
 
 /*
 * Utilitaries
@@ -193,6 +189,7 @@ char	**ft_split(char const *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strlen(char const *str);
 char	*ft_strjoin(char const *s1, char *s2);
+char	*ft_strjoin_free_s2(char *s1, char *s2);
 int		single_redirection(char *str);
 int		double_redirection(char *str);
 int		ft_strcspn(const char *s, char *reject);

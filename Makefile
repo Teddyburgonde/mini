@@ -68,7 +68,7 @@ $(NAME): $(MY_OBJECTS)
 	@clear
 	@$(CC) $(FLAGS) $(MY_OBJECTS) -o $(NAME) -lreadline
 	@echo $(light_cyan)"\t   »»-————　Make　————-««\n"
-	@make header
+	# @make header
 
 
 clean: 

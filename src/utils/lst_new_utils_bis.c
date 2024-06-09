@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_new_utils_bis.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/21 11:26:17 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/09 11:36:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_redirection	*ft_lstnew_redirection(void)
 	tmp = (t_redirection *)malloc(sizeof(t_redirection));
 	if (!tmp)
 		return (NULL);
-	tmp->e_type = STDOUT;
 	tmp->e_position = NONE;
 	tmp->infile_fd = STDIN_FILENO;
 	tmp->outfile_fd = STDOUT_FILENO;

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 11:06:05 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/09 11:44:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,65 @@ static void	where_are_heredoc(t_redirection **list, t_bool exist)
 	tmp = *list;
 	while (tmp)
 	{
-		if (exist == FALSE)
+		if (exist == FALSE && tmp)
 			tmp->e_position = NONE;
-		else if (exist == TRUE && tmp->e_position != HERE)
+		else if (exist == TRUE && tmp && tmp->e_position != HERE)
 			tmp->e_position = COMING;
 		tmp = tmp->next;
 	}
+}
+
+static int	ft_intlen(int *n, int *sg)
+{
+	int	i;
+	int	temp;
+
+	i = 0;
+	temp = *n;
+	if (*n == 0)
+		return (1);
+	if (*n < 0)
+	{
+		*n *= -1;
+		*sg = 1;
+		temp *= -1;
+		i++;
+	}
+	while (temp > 0)
+	{
+		i++;
+		temp /= 10;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*tab;
+	int		i;
+	int		sg;
+
+	sg = 0;
+	i = ft_intlen(&n, &sg);
+	i--;
+	tab = ft_calloc(sizeof(char), (i + 1));
+	if (tab == 0)
+		return (0);
+	if (n == -2147483648)
+	{
+		free(tab);
+		tab = copy("-2147483648");
+		return (tab);
+	}
+	while (n > 9)
+	{
+		tab[i--] = (n % 10) + '0';
+		n /= 10;
+	}
+	tab[i] = n + '0';
+	if (sg == 1)
+		tab[0] = '-';
+	return (tab);
 }
 
 t_redirection	*stock_redirection(t_command_to_expand *list)
@@ -155,6 +208,8 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			redirection = ft_lstnew_redirection();
 			if (!redirection)
 				return (NULL);
+			redirection->nb_heredoc = 0;
+			redirection->file_heredoc = NULL;
 			tmp_redirection = tmp_command->redirections;
 			save = 0;
 			while (tmp_redirection)
@@ -167,7 +222,8 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
 					}
-					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+					redirection->outfile_fd = open(tmp_redirection->arg,
+							O_CREAT | O_TRUNC | O_WRONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_INFILE)
 				{
@@ -177,7 +233,8 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						close(redirection->infile_fd);
 						redirection->infile_fd = -1;
 					}
-					redirection->infile_fd = open(tmp_redirection->arg, O_RDONLY, 0644);
+					redirection->infile_fd = open(
+							tmp_redirection->arg, O_RDONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_APPEND)
 				{
@@ -187,24 +244,32 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
 					}
-					redirection->outfile_fd = open(tmp_redirection->arg, O_CREAT | O_WRONLY, 0644);
+					redirection->outfile_fd = open(
+							tmp_redirection->arg, O_CREAT | O_APPEND | O_WRONLY, 0644);
 				}
 				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
 					&& is_last(tmp_redirection) == tmp_redirection)
 				{
 					if (is_last_infile(tmp_redirection) == TRUE)
 					{
+						redirection->nb_heredoc++;
 						redirection->e_position = HERE;
 						redirection->limiter = tmp_redirection->arg;
+						redirection->file_heredoc = ft_itoa(
+								redirection->nb_heredoc);
+						redirection->file_heredoc = ft_strjoin_free_s2(
+								"/tmp/.heredoc", redirection->file_heredoc);
 						if (access("/tmp/.heredoc", F_OK) == 0)
 							unlink("/tmp/.heredoc");
-						redirection->infile_fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT , 0644);
+						redirection->infile_fd = open("/tmp/.heredoc",
+								O_WRONLY | O_TRUNC | O_CREAT , 0644);
 						if (redirection->infile_fd != -1)
 						{
 							ft_heredoc(redirection, TRUE);
 							close(redirection->infile_fd);
 							redirection->infile_fd = -1;
-							redirection->infile_fd = open("/tmp/.heredoc", O_RDONLY, 0644);
+							redirection->infile_fd = open(
+									"/tmp/.heredoc", O_RDONLY, 0644);
 						}
 						else
 							perror("Error opening heredoc files");
@@ -216,16 +281,14 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 				tmp_redirection = tmp_redirection->next;
 				save++;
 			}
-			if (tmp_command->next != NULL)
-				redirection->e_type = PIPE_OUT;
 			if (tmp_redirection == NULL && save == 0)
 			{
 				result = ft_lstnew_redirection();
 				if (!result)
 					return (NULL);
 			}
-			where_are_heredoc(&redirection, heredoc);
 			ft_lstadd_back_redirection(&result, redirection);
+			where_are_heredoc(&result, heredoc);
 			tmp_command = tmp_command->next;
 		}
 	}
