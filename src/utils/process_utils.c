@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 13:45:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 14:26:28 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,12 @@ void	handle_pipe_closing(t_vars *vars)
 {
 	if ((vars->cmd_index - 1) % 2 == 1 && vars->nb_cmd > 1)
 	{
-		close_pipe(vars->pipe_1);
+		// close_pipe(vars->pipe_1);
+		if (vars->pipe_1[1] != -1)
+		{
+			close(vars->pipe_1[1]);
+			vars->pipe_1[1] = -1;
+		}
 		if (vars->pipe_2[0] != -1)
 		{
 			close(vars->pipe_2[0]);
@@ -72,11 +77,16 @@ void	handle_pipe_closing(t_vars *vars)
 	}
 	else if ((vars->cmd_index - 1) % 2 == 0 && vars->nb_cmd > 1)
 	{
-		close_pipe(vars->pipe_2);
+		// close_pipe(vars->pipe_2);
 		if (vars->pipe_1[0] != -1)
 		{
 			close(vars->pipe_1[0]);
 			vars->pipe_1[0] = -1;
+		}
+		if (vars->pipe_2[1] != -1)
+		{
+			close(vars->pipe_2[1]);
+			vars->pipe_2[1] = -1;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:31:26 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/01 11:32:31 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 14:23:21 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars)
 
 void	last_command_redirection_even(t_redirection *redirect, t_vars *vars)
 {
+	printf("%i\n", vars->pipe_2[0]);
 	if (redirect->infile_fd > 2)
 	{
 		if (dup2(redirect->infile_fd, STDIN_FILENO) < 0)
@@ -112,7 +113,6 @@ void	last_command_redirection_odd(t_redirection *redirect, t_vars *vars)
 	}
 	if (redirect->outfile_fd > 2)
 	{
-		// printf("JE PASSE IIIIIICIII\n");
 		if (dup2(redirect->outfile_fd, STDOUT_FILENO) < 0)
 			perror("dup2");
 	}
