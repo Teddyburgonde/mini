@@ -308,7 +308,7 @@ void	export(t_env **env, char **cmd);
 int		ft_cd(char **command, t_env **env);
 void	ft_echo(char **command, t_vars *vars, t_redirection *redirect);
 int		ft_pwd(t_vars *vars, t_redirection *redirect);
-void	unset(t_env **env, char *name);
+void	unset(t_env **env, char **names);
 int		ft_exit(char **command);
 
 /*
