@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/10 12:11:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 15:10:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	unset(t_env **env, char **names)
+int	unset(t_env **env, char **names)
 {
 	int		i;
 	t_env	*tmp;
@@ -39,4 +39,5 @@ void	unset(t_env **env, char **names)
 			tmp = tmp->next;
 		}
 	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/02 16:51:36 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 15:13:44 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ static t_argument	*ft_expand_vars_in_argument(
 			tmp->value = argument[i];
 			ft_lstadd_back_char_list(&arg->chars, tmp);
 		}
-		else if (argument[i] == '$')
+		else if (argument[i] == '$' && argument[i + 1] != '?')
 		{
+			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
 			if (lst_search_env(var_name, env))
 			{
@@ -99,7 +100,8 @@ static t_argument	*ft_expand_vars_in_argument(
 		{
 			while (argument[i])
 			{
-				if (argument[i] == '$')
+				// I added argument[i + 1] != '?' to get code error
+				if (argument[i] == '$' && argument[i + 1] != '?')
 					break ;
 				tmp = lst_new_char_list();
 				if (!tmp)

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:16:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/07 13:56:50 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:18:16 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,20 @@ static void	print_not_option_n_fd(char **command, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
-void	ft_echo(char **command, t_vars *vars, t_redirection *redirect)
+int	print_value_exit_status(char **command)
+{
+	if (command[1][0] && command[1][0] == '$' && command[1][1] == '?')
+		return (0);
+	return (1);
+}
+
+
+int	ft_echo(char **command, t_vars *vars, t_redirection *redirect)
 {
 	int	option;
 
+	if (print_value_exit_status(command) != 1)
+		return (0);
 	option = is_there_an_option_n(command);
 	if (vars->nb_cmd == 1)
 	{
@@ -106,4 +116,5 @@ void	ft_echo(char **command, t_vars *vars, t_redirection *redirect)
 		if (option == 0)
 			print_not_option_n(command);
 	}
+	return (0);
 }
