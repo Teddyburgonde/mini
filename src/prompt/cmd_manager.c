@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/07 14:38:05 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/10 12:20:51 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,28 @@ static void	exec_env(char **command_line, t_vars *vars)
 	}
 }
 
-static void	print_env(char **env)
+static void	print_env(char **env, t_vars *vars, t_redirection *redirect)
 {
 	int	i;
 
 	i = 0;
-	while (env && env[i])
+	if (vars->nb_cmd == 1)
 	{
-		printf("declare -x %s\n", env[i]);
-		i++;
+		while (env && env[i])
+		{
+			ft_putstr_fd("declare -x ", redirect->outfile_fd);
+			ft_putstr_fd(env[i], redirect->outfile_fd);
+			ft_putstr_fd("\n", redirect->outfile_fd);
+			i++;
+		}
+	}
+	else
+	{
+		while (env && env[i])
+		{
+			printf("declare -x %s\n", env[i]);
+			i++;
+		}
 	}
 }
 
@@ -66,7 +79,7 @@ int	cmd_selector(t_env **env, char **command_line,
 	else if (ft_strcmp(command_line[0], "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(command_line[0], "unset") == 0)
-		unset(env, command_line[1]);
+		unset(env, command_line);
 	else if (ft_strcmp(command_line[0], "export") == 0)
 	{
 		if (command_line[1])
@@ -74,7 +87,7 @@ int	cmd_selector(t_env **env, char **command_line,
 		else
 		{
 			envp = env_to_char_export(tmp);
-			print_env(envp);
+			print_env(envp, vars, redirect);
 			if (envp)
 				ft_free(envp);
 		}
