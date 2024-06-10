@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 12:27:10 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 11:16:37 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_exit(char **command)
 		|| ft_strncmp(command[1], "-9223372036854775808", 21) == 0)
 		ft_exit_message_0();
 	if (ft_isdigit(command[1][i]) == 1 && command[2] != NULL)
-	{	
+	{
 		ft_exit_message_too_many_arguments();
 		return (1);
 	}
@@ -75,6 +75,7 @@ int	ft_exit(char **command)
 		ft_exit_message_argument_required(command[1]);
 	tmp = ft_atol(command[1]) % 256;
 	printf("exit\n");
+	exit(tmp);
 	//exit code 0 cependant la tu peux quitter le programme
 	return (0);
 }
