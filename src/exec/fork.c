@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 12:30:18 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 11:13:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int    fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
 	initialize_vars(vars);
 	if (vars->cmd[vars->cmd_index - 1] != NULL)
-        process_commands(vars, redirect, envp);
+		process_commands(vars, redirect, envp);
 	wait_process(vars);
 	ft_close_fd(vars);
 	ft_lstclear_final_redirection(redirect);
