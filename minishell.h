@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 12:48:34 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 11:54:58 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,7 +307,7 @@ int	cmd_selector(t_env **env, char **command_line,
 void	export(t_env **env, char **cmd);
 int		ft_cd(char **command, t_env **env);
 void	ft_echo(char **command, t_vars *vars, t_redirection *redirect);
-int		ft_pwd(void);
+int		ft_pwd(t_vars *vars, t_redirection *redirect);
 void	unset(t_env **env, char *name);
 int		ft_exit(char **command);
 
