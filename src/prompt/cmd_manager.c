@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/07 14:38:05 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/10 11:55:22 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	cmd_selector(t_env **env, char **command_line,
 	if (ft_strcmp(command_line[0], "echo") == 0)
 		ft_echo(command_line, vars, redirect);
 	else if (ft_strcmp(command_line[0], "pwd") == 0)
-		ft_pwd();
+		ft_pwd(vars, redirect);
 	else if (ft_strcmp(command_line[0], "unset") == 0)
 		unset(env, command_line[1]);
 	else if (ft_strcmp(command_line[0], "export") == 0)
