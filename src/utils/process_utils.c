@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 14:26:28 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/10 14:46:49 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ void	error_close_files(t_redirection *redirect)
 	}
 }
 
-void	close_pipe(int *pipe_fd)
-{
-	if (pipe_fd[0] != -1)
-	{
-		close(pipe_fd[0]);
-		pipe_fd[0] = -1;
-	}
-	if (pipe_fd[1] != -1)
-	{
-		close(pipe_fd[1]);
-		pipe_fd[1] = -1;
-	}
-}
+// void	close_pipe(int *pipe_fd)
+// {
+// 	if (pipe_fd[0] != -1)
+// 	{
+// 		close(pipe_fd[0]);
+// 		pipe_fd[0] = -1;
+// 	}
+// 	if (pipe_fd[1] != -1)
+// 	{
+// 		close(pipe_fd[1]);
+// 		pipe_fd[1] = -1;
+// 	}
+// }
 
 void	handle_pipe_closing(t_vars *vars)
 {
