@@ -150,7 +150,7 @@ typedef struct s_char_list {
 
 	char				value;
 	t_bool				last_pos;
-	t_bool				was_in_a_variable;
+	t_bool				was_in_a_variable; // Maybe sa degage
 
 	struct s_char_list	*next;
 }	t_char_list;
