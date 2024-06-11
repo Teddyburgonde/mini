@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 14:19:41 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:35:52 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,13 +211,13 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			redirection = ft_lstnew_redirection();
 			if (!redirection)
 				return (NULL);
-			redirection->nb_heredoc = 0;
-			redirection->file_heredoc = NULL;
 			tmp_redirection = tmp_command->redirections;
 			save = 0;
 			while (tmp_redirection)
 			{
-				if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
+				if (tmp_redirection->arg == NULL)
+					redirection->ambiguous = TRUE;
+				else if (tmp_redirection->e_type == REDIRECTION_OUTFILE)
 				{
 					if (redirection->outfile_fd != STDOUT_FILENO
 						&& redirection->outfile_fd != -1)
@@ -228,7 +228,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					redirection->outfile_fd = open(tmp_redirection->arg,
 							O_CREAT | O_TRUNC | O_WRONLY, 0644);
 				}
-				if (tmp_redirection->e_type == REDIRECTION_INFILE)
+				else if (tmp_redirection->e_type == REDIRECTION_INFILE)
 				{
 					if (redirection->infile_fd != STDIN_FILENO
 						&& redirection->infile_fd != -1)
@@ -239,7 +239,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					redirection->infile_fd = open(
 							tmp_redirection->arg, O_RDONLY, 0644);
 				}
-				if (tmp_redirection->e_type == REDIRECTION_APPEND)
+				else if (tmp_redirection->e_type == REDIRECTION_APPEND)
 				{
 					if (redirection->outfile_fd != STDOUT_FILENO
 						&& redirection->outfile_fd != -1)
@@ -250,7 +250,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					redirection->outfile_fd = open(tmp_redirection->arg,
 							O_CREAT | O_APPEND | O_WRONLY, 0644);
 				}
-				if (tmp_redirection->e_type == REDIRECTION_HEREDOC
+				else if (tmp_redirection->e_type == REDIRECTION_HEREDOC
 					&& is_last(tmp_redirection) == tmp_redirection)
 				{
 					if (is_last_infile(tmp_redirection) == TRUE)
