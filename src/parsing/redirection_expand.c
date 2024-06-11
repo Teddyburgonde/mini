@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/10 15:15:03 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:12:22 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ft_strlen_ultime(t_redirection_to_expand *tmp, t_env *env)
 			in = FALSE;
 		else if (tmp->arg[i] == '$' && tmp->arg[i + 1] != '?' && in == FALSE)
 		{
-			// I add condition && tmp->arg[i + 1] != '?'
+			// I add condition && tmp->arg[i + 1] != '?' for $?
 			j = 0;
 			var_name = get_var_name(&tmp->arg[i]);
 			if (lst_search_env(var_name, env))
