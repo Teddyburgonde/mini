@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:16:48 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 15:18:16 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:49:09 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,11 @@ int	ft_echo(char **command, t_vars *vars, t_redirection *redirect)
 {
 	int	option;
 
+	if (!command[1])
+	{
+		write (1, "\n", 1);
+		return (0);
+	}
 	if (print_value_exit_status(command) != 1)
 		return (0);
 	option = is_there_an_option_n(command);
