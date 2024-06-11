@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 13:47:05 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 14:31:42 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,6 +445,7 @@ static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 	t_env	*var;
 
 	i = 0;
+	in_quote = FALSE;
 	while (tmp->arg[i])
 	{
 		refresh_quotes_status(&in_quote, tmp->arg[i]);

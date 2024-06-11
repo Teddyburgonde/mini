@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 14:12:16 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 14:25:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,21 +268,30 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	while (tmp_char && in_quote == FALSE)
 	{
 		// Si y a des quotes qui apparaissent et qu'il y a des space sa break ;
-		if (tmp_char->value == '\'' || tmp_char->value == '"')
+		if ((tmp_char->value == '\'' || tmp_char->value == '"')
+			&& quote_in_var == FALSE)
 			quote_in_var = TRUE;
+		else if ((tmp_char->value == '\'' || tmp_char->value == '"')
+			&& quote_in_var == TRUE)
+			quote_in_var = FALSE;
 		if (quote_in_var == FALSE
 			&& (tmp_char->value == SPACE
 				|| tmp_char->value == TAB
 				|| tmp_char->value == NEW_LINE))
 			break ;
-		arg = lst_new_char_list();
-		if (!arg)
-			return (0);
-		arg->value = tmp_char->value;
-		arg->was_in_a_variable = tmp_char->was_in_a_variable;
-		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		tmp_char->last_pos = FALSE;
-		tmp_char = tmp_char->next;
+		if (tmp_char->value == '\'' || tmp_char->value == '"')
+			tmp_char = tmp_char->next;
+		if (tmp_char)
+		{
+			arg = lst_new_char_list();
+			if (!arg)
+				return (0);
+			arg->value = tmp_char->value;
+			arg->was_in_a_variable = tmp_char->was_in_a_variable;
+			ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
+			tmp_char->last_pos = FALSE;
+			tmp_char = tmp_char->next;
+		}
 	}
 	while (tmp_char && in_quote == TRUE)
 	{
