@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 15:11:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:39:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ typedef struct s_redirection {
 		COMING,
 		NONE
 	}	e_position;
+	t_bool					ambiguous;
 	struct s_redirection	*next;
 }	t_redirection;
 
@@ -207,6 +208,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 int		ft_lstsize_env(t_env *env);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcspn2(const char *s, char *reject);
+char	*ft_itoa(int n);
 void	ft_exit_message_0(void);
 void	ft_exit_message_2(char *command);
 void	ft_exit_message_too_many_arguments(void);
@@ -545,8 +547,10 @@ t_redirection	*ft_lstlast_redirection(t_redirection *lst);
 // sinon il dit que le fichier n'existe pas si il y a un fichier existant et d'autre argument
 // env fait rien
 
-t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirection,
-		t_env *env);
+t_redirection_to_expand	*expand_redirection(
+	t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
+
+t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirection, t_env *env, t_vars *vars);
 char	*get_var_name(char *str);
 
 #endif

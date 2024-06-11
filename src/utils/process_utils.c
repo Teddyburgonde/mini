@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 14:46:49 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:38:09 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	child_process(t_vars *vars, t_redirection *redirect
 		, char **actual_cmd)
 {
+	if (redirect->ambiguous == TRUE)
+		exit(1);
 	ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
 	{

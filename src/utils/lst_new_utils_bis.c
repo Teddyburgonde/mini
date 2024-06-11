@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/09 11:36:45 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:32:14 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_argument	*lst_new_argument(void)
 	tmp->next = NULL;
 	return (tmp);
 }
+
 t_redirection	*ft_lstnew_redirection(void)
 {
 	t_redirection	*tmp;
@@ -44,6 +45,9 @@ t_redirection	*ft_lstnew_redirection(void)
 	tmp = (t_redirection *)malloc(sizeof(t_redirection));
 	if (!tmp)
 		return (NULL);
+	tmp->file_heredoc = NULL;
+	tmp->nb_heredoc = 0;
+	tmp->ambiguous = FALSE;
 	tmp->e_position = NONE;
 	tmp->infile_fd = STDIN_FILENO;
 	tmp->outfile_fd = STDOUT_FILENO;

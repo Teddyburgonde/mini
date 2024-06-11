@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/03 14:32:35 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 14:14:09 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,7 @@ void	export(t_env **env, char **cmd)
 	int		i;
 
 	i = 1;
+	value = NULL;
 	while (cmd[i] != NULL)
 	{
 		export_status = verif_export(cmd[i]);
