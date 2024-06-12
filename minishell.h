@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 13:09:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:23:14 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ t_command_parsing_result		*ft_redirections_arguments(
 			t_redirection_parsing_result *redirection_result,
 			t_argument_parsing_result *argument_result);
 t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
-		t_env *env, t_vars *vars)
+		t_env *env, t_vars *vars);
 
 /*
 * Setup command
