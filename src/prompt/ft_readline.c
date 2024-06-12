@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 14:10:11 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 11:31:27 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ static void	process_successful_command(t_command_line_parsing_result
 	free(command_line);
 }
 
+static int skip_spaces_and_tabs(char *str)
+{
+	int i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32 || str[i] == '\n')
+			i++;
+		else
+			return (1);
+	}
+	return (0);
+}
+
 static void	verif_command_line(char *command_line
 	, t_env **env)
 {
@@ -37,6 +52,8 @@ static void	verif_command_line(char *command_line
 	{
 		add_history(command_line);
 		parsing_result = ft_parse_command_line(command_line);
+		if (skip_spaces_and_tabs(command_line) == 0)
+			return ;
 		if (!parsing_result->did_succeed)
 		{
 			free(command_line);
@@ -61,6 +78,7 @@ static void	verif_command_line(char *command_line
 				|| ft_strcmp(parsing_result->commands->arguments->content,
 					"''") == 0) && parsing_result->commands->next == NULL)
 		{
+			// erfe ?????????
 			printf("erfe");
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
