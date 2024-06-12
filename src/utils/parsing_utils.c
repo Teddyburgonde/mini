@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:28:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 11:55:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/11 15:00:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,20 @@ char	*ft_strjoin_file(char *s1)
 		return (0);
 	if (s1[0] != '\'' && s1[0] != '"')
 	{
-		tab = malloc((1 + ft_strcspn(s1, "<>\'\"| \n\t")
+		tab = malloc((1 + ft_strcspn(s1, "<>| \n\t")
 					) * sizeof(char));
-		len = ft_strcspn(s1, "<>\'\"| \n\t");
+		len = ft_strcspn(s1, "<>| \n\t");
 	}
 	else
 	{
-		tab = malloc((3 + ft_strcspn(&s1[1], "<>\'\"| \n\t")
+		tab = malloc((3 + ft_strcspn(&s1[1], "<>| \n\t")
 					) * sizeof(char));
-		len = ft_strcspn(&s1[1], "<>\'\"| \n\t") + 2;
+		len = ft_strcspn(&s1[1], "<>| \n\t") + 2;
 	}
 	if (tab == 0)
 		return (NULL);
 	i = 0;
-	while (s1 && i < len)
+	while (s1 && (i) < len)
 	{
 		tab[i] = s1[i];
 		i++;

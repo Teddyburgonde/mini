@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_processes_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/07 14:42:52 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:28:04 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,9 @@ void	 process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
 		if (vars->nb_cmd >= 2
 			|| cmd_selector(envp, vars->cmd[vars->cmd_index - 1], vars, *redirect) == 1)
 			process(vars, tmp);
-		if (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
-			|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0)
+		if (vars->cmd[vars->cmd_index - 1] != NULL
+			&& (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
+			|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0))
 		{
 			if (vars->env)
 				free(vars->env);

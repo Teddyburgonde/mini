@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 14:31:42 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 11:47:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -430,7 +430,7 @@ t_redirection_to_expand	*expand_redirection(
 			}
 		}
 		else
-			tmp->arg = copy(redirect->arg);
+			tmp->arg = copy_without_quote(redirect->arg);
 		ft_redirection_to_expand_addback(&final, tmp);
 		redirect = redirect->next;
 	}
@@ -463,7 +463,8 @@ static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 				free(var_name);
 				return (1);
 			}
-			free(var_name);
+			else
+				free(var_name);
 		}
 		i++;
 	}
