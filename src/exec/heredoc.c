@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/11 17:43:57 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:32:05 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ void	ft_heredoc(t_redirection *redirection,
 				}
 				count++;
 			}
+			free(tmp_content);
+			tmp_content = NULL;
 		}
 		all = all->next;
 	}

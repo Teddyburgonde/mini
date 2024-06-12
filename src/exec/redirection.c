@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 13:54:02 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 14:50:34 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,20 +197,26 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 	t_redirection			*redirection;
 	t_redirection			*result;
 	t_bool					heredoc;
+	int						nb_hd;
 	int	save;
 
 	tmp_command = list;
 	heredoc = FALSE;
+	nb_hd = 0;
 	result = NULL;
+	redirection = NULL;
 	// Why ??????
 	// si fd = -1 exit code 1 
 	if (tmp_command)
 	{
 		while (tmp_command)
 		{
+			if (redirection)
+				nb_hd = redirection->nb_heredoc;
 			redirection = ft_lstnew_redirection();
 			if (!redirection)
 				return (NULL);
+			redirection->nb_heredoc = nb_hd;
 			tmp_redirection = tmp_command->redirections;
 			save = 0;
 			while (tmp_redirection)

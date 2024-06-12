@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 13:10:06 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 16:19:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,23 @@ static int	fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env
 	{
 		final_parsing = ft_expand_argument(tmp->arguments, env, vars);
 		command_line = ft_setup_command(final_parsing);
-
-/* 		vars->full_cmd = command_line;
-		vars->cmd[i] = find_the_accessible_path(vars->path, vars, command_line);
-		vars->cmd[i] = copy_double_array(vars->cmd[i]); */
 		if (!is_builtins_parsing(command_line))
 		{
-			vars->full_cmd = find_the_accessible_path(
-					vars->path, vars, command_line);
-			vars->cmd[i] = copy_double_array(vars->full_cmd);
-			if (vars->cmd[i] == NULL)
+			if (command_line[0] != NULL)
 			{
-				ft_lstclear_argument(&final_parsing);
-				return (-1);
+				vars->full_cmd = find_the_accessible_path(
+						vars->path, vars, command_line);
+				vars->cmd[i] = copy_double_array(vars->full_cmd);
+				if (vars->cmd[i] == NULL)
+				{
+					ft_lstclear_argument(&final_parsing);
+					return (-1);
+				}
+			}
+			else
+			{
+				vars->cmd[i] = copy_double_array(NULL);
+				free(command_line);
 			}
 		}
 		else

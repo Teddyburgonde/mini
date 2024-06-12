@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/09 13:59:43 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 16:29:23 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
+		if (tmp->e_position == HERE)
+			unlink(tmp->file_heredoc);
 		if (tmp->limiter)
 			free(tmp->limiter);
 		if (tmp->file_heredoc)
