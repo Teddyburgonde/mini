@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/11 12:35:52 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 11:06:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_flow_redirection(t_vars *vars, t_redirection *redirect)
 	{
 		if (vars->cmd_index % 2 == 1)
 			last_command_redirection_odd(redirect, vars);
-		else
+		else if (vars->cmd_index % 2 == 0)
 			last_command_redirection_even(redirect, vars);
 	}
 }
@@ -284,7 +284,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 				tmp_redirection = tmp_redirection->next;
 				save++;
 			}
-			if (tmp_redirection == NULL && save == 0)
+			if (tmp_redirection == NULL && save == 0 && redirection == NULL)
 			{
 				result = ft_lstnew_redirection();
 				if (!result)
