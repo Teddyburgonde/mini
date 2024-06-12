@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/11 12:39:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 11:33:05 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ int		ft_lstsize_env(t_env *env);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcspn2(const char *s, char *reject);
 char	*ft_itoa(int n);
+char	*copy_without_quote(char *s);
 void	ft_exit_message_0(void);
 void	ft_exit_message_2(char *command);
 void	ft_exit_message_too_many_arguments(void);
