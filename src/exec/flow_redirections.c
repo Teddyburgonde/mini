@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   flow_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:31:26 by rgobet            #+#    #+#             */
 /*   Updated: 2024/06/12 11:17:01 by rgobet           ###   ########.fr       */
