@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 14:25:32 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:09:19 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,18 @@ char	*get_var_name(char *str)
 }
 
 static t_argument	*ft_expand_vars_in_argument(
-		const char *argument, t_env *env)
+		const char *argument, t_env *env, t_vars *vars)
 {
 	t_char_list	*tmp;
 	t_argument	*arg;
 	t_env		*var;
 	char		*var_name;
+	char		*exit_code;
 	int			i;
 	int			j;
 
 	i = 0;
+	exit_code = NULL;
 	arg = lst_new_argument();
 	if (!arg || !argument)
 		return (NULL);
@@ -72,11 +74,26 @@ static t_argument	*ft_expand_vars_in_argument(
 			tmp->value = argument[i];
 			ft_lstadd_back_char_list(&arg->chars, tmp);
 		}
-		else if (argument[i] == '$' && argument[i + 1] != '?')
+		else if (argument[i] == '$')
 		{
 			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
-			if (lst_search_env(var_name, env))
+			if (ft_strcmp(var_name, "$?") == 0)
+			{
+				exit_code = ft_itoa(vars->exit_code);
+				while (exit_code[j])
+				{
+					tmp = lst_new_char_list();
+					if (!tmp)
+						return (NULL);
+					tmp->value = exit_code[j];
+					tmp->was_in_a_variable = TRUE;
+					ft_lstadd_back_char_list(&arg->chars, tmp);
+					j++;
+				}
+				i = skip_dolar_var((char *)argument, i);
+			}
+			else if (lst_search_env(var_name, env))
 			{
 				var = lst_search_env(var_name, env);
 				while (var->value[j])
@@ -101,7 +118,7 @@ static t_argument	*ft_expand_vars_in_argument(
 			while (argument[i])
 			{
 				// I added argument[i + 1] != '?' to get code error
-				if (argument[i] == '$' && argument[i + 1] != '?')
+				if (argument[i] == '$')
 					break ;
 				tmp = lst_new_char_list();
 				if (!tmp)
@@ -267,7 +284,6 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	tmp_char->last_pos = FALSE;
 	while (tmp_char && in_quote == FALSE)
 	{
-		// Si y a des quotes qui apparaissent et qu'il y a des space sa break ;
 		if ((tmp_char->value == '\'' || tmp_char->value == '"')
 			&& quote_in_var == FALSE)
 			quote_in_var = TRUE;
@@ -432,7 +448,7 @@ static void	ft_remove_quotes(t_argument **src)
 }
 
 t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
-		t_env *env)
+		t_env *env, t_vars *vars)
 {
 	t_argument				*argument_with_expanded_vars;
 	t_argument				*args_with_expanded_vars;
@@ -447,7 +463,7 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	while (tmp_to_expand != NULL)
 	{
 		argument_with_expanded_vars = ft_expand_vars_in_argument(
-				tmp_to_expand->content, env);
+				tmp_to_expand->content, env, vars);
 		if (argument_with_expanded_vars->chars == NULL)
 		{
 			free(argument_with_expanded_vars);

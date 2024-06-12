@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/02 15:37:45 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:10:06 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env
 	i = 0;
 	while (i < vars->nb_cmd)
 	{
-		final_parsing = ft_expand_argument(tmp->arguments, env);
+		final_parsing = ft_expand_argument(tmp->arguments, env, vars);
 		command_line = ft_setup_command(final_parsing);
 
 /* 		vars->full_cmd = command_line;
