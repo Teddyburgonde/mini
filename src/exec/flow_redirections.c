@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flow_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 11:31:26 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 11:17:01 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 15:13:17 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars)
 
 void	last_command_redirection_even(t_redirection *redirect, t_vars *vars)
 {
-	printf("%i\n", vars->pipe_2[0]);
 	if (redirect->infile_fd > 2)
 	{
 		if (dup2(redirect->infile_fd, STDIN_FILENO) < 0)

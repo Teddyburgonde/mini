@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/11 12:38:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 16:47:18 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int	child_process(t_vars *vars, t_redirection *redirect
 		exit(1);
 	}
 	ft_close_fd(vars);
-	if (is_builtins_exec(vars) == 1)
+	if (actual_cmd != NULL && is_builtins_exec(vars) == 1)
 		exit(0);
+	if (actual_cmd == NULL)
+		exit (0);
 	execve(actual_cmd[0], actual_cmd, vars->env);
 	ft_close_fd(vars);
 	error_close_files(redirect);
