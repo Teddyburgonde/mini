@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 11:53:36 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:53:43 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ int	cmd_selector(t_env **env, char **command_line,
 
 	tmp = *env;
 	envp = NULL;
+	if (redirect->ambiguous == TRUE)
+	{
+		vars->exit_code = 1;
+		return (0);
+	}
 	if (vars->nb_cmd > 1 || vars->child != 0)
 		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0)
@@ -128,7 +133,9 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	tmp_redir = tmp->redirections;
 	tmp_arg = tmp->arguments;
 	vars.env = NULL;
-	if (env)
+	vars.exit_code = 0;
+	vars.exit_code_signal = 0;
+	if (*env)
 	{
 		tmp->redirections = ft_expand_redirections(tmp_redir, *env, &vars);
 		redirection = stock_redirection(tmp);

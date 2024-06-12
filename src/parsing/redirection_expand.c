@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 11:47:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:49:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,22 +397,7 @@ t_redirection_to_expand	*expand_redirection(
 				refresh_quotes_status(&in_quote, redirect->arg[i]);
 				if (in_quote == FALSE && redirect->arg[i] == '$')
 					var_name = get_var_name(&redirect->arg[i]);
-				if (in_quote == FALSE && redirect->arg[i] == '$')
-				{
-					j = 0;
-					var = lst_search_env(var_name, env);
-					if (var->value != NULL && var->value[j] != 0)
-					{
-						while (var->value[j])
-						{
-							tmp->arg[ft_strlen(tmp->arg)] = var->value[j];
-							j++;
-						}
-					}
-					i += ft_strlen(var_name) - 1;
-					free(var_name);
-				}
-				else if (ft_strcmp(var_name, "$?") == 0)
+				if (ft_strcmp(var_name, "$?") == 0)
 				{
 					j = 0;
 					exit_code = ft_itoa(vars->exit_code);
@@ -420,6 +405,22 @@ t_redirection_to_expand	*expand_redirection(
 					{
 						tmp->arg[ft_strlen(tmp->arg)] = exit_code[j];
 						j++;
+					}
+					i += ft_strlen(var_name) - 1;
+					free(var_name);
+					free(exit_code);
+				}
+				else if (in_quote == FALSE && redirect->arg[i] == '$')
+				{
+					j = 0;
+					var = lst_search_env(var_name, env);
+					if (var != NULL && var->value != NULL && var->value[j] != 0)
+					{
+						while (var->value[j])
+						{
+							tmp->arg[ft_strlen(tmp->arg)] = var->value[j];
+							j++;
+						}
 					}
 					i += ft_strlen(var_name) - 1;
 					free(var_name);
@@ -453,15 +454,20 @@ static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 			var_name = get_var_name(&tmp->arg[i]);
 		if (in_quote == FALSE && tmp->arg[i] == '$')
 		{
-			var = lst_search_env(var_name, env);
-			if (var->value == NULL || ft_strlen(var->value) == 0
-				|| ft_strcspn(var->value, " \n\t") != ft_strlen(var->value))
+			if (ft_strcmp(var_name, "$?") != 0)
 			{
-				ft_putstr_fd("minishell: $", 2);
-				ft_putstr_fd(var->var_name, 2);
-				ft_putstr_fd(": ambiguous redirect\n", 2);
-				free(var_name);
-				return (1);
+				var = lst_search_env(var_name, env);
+				if (var == NULL || var->value == NULL || ft_strlen(var->value) == 0
+					|| ft_strcspn(var->value, " \n\t") != ft_strlen(var->value))
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(var_name, 2);
+					ft_putstr_fd(": ambiguous redirect\n", 2);
+					free(var_name);
+					return (1);
+				}
+				else
+					free(var_name);
 			}
 			else
 				free(var_name);

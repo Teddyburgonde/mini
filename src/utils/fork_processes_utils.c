@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 11:28:04 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/12 13:55:53 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	wait_process(t_vars *vars)
 	int		exit_status;
 	pid_t	pid;
 
+	exit_status = 0;
 	wstatus = 0;
 	pid = 0;
 	while (pid != -1)
