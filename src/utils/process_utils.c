@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 16:47:18 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 10:59:28 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	child_process(t_vars *vars, t_redirection *redirect
 	execve(actual_cmd[0], actual_cmd, vars->env);
 	ft_close_fd(vars);
 	error_close_files(redirect);
-	perror("Execve");
+	//perror("Execve");
 	return (1);
 }
 

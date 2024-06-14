@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/03 14:33:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:59:11 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ void	build_path(char **path, char **bin_path,
 			break ;
 		}
 		free(*is_valid_cmd);
+	}
+	// j'ai ajouté ceci
+	if (path[i] == NULL)
+	{
+		ft_putstr_fd(full_cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		// rajouter un exit_code 127
 	}
 }
 
