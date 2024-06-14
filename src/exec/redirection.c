@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 14:50:34 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 12:53:25 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,9 +300,13 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			where_are_heredoc(&result, heredoc);
 			tmp_command = tmp_command->next;
 		}
-		ft_lstclear_redirections(&list->redirections);
 	}
-
+	tmp_command = list;
+	while (tmp_command)
+	{
+		ft_lstclear_redirections(&tmp_command->redirections);
+		tmp_command = tmp_command->next;
+	}
 	// exit code 0 si tout se passe bien
 	return (result);
 }

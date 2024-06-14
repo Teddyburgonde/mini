@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/14 10:59:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:03:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int	child_process(t_vars *vars, t_redirection *redirect
-		, char **actual_cmd)
+		, char **actual_cmd, t_env **env)
 {
 	if (redirect->ambiguous == TRUE)
 		exit(1);
@@ -25,7 +25,10 @@ int	child_process(t_vars *vars, t_redirection *redirect
 	}
 	ft_close_fd(vars);
 	if (actual_cmd != NULL && is_builtins_exec(vars) == 1)
+	{
+		cmd_selector(env, vars->cmd[vars->cmd_index - 1], vars, redirect);
 		exit(0);
+	}
 	if (actual_cmd == NULL)
 		exit (0);
 	execve(actual_cmd[0], actual_cmd, vars->env);

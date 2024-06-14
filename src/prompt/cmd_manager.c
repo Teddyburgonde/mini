@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 16:55:56 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 14:30:11 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	cmd_selector(t_env **env, char **command_line,
 		vars->exit_code = 1;
 		return (0);
 	}
-	if (vars->nb_cmd > 1 || vars->child != 0)
+	if (vars->nb_cmd > 1 && vars->child != 0)
 		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0)
 		vars->exit_code = ft_echo(command_line, vars, redirect);
@@ -125,20 +125,19 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 {
 	t_vars							vars;
 	t_command_to_expand				*tmp;
-	t_redirection_to_expand			*tmp_redir;
 	t_argument_to_expand			*tmp_arg;
 	t_redirection					*redirection;
 
 	tmp = cmd->commands;
-	tmp_redir = tmp->redirections;
 	tmp_arg = tmp->arguments;
 	vars.env = NULL;
 	vars.exit_code = 0;
 	vars.exit_code_signal = 0;
 	if (*env)
 	{
-		tmp->redirections = ft_expand_redirections(tmp_redir, *env, &vars);
-		redirection = stock_redirection(tmp);
+		tmp->redirections = ft_expand_redirections(&cmd->commands->redirections,
+				*env, &vars);
+		redirection = stock_redirection(cmd->commands);
 		vars.nb_cmd = ft_lstsize_command(cmd->commands);
 		vars.path = ft_split(lst_search_env("$PATH", *env)->value, ':');
 		vars.cmd = ft_calloc(vars.nb_cmd + 1, sizeof(char **));
