@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 13:28:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 12:16:57 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ static t_argument	*ft_expand_vars_in_argument(
 				ft_lstadd_back_char_list(&arg->chars, tmp);
 				i++;
 			}
+			tmp = lst_new_char_list();
+			if (!tmp)
+				return (NULL);
+			tmp->value = argument[i];
+			ft_lstadd_back_char_list(&arg->chars, tmp);
+		}
+		else if (argument[i] == '\"') // i add this code for print the value of env variable echo "$LANG"  --> en_US.UTF-8
+		{
 			tmp = lst_new_char_list();
 			if (!tmp)
 				return (NULL);
