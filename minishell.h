@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 13:23:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 12:43:29 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,10 +222,10 @@ int		choice_pipe_setup(t_vars *vars);
 int		setup_pipe(int *pipe_fd);
 void	initialize_vars(t_vars *vars);
 int		wait_process(t_vars *vars);
-int		process(t_vars *vars, t_redirection *redirect);
+int	process(t_vars *vars, t_redirection *redirect, t_env **env);
 void	handle_pipe_closing(t_vars *vars);
-int		child_process(t_vars *vars, t_redirection *redirect,
-			char **actual_cmd);
+int	child_process(t_vars *vars, t_redirection *redirect
+		, char **actual_cmd, t_env **env);
 void	error_close_files(t_redirection *redirect);
 void	ft_close_fd(t_vars *vars);
 
@@ -399,7 +399,6 @@ void	set_interactive_mode(int	set);
 * Exec
 */
 
-int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
 t_redirection	*stock_redirection(t_command_to_expand *list);
 t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
 void	ft_heredoc(t_redirection *redirection,
@@ -548,10 +547,11 @@ t_redirection	*ft_lstlast_redirection(t_redirection *lst);
 // sinon il dit que le fichier n'existe pas si il y a un fichier existant et d'autre argument
 // env fait rien
 
-t_redirection_to_expand	*expand_redirection(
-	t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
+t_redirection_to_expand		*expand_redirection(
+			t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
 
-t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirection, t_env *env, t_vars *vars);
+t_redirection_to_expand		*ft_expand_redirections(
+			t_redirection_to_expand **redirection, t_env *env, t_vars *vars);
 char	*get_var_name(char *str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/09 15:22:46 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:19:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int ac, char **av, char *envp[])
 	if (ft_readline(&env) == 1)
 	{
 		ft_lstclear_env(&env);
-		
 		return (1);
 	}
 	ft_lstclear_env(&env);

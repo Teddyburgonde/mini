@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 13:49:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 12:18:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -477,18 +477,20 @@ static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 	return (0);
 }
 
-t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirection,
+t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand **redirection,
 		t_env *env, t_vars *vars)
 {
+	t_redirection_to_expand	*to_expand;
 	t_redirection_to_expand	*expand_redirections;
 	t_redirection_to_expand	*error_ambig;
 	t_redirection_to_expand	*tmp;
 
 	expand_redirections = NULL;
-	expand_redirections = expand_redirection(redirection, env, vars);
+	to_expand = *redirection;
+	expand_redirections = expand_redirection(to_expand, env, vars);
 	if (expand_redirections)
 	{
-		error_ambig = redirection;
+		error_ambig = to_expand;
 		tmp = expand_redirections;
 		while (tmp)
 		{
@@ -503,6 +505,6 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand *redirec
 			error_ambig = error_ambig->next;
 		}
 	}
-	ft_lstclear_redirections(&redirection);
+	ft_lstclear_redirections(redirection);
 	return (expand_redirections);
 }

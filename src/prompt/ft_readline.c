@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 16:55:25 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 12:38:28 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,22 @@
 // dans un selecteur de buit-in. Le selecteur execute le built-in en question.
 // Si se n'est pas un built-in on creer un fork ... (pipex_bonus)
 
-static void	process_successful_command(t_command_line_parsing_result
+static char	*process_successful_command(t_command_line_parsing_result
 *parsing_result, t_env **env, char *command_line)
 {
 	ft_cmd_manager(env, parsing_result);
 	ft_lstclear_commands(&parsing_result->commands);
 	free(parsing_result);
-	free(command_line);
+	if (command_line)
+		free(command_line);
+	command_line = NULL;
+	return (command_line);
 }
 
 static int skip_spaces_and_tabs(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (str[i])
 	{
@@ -43,7 +46,7 @@ static int skip_spaces_and_tabs(char *str)
 	return (0);
 }
 
-static void	verif_command_line(char *command_line
+static char	*verif_command_line(char *command_line
 	, t_env **env)
 {
 	t_command_line_parsing_result	*parsing_result;
@@ -53,10 +56,16 @@ static void	verif_command_line(char *command_line
 		add_history(command_line);
 		parsing_result = ft_parse_command_line(command_line);
 		if (skip_spaces_and_tabs(command_line) == 0)
-			return ;
+		{
+			free(parsing_result);
+			free(command_line);
+			command_line = NULL;
+			return (command_line);
+		}
 		if (!parsing_result->did_succeed)
 		{
 			free(command_line);
+			command_line = NULL;
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);
 		}
@@ -64,6 +73,7 @@ static void	verif_command_line(char *command_line
 		{
 			write (2, "Error: too much pipe or in a wrong position !\n", 46);
 			free(command_line);
+			command_line = NULL;
 		}
 		else if (ft_strcmp(command_line, "''") == 0
 			|| ft_strcmp(command_line, "\"\"") == 0)
@@ -72,22 +82,25 @@ static void	verif_command_line(char *command_line
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);
 			free(command_line);
+			command_line = NULL;
 		}
 		else if (parsing_result->commands->arguments != NULL && (ft_strcmp(
 					parsing_result->commands->arguments->content, "\"\"") == 0
 				|| ft_strcmp(parsing_result->commands->arguments->content,
 					"''") == 0) && parsing_result->commands->next == NULL)
 		{
-			// erfe ?????????
-			printf("erfe");
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);
 			free(command_line);
+			command_line = NULL;
 		}
 		else
-			process_successful_command(parsing_result, env, command_line);
+			command_line = process_successful_command(
+					parsing_result, env, command_line);
+		return (command_line);
 	}
+	return (command_line);
 }
 
 int	ft_readline(t_env **env)
@@ -97,13 +110,16 @@ int	ft_readline(t_env **env)
 	command_line = NULL;
 	while (1)
 	{
+		if (command_line)
+			free(command_line);
+		command_line = NULL;
 		command_line = readline("minishell ~ ");
 		if (command_line == NULL)
 		{
 			free(command_line);
 			break ;
 		}
-		verif_command_line(command_line, env);
+		command_line = verif_command_line(command_line, env);
 	}
 	return (0);
 }

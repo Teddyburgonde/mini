@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 16:37:47 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 11:56:55 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ void	 process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
 		if (choice_pipe_setup(vars) == 1)
 			return ;
 		if (vars->nb_cmd >= 2
-			|| cmd_selector(envp, vars->cmd[vars->cmd_index - 1], vars, *redirect) == 1)
-			process(vars, tmp);
+			|| cmd_selector(envp, vars->cmd[vars->cmd_index - 1],
+				vars, *redirect) == 1)
+			process(vars, tmp, envp);
 		if (vars->cmd[vars->cmd_index - 1] != NULL
 			&& (ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "export") == 0
 			|| ft_strcmp(vars->cmd[vars->cmd_index - 1][0], "unset") == 0))

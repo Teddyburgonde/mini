@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:38 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 16:46:26 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/14 11:57:13 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@
 * dans le pipe si redirect->e_type == PIPE_OUT
 */
 
-int	process(t_vars *vars, t_redirection *redirect)
+int	process(t_vars *vars, t_redirection *redirect, t_env **env)
 {
 	vars->child = fork();
 	if (vars->child == 0)
-		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1]);
+		child_process(vars, redirect, vars->cmd[vars->cmd_index - 1], env);
 	else if (vars->child < 0)
 	{
 		perror("fork");
