@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
 /*   Updated: 2024/06/15 11:07:21 by rgobet           ###   ########.fr       */
@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <string.h>
 
 int	child_process(t_vars *vars, t_redirection *redirect
 		, char **actual_cmd, t_env **env)
@@ -19,9 +20,14 @@ int	child_process(t_vars *vars, t_redirection *redirect
 		exit(1);
 	write(2, "HeHo\n", 5);
 	ft_flow_redirection(vars, redirect);
-	if (redirect->infile_fd == -1 || redirect->outfile_fd == -1)
+	if (redirect->infile_fd == -1)
+	{	
+		perror(redirect->name_infile);
+		exit(1);
+	}
+	if (redirect->outfile_fd == -1)
 	{
-		perror("Error opening files");
+		perror(redirect->name_outfile);
 		exit(1);
 	}
 	ft_close_fd(vars);

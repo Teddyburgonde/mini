@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/14 12:43:29 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/15 13:59:04 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ typedef struct s_redirection {
 	int						nb_heredoc;
 	char					*file_heredoc;
 	char					*limiter;
+	char                    *name_infile;
+	char                    *name_outfile;	
 	enum
 	{
 		HERE,
@@ -434,7 +436,7 @@ char *read_line(int fd, char *stock);
 char	*ft_strdup_gnl(const char *s);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*extract_line(char *stock);
-char	*ft_strdup(const char *s);
+//char	*ft_strdup(const char *s);
 char	*extract_surplus_line(char *stock);
 char	*get_next_line(int fd);
 

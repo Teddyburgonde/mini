@@ -55,6 +55,7 @@ void	build_path(char **path, char **bin_path,
 		*bin_path = ft_strjoin(path[i++], "/");
 		*is_valid_cmd = ft_strjoin(*bin_path, full_cmd[0]);
 		free(*bin_path);
+		
 		if (access(*is_valid_cmd, X_OK) == 0)
 		{
 			update_full_cmd(&full_cmd, *is_valid_cmd);

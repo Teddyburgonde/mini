@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_new_utils_bis.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:02:42 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 12:32:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/15 14:02:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,9 @@ t_redirection	*ft_lstnew_redirection(void)
 	tmp->outfile_fd = STDOUT_FILENO;
 	tmp->limiter = NULL;
 	tmp->next = NULL;
+	// modif 15 juin 2024 
+	tmp->name_infile = NULL;
+	tmp->name_outfile = NULL;
+	
 	return (tmp);
 }
