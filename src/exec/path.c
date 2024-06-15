@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/12 16:19:57 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/15 10:17:41 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ int	verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env)
 {
 	if (fill_command_paths(vars, tmp, env) == -1)
 	{
-		ft_free(vars->path);
+		if (vars->path)
+		{
+			ft_free(vars->path);
+			vars->path = NULL;
+		}
 		ft_free_tab_3d(vars);
 		return (1);
 	}
