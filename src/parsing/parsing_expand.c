@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/14 12:16:57 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:28:27 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	if (!splitted_arguments)
 		return (0);
 	in = 0;
+	arg = NULL;
 	quote_in_var = FALSE;
 	tmp = argument_to_split;
 	tmp = ft_get_last_pos(tmp);
@@ -328,14 +329,20 @@ static int	ft_split_argument(t_argument *argument_to_split,
 			else
 				in++;
 		}
-		arg = lst_new_char_list();
-		if (!arg)
-			return (0);
-		arg->value = tmp_char->value;
-		arg->was_in_a_variable = tmp_char->was_in_a_variable;
-		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		tmp_char->last_pos = FALSE;
-		tmp_char = tmp_char->next;
+		if ((tmp_char->value == '\'' && tmp_char->next->value == '\'')
+			|| (tmp_char->value == '"' && tmp_char->next->value == '"'))
+			tmp_char = tmp_char->next->next;
+		if (tmp_char)
+		{
+			arg = lst_new_char_list();
+			if (!arg)
+				return (0);
+			arg->value = tmp_char->value;
+			arg->was_in_a_variable = tmp_char->was_in_a_variable;
+			ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
+			tmp_char->last_pos = FALSE;
+			tmp_char = tmp_char->next;
+		}
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
 	if (tmp_char == NULL)
@@ -493,7 +500,8 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		while (tmp != 0)
 			tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
 		tmp_split = splitted_arguments;
-		ft_remove_quotes(&tmp_split);
+		if (tmp_split->chars)
+			ft_remove_quotes(&tmp_split);
 	}
 	if (args_with_expanded_vars)
 		ft_lstclear_argument(&args_with_expanded_vars);

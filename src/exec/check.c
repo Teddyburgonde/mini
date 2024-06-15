@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 13:19:51 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/15 11:00:14 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	update_full_cmd(char ***full_cmd, char *is_valid_cmd)
 void	build_path(char **path, char **bin_path,
 	char **is_valid_cmd, char **full_cmd)
 {
-	int	i;
+	int		i;
+	t_bool	successfull;
 
 	i = 0;
-	while (path[i])
+	successfull = FALSE;
+	while (path && path[i])
 	{
 		*bin_path = ft_strjoin(path[i++], "/");
 		*is_valid_cmd = ft_strjoin(*bin_path, full_cmd[0]);
@@ -57,12 +59,13 @@ void	build_path(char **path, char **bin_path,
 		if (access(*is_valid_cmd, X_OK) == 0)
 		{
 			update_full_cmd(&full_cmd, *is_valid_cmd);
+			successfull = TRUE;
 			break ;
 		}
 		free(*is_valid_cmd);
 	}
 	// j'ai ajouté ceci
-	if (path[i] == NULL)
+	if (successfull == FALSE)
 	{
 		ft_putstr_fd(full_cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
@@ -77,13 +80,21 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	char	*is_valid_cmd;
 
 	i = 0;	
+	(void)vars;
 	//vars->cmd[i] = command_line;
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
-		ft_free_tab_3d(vars);
-		ft_free(vars->path);
+		ft_putstr_fd(command_line[0], 2);
+		ft_putstr_fd(": command not found.\n", 2);
+		// ft_free_tab_3d(vars);
+		// if (vars->path)
+		// {
+		// 	ft_free(vars->path);
+		// 	vars->path = NULL;
+		// }
 		// ft_free(vars->full_cmd);
+		return (command_line);
 	}
 	if (access(command_line[0], X_OK) == 0)
 		return (command_line);

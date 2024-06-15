@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 14:26:33 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/15 11:07:21 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	child_process(t_vars *vars, t_redirection *redirect
 {
 	if (redirect->ambiguous == TRUE)
 		exit(1);
+	write(2, "HeHo\n", 5);
 	ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1)
 	{	
@@ -35,7 +36,7 @@ int	child_process(t_vars *vars, t_redirection *redirect
 		cmd_selector(env, vars->cmd[vars->cmd_index - 1], vars, redirect);
 		exit(0);
 	}
-	if (actual_cmd == NULL)
+	if (actual_cmd == NULL || actual_cmd[0][0] == 0)
 		exit (0);
 	execve(actual_cmd[0], actual_cmd, vars->env);
 	ft_close_fd(vars);
