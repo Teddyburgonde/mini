@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/14 10:59:11 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:19:51 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	build_path(char **path, char **bin_path,
 		*bin_path = ft_strjoin(path[i++], "/");
 		*is_valid_cmd = ft_strjoin(*bin_path, full_cmd[0]);
 		free(*bin_path);
+		
 		if (access(*is_valid_cmd, X_OK) == 0)
 		{
 			update_full_cmd(&full_cmd, *is_valid_cmd);

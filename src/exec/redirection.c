@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/14 12:53:25 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/15 14:03:18 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,25 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
+
+static char	*ft_strdup(char *s)
+{
+	char		*tab;
+	int			i;
+
+	i = 0;
+	tab = malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (tab)
+	{
+		while (s[i])
+		{
+			tab[i] = s[i];
+			i++;
+		}
+		tab[i] = '\0';
+	}
+	return ((char *)tab);
+}
 t_redirection	*stock_redirection(t_command_to_expand *list)
 {
 	t_command_to_expand		*tmp_command;
@@ -233,6 +252,9 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					}
 					redirection->outfile_fd = open(tmp_redirection->arg,
 							O_CREAT | O_TRUNC | O_WRONLY, 0644);
+							// modif
+							// penser a le free 
+					redirection->name_outfile = ft_strdup(tmp_redirection->arg);
 				}
 				else if (tmp_redirection->e_type == REDIRECTION_INFILE)
 				{
@@ -244,6 +266,9 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					}
 					redirection->infile_fd = open(
 							tmp_redirection->arg, O_RDONLY, 0644);
+					// modif
+					// penser a le free 
+					redirection->name_infile =  ft_strdup(tmp_redirection->arg);
 				}
 				else if (tmp_redirection->e_type == REDIRECTION_APPEND)
 				{
@@ -288,6 +313,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					heredoc = TRUE;
 				}
 				tmp_redirection = tmp_redirection->next;
+				
 				save++;
 			}
 			if (tmp_redirection == NULL && save == 0 && redirection == NULL)
