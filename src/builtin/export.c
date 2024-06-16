@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 17:51:27 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:34:53 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,14 +168,13 @@ static int	verif_export(char *str)
 					&& i <= len_mid)
 				{
 					ft_putstr_fd(
-						"minishell: syntax error near unexpected token `", 2);
-					write(2, &str[i], 1);
-					write(2, "'\n", 2);
+						" not a valid identifier\n", 2);
 					return (1);
 				}
 				else if (append == TRUE && str[i] != '_'
 					&& i <= len_mid + 1)
 				{
+					printf("ZZZZZZZZZZZz\n");
 					ft_putstr_fd(
 						"minishell: syntax error near unexpected token `", 2);
 					write(2, &str[i], 1);
