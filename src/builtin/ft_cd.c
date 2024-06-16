@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 12:54:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 14:35:52 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_error_ft_cd(char **command)
 		return (EXIT_FAILURE);
 	if (command[2] != NULL)
 	{
-		write (1, "Error\n", 6);
+		write (2, " too many arguments\n",20);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

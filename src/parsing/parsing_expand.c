@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 13:54:20 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 14:03:31 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,12 +422,12 @@ static int	ft_split_argument(t_argument *argument_to_split,
 
 static t_bool	empty_quote_verif(t_char_list *tmp)
 {
-	if (tmp->value == '"')
+	if (tmp && tmp->value == '"')
 	{
 		if (tmp->next->value == '"' && tmp->next->next == NULL)
 			return (TRUE);
 	}
-	else if (tmp->value == '\'')
+	else if (tmp && tmp->value == '\'')
 	{
 		if (tmp->next->value == '\'' && tmp->next->next == NULL)
 			return (TRUE);
@@ -451,11 +451,11 @@ static void	ft_remove_quotes(t_argument **src)
 
 	while (*src != NULL)
 	{
-		if ((*src)->chars->value == '"')
+		if ((*src)->chars && (*src)->chars->value == '"')
 			in_simple = TRUE;
 		else
 			in_simple = FALSE;
-		if ((*src)->chars->value == '\'')
+		if ((*src)->chars && (*src)->chars->value == '\'')
 			in_double = TRUE;
 		else
 			in_double = FALSE;
