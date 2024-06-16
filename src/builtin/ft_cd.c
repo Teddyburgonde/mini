@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 14:35:52 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:48:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ char	*ft_chdid_and_verif(char *stock)
 {
 	if (chdir(stock) == -1)
 	{
-		printf("error directory\n");
+		write (2, " No such file or directory\n", 27);
+
 		exit(EXIT_FAILURE);
 	}
 	return (stock);

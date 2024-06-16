@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_message_for_exit.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:39:20 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/01 12:27:50 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 14:45:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_exit_message_2(char *command)
 {
 	ft_putstr_fd("exit\nbash: exit: ", 2);
 	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
+	//ft_putstr_fd(": numeric argument required\n", 2);
 }
 
 void	ft_exit_message_too_many_arguments(void)
