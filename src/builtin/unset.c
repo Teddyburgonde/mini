@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/10 15:10:52 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 11:56:57 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	unset(t_env **env, char **names)
 			prev = tmp;
 			tmp = tmp->next;
 		}
+		i++;
 	}
 	return (0);
 }

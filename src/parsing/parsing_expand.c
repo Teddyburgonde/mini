@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/15 14:42:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 11:51:15 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,21 @@ static t_argument	*ft_expand_vars_in_argument(
 		}
 		else if (argument[i] == '\"') // i add this code for print the value of env variable echo "$LANG"  --> en_US.UTF-8
 		{
+			tmp = lst_new_char_list();
+			if (!tmp)
+				return (NULL);
+			tmp->value = argument[i];
+			ft_lstadd_back_char_list(&arg->chars, tmp);
+			i++;
+			while (argument[i] != '\"')
+			{
+				tmp = lst_new_char_list();
+				if (!tmp)
+					return (NULL);
+				tmp->value = argument[i];
+				ft_lstadd_back_char_list(&arg->chars, tmp);
+				i++;
+			}
 			tmp = lst_new_char_list();
 			if (!tmp)
 				return (NULL);
@@ -268,6 +283,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	t_argument **args)
 {
 	int			in;
+	char		quote;
 	t_char_list	*arg;
 	t_char_list	*tmp_char;
 	t_argument	*tmp;
@@ -275,6 +291,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	t_bool		in_quote;
 	t_bool		quote_in_var;
 
+	quote = 0;
 	splitted_arguments = lst_new_argument();
 	if (!splitted_arguments)
 		return (0);
@@ -287,7 +304,10 @@ static int	ft_split_argument(t_argument *argument_to_split,
 		tmp = argument_to_split;
 	if (tmp->chars->value == '"'
 		|| tmp->chars->value == '\'')
+	{
+		quote = tmp->chars->value;
 		in_quote = TRUE;
+	}
 	else
 		in_quote = FALSE;
 	tmp_char = tmp->chars;
@@ -296,7 +316,10 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	{
 		if ((tmp_char->value == '\'' || tmp_char->value == '"')
 			&& quote_in_var == FALSE)
+		{
+			quote = tmp_char->value;
 			quote_in_var = TRUE;
+		}
 		else if ((tmp_char->value == '\'' || tmp_char->value == '"')
 			&& quote_in_var == TRUE)
 			quote_in_var = FALSE;
@@ -307,7 +330,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 			break ;
 		if (tmp_char->value == '\'' || tmp_char->value == '"')
 			tmp_char = tmp_char->next;
-		if (tmp_char)
+		if (tmp_char && tmp_char->value != quote)
 		{
 			arg = lst_new_char_list();
 			if (!arg)
@@ -324,16 +347,19 @@ static int	ft_split_argument(t_argument *argument_to_split,
 		if (tmp_char->value == '\''
 			|| tmp_char->value == '"')
 		{
-			if (in == 1)
+			if (in == 1 && tmp_char->value == quote)
 				in_quote = FALSE;
-			else
+			else if (in == 0)
+			{
+				quote = tmp_char->value;
 				in++;
+			}
 		}
 		if (tmp_char->value && tmp_char->next &&
 			((tmp_char->value == '\'' && tmp_char->next->value == '\'')
 			|| (tmp_char->value == '"' && tmp_char->next->value == '"')))
 			tmp_char = tmp_char->next->next;
-		if (tmp_char)
+		if (tmp_char && tmp_char->value != quote)
 		{
 			arg = lst_new_char_list();
 			if (!arg)
@@ -344,6 +370,8 @@ static int	ft_split_argument(t_argument *argument_to_split,
 			tmp_char->last_pos = FALSE;
 			tmp_char = tmp_char->next;
 		}
+		else if (tmp_char)
+			tmp_char = tmp_char->next;
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
 	if (tmp_char == NULL)
