@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 14:14:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 16:10:38 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,10 @@ static int	verif_export(char *str)
 	}
 	len_mid = ft_strcspn(str, "=");
 	if (len_mid == ft_strlen(str))
+	{
+		//ft_putstr_fd("': not a valid identifier\n", 2);
 		return (2);
+	}
 	if (str[len_mid - 1] == '+')
 		len_mid--;
 	else
