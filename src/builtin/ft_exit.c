@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 17:56:38 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:23:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,14 @@ int	ft_exit(char **command)
 	if (ft_isdigit(command[1][i]) == 1 && command[2] != NULL)
 	{
 		ft_putstr_fd(" too many arguments\n", 2);
-		return (1);
+		exit(1);
 	}
 	while (command[1][i])
 	{
+		if (command[1][i] == '-')
+			exit (156);
+		if (command[1][i] == '+')
+			exit (100);
 		if (!ft_isdigit(command[1][i]))
 		{
 			ft_putstr_fd(" numeric argument required\n", 2);
