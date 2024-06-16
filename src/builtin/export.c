@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 16:10:38 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:51:27 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,7 +320,10 @@ void	export(t_env **env, char **cmd)
 			handle_export_status_0(env, tmp_env, cmd[i], var_name, value);
 		}
 		else if (export_status == 2)
+		{
 			handle_export_status_2((env), tmp_env, cmd[i], var_name, value);
+			ft_putstr_fd(" not a valid identifier\n", 2);
+		}
 		i++;
 	}
 }

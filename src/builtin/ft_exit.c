@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 16:33:54 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:56:38 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	ft_exit(char **command)
 	{
 		if (!ft_isdigit(command[1][i]))
 		{
-			//ft_exit_message_2(command[1]);
-			exit (1);
+			ft_putstr_fd(" numeric argument required\n", 2);
+			exit (2);
 		}
 		i++;
 	}
