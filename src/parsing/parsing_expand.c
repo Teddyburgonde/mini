@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 11:51:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 13:54:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,16 @@ static t_argument	*ft_expand_vars_in_argument(
 					ft_lstadd_back_char_list(&arg->chars, tmp);
 					j++;
 				}
+				i = skip_dolar_var((char *)argument, i);
+			}
+			else if (argument[i] == '$' && argument[i + 1] == 0)
+			{
+				tmp = lst_new_char_list();
+				if (!tmp)
+					return (NULL);
+				tmp->value = argument[i];
+				tmp->was_in_a_variable = FALSE;
+				ft_lstadd_back_char_list(&arg->chars, tmp);
 				i = skip_dolar_var((char *)argument, i);
 			}
 			else
