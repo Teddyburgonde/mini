@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 11:07:21 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 09:47:35 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ int	child_process(t_vars *vars, t_redirection *redirect
 {
 	if (redirect->ambiguous == TRUE)
 		exit(1);
-	write(2, "HeHo\n", 5);
 	ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1)
 	{	
-		perror(redirect->name_infile);
+		write (2, "bash: ", 6);
+		ft_putstr_fd(redirect->name_infile, 2);
+		write (2, ":", 1);
+		write (2, " ", 1);
+		perror("");
 		exit(1);
 	}
 	if (redirect->outfile_fd == -1)

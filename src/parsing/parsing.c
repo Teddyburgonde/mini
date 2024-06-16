@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/04 11:25:51 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 10:39:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,10 @@ t_command_line_parsing_result	*parsing_command(
 			remaining_line = skip_spaces(remaining_line);
 			if (ft_strlen(remaining_line) == 0 || remaining_line[0] == '|')
 			{
-				write (2, "Error: too much pipe or in a wrong position !\n", 46);
+				ft_putstr_fd(
+						"minishell: syntax error near unexpected token `", 2);
+				ft_putstr_fd(remaining_line, 2);
+				write (1, "'\n", 2);
 				result->did_succeed = FALSE;
 				return (result);
 			}

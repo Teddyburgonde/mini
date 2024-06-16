@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/14 15:28:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/15 14:42:56 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,8 +329,9 @@ static int	ft_split_argument(t_argument *argument_to_split,
 			else
 				in++;
 		}
-		if ((tmp_char->value == '\'' && tmp_char->next->value == '\'')
-			|| (tmp_char->value == '"' && tmp_char->next->value == '"'))
+		if (tmp_char->value && tmp_char->next &&
+			((tmp_char->value == '\'' && tmp_char->next->value == '\'')
+			|| (tmp_char->value == '"' && tmp_char->next->value == '"')))
 			tmp_char = tmp_char->next->next;
 		if (tmp_char)
 		{
