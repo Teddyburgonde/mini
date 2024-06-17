@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 10:39:43 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:17:30 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,14 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 		redirection_result->did_succeed = FALSE;
 		return (redirection_result);
 	}
-	redirection_result->did_succeed = TRUE;
 	redirection_result->redirection = lst_new_redirection_parsing_result();
+	if (!redirection_result->redirection)
+	{
+		redirection_result->did_succeed = FALSE;
+		return (redirection_result);
+	}
+	redirection_result->did_succeed = TRUE;
+	str = skip_spaces(str);
 	redirection_result = ft_verif_redirection(str, redirection_result);
 	if (redirection_result->did_succeed == FALSE)
 		return (redirection_result);
@@ -93,7 +99,7 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 	str = skip_spaces(str);
 	redirection_result->redirection->arg = ft_strjoin_file(
 			str);
-	str = ft_skip_arg(str, " \"'\n\t|><");
+	str = ft_skip_arg(str, " \n\t|><");
 	redirection_result->remaining_line = str;
 	return (redirection_result);
 }

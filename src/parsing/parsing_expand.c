@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 14:03:31 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:47:18 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,6 +382,16 @@ static int	ft_split_argument(t_argument *argument_to_split,
 		}
 		else if (tmp_char)
 			tmp_char = tmp_char->next;
+	}
+	while (tmp_char && tmp_char->value != SPACE
+		&& tmp_char->value != TAB && tmp_char->value != NEW_LINE)
+	{
+		arg->value = tmp_char->value;
+		arg->was_in_a_variable = tmp_char->was_in_a_variable;
+		arg->next = NULL;
+		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
+		tmp_char->last_pos = FALSE;
+		tmp_char = tmp_char->next;
 	}
 	ft_lstadd_back_argument(args, splitted_arguments);
 	if (tmp_char == NULL)
