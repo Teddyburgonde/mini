@@ -6,11 +6,12 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 14:48:22 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/17 05:45:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 int	check_error_ft_cd_home(char **command)
 {
