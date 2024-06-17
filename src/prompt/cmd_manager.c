@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 08:34:42 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/17 12:34:20 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int	cmd_selector(t_env **env, char **command_line,
 
 int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 {
+	static int						first;
 	t_vars							vars;
 	t_command_to_expand				*tmp;
 	t_argument_to_expand			*tmp_arg;
@@ -131,8 +132,11 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 	tmp = cmd->commands;
 	tmp_arg = tmp->arguments;
 	vars.env = NULL;
-	vars.exit_code = 0;
-	vars.exit_code_signal = 0;
+	if (first == 0)
+	{
+		vars.exit_code = 0;
+		vars.exit_code_signal = 0;
+	}
 	if (*env)
 	{
 		tmp->redirections = ft_expand_redirections(&cmd->commands->redirections,
@@ -148,5 +152,6 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd)
 		ft_lstclear_commands(&cmd->commands);
 		free(vars.env);
 	}
+	first++;
 	return (0);
 }

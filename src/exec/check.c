@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 11:00:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 12:26:45 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	{
 		ft_putstr_fd(command_line[0], 2);
 		ft_putstr_fd(": command not found.\n", 2);
+		vars->exit_code = 127;
 		// ft_free_tab_3d(vars);
 		// if (vars->path)
 		// {

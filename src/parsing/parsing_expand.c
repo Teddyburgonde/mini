@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 11:00:03 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 12:10:38 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,25 @@ static t_argument	*ft_expand_vars_in_argument(
 {
 	t_char_list	*tmp;
 	t_argument	*arg;
+	t_bool		in_quote;
 	t_env		*var;
 	char		*var_name;
 	char		*exit_code;
 	int			i;
 	int			j;
+	int			s;
 
 	i = 0;
 	exit_code = NULL;
+	in_quote = FALSE;
 	arg = lst_new_argument();
 	if (!arg || !argument)
 		return (NULL);
+	j = 0;
 	while (argument[i] != 0)
 	{
-		j = 0;
-		if (argument[i] == '\'')
+		s = 0;
+		if (argument[i] == '\'' && in_quote == FALSE)
 		{
 			tmp = lst_new_char_list();
 			if (!tmp)
@@ -73,17 +77,24 @@ static t_argument	*ft_expand_vars_in_argument(
 				return (NULL);
 			tmp->value = argument[i];
 			ft_lstadd_back_char_list(&arg->chars, tmp);
-		}
-		else if (argument[i] == '\"') // i add this code for print the value of env variable echo "$LANG"  --> en_US.UTF-8
-		{
-			tmp = lst_new_char_list();
-			if (!tmp)
-				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
 			i++;
-			while (argument[i] != '\"')
+		}
+		else if (argument[i] == '"' || (in_quote == TRUE && argument[i] != '$'))
+		{
+			if (argument[i] == '"' && in_quote == FALSE)
 			{
+				tmp = lst_new_char_list();
+				if (!tmp)
+					return (NULL);
+				in_quote = TRUE;
+				tmp->value = argument[i];
+				ft_lstadd_back_char_list(&arg->chars, tmp);
+				i++;
+			}
+			while (argument[i] && argument[i] != '"')
+			{
+				if (argument[i] == '$')
+					break ;
 				tmp = lst_new_char_list();
 				if (!tmp)
 					return (NULL);
@@ -91,48 +102,58 @@ static t_argument	*ft_expand_vars_in_argument(
 				ft_lstadd_back_char_list(&arg->chars, tmp);
 				i++;
 			}
-			tmp = lst_new_char_list();
-			if (!tmp)
-				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
+			if (argument[i] == '"')
+			{
+				tmp = lst_new_char_list();
+				if (!tmp)
+					return (NULL);
+				in_quote = FALSE;
+				tmp->value = argument[i];
+				ft_lstadd_back_char_list(&arg->chars, tmp);
+				i++;
+			}
 		}
 		else if (argument[i] == '$')
 		{
 			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
-			if (ft_strcmp(var_name, "$?") == 0)
+			if (ft_strcmp(var_name, "$?") == 0
+				|| (var_name[0] == '$' && var_name[1] == '?'))
 			{
 				exit_code = ft_itoa(vars->exit_code);
-				while (exit_code[j])
+				while (exit_code[s])
 				{
 					tmp = lst_new_char_list();
 					if (!tmp)
 						return (NULL);
-					tmp->value = exit_code[j];
+					tmp->value = exit_code[s];
 					tmp->was_in_a_variable = TRUE;
 					ft_lstadd_back_char_list(&arg->chars, tmp);
-					j++;
+					s++;
 				}
 				free(exit_code);
-				i = skip_dolar_var((char *)argument, i);
+				i += 2;
 			}
 			else if (lst_search_env(var_name, env))
 			{
 				var = lst_search_env(var_name, env);
-				while (var->value[j])
+				while (var->value[s])
 				{
 					tmp = lst_new_char_list();
 					if (!tmp)
 						return (NULL);
-					tmp->value = var->value[j];
+					tmp->value = var->value[s];
 					tmp->was_in_a_variable = TRUE;
 					ft_lstadd_back_char_list(&arg->chars, tmp);
-					j++;
+					s++;
 				}
 				i = skip_dolar_var((char *)argument, i);
 			}
-			else if (argument[i] == '$' && argument[i + 1] == 0)
+			else if ((argument[i] == '$' && argument[i + 1] == 0)
+				|| (argument[i] == '$' && argument[i + 1] == '"'
+					&& in_quote == TRUE)
+				|| ((argument[i] == '$' && (argument[i + 1] == SPACE
+				|| argument[i + 1] == TAB || argument[i + 1] == NEW_LINE))))
 			{
 				tmp = lst_new_char_list();
 				if (!tmp)
@@ -162,7 +183,7 @@ static t_argument	*ft_expand_vars_in_argument(
 				i++;
 			}
 		}
-		if (argument[i] != 0)
+		if (argument[i] != 0 && argument[i] != '$' && s == 0)
 			i++;
 	}
 	return (arg);
