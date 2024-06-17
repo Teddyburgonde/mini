@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/16 14:47:18 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 11:00:03 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,6 +386,9 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	while (tmp_char && tmp_char->value != SPACE
 		&& tmp_char->value != TAB && tmp_char->value != NEW_LINE)
 	{
+		arg = lst_new_char_list();
+		if (!arg)
+			return (0);
 		arg->value = tmp_char->value;
 		arg->was_in_a_variable = tmp_char->was_in_a_variable;
 		arg->next = NULL;
