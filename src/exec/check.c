@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 11:00:14 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 11:35:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	build_path(char **path, char **bin_path,
 		*bin_path = ft_strjoin(path[i++], "/");
 		*is_valid_cmd = ft_strjoin(*bin_path, full_cmd[0]);
 		free(*bin_path);
-		
 		if (access(*is_valid_cmd, X_OK) == 0)
 		{
 			update_full_cmd(&full_cmd, *is_valid_cmd);
@@ -67,8 +66,13 @@ void	build_path(char **path, char **bin_path,
 	// j'ai ajouté ceci
 	if (successfull == FALSE)
 	{
-		ft_putstr_fd(full_cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		if (full_cmd[0][0] == '.')
+			ft_putstr_fd(" Is a directory\n", 2);
+		if (full_cmd[0][0] == '/')
+			ft_putstr_fd(" No such file or directory\n", 2);
+		else
+			ft_putstr_fd(" command not found\n", 2);
+		//ft_putstr_fd(full_cmd[0], 2);
 		// rajouter un exit_code 127
 	}
 }
