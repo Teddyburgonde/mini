@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/25 12:54:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 05:45:05 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 int	check_error_ft_cd_home(char **command)
 {
@@ -42,7 +43,7 @@ int	check_error_ft_cd(char **command)
 		return (EXIT_FAILURE);
 	if (command[2] != NULL)
 	{
-		write (1, "Error\n", 6);
+		write (2, " too many arguments\n",20);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -66,7 +67,8 @@ char	*ft_chdid_and_verif(char *stock)
 {
 	if (chdir(stock) == -1)
 	{
-		printf("error directory\n");
+		write (2, " No such file or directory\n", 27);
+
 		exit(EXIT_FAILURE);
 	}
 	return (stock);

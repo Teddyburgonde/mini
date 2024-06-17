@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/11 14:14:09 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 08:08:01 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,13 @@ static int	verif_export(char *str)
 		return (1);
 	}
 	len_mid = ft_strcspn(str, "=");
-	if (len_mid == ft_strlen(str))
-		return (2);
+	// MODIF 17 JUIN 2024 j'ai enlevé le if pour que export A- passe dans la boucle
+	// et on affiche le bon message d'erreur
+	// if (len_mid == ft_strlen(str))
+	// {
+	// 	//ft_putstr_fd("': not a valid identifier\n", 2);
+	// 	return (2);
+	// }
 	if (str[len_mid - 1] == '+')
 		len_mid--;
 	else
@@ -165,9 +170,7 @@ static int	verif_export(char *str)
 					&& i <= len_mid)
 				{
 					ft_putstr_fd(
-						"minishell: syntax error near unexpected token `", 2);
-					write(2, &str[i], 1);
-					write(2, "'\n", 2);
+						" not a valid identifier\n", 2);
 					return (1);
 				}
 				else if (append == TRUE && str[i] != '_'

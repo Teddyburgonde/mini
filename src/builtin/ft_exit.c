@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/10 11:16:37 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/16 18:23:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,19 @@ int	ft_exit(char **command)
 		ft_exit_message_0();
 	if (ft_isdigit(command[1][i]) == 1 && command[2] != NULL)
 	{
-		ft_exit_message_too_many_arguments();
-		return (1);
+		ft_putstr_fd(" too many arguments\n", 2);
+		exit(1);
 	}
 	while (command[1][i])
 	{
+		if (command[1][i] == '-')
+			exit (156);
+		if (command[1][i] == '+')
+			exit (100);
 		if (!ft_isdigit(command[1][i]))
 		{
-			ft_exit_message_2(command[1]);
-			exit (1);
+			ft_putstr_fd(" numeric argument required\n", 2);
+			exit (2);
 		}
 		i++;
 	}
