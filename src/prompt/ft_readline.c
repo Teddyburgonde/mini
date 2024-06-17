@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 10:26:54 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:46:24 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 // Si se n'est pas un built-in on creer un fork ... (pipex_bonus)
 
 static char	*process_successful_command(t_command_line_parsing_result
-*parsing_result, t_env **env, char *command_line)
+*parsing_result, t_env **env, char *command_line, t_vars *vars)
 {
-	ft_cmd_manager(env, parsing_result);
+	ft_cmd_manager(env, parsing_result, vars);
 	ft_lstclear_commands(&parsing_result->commands);
 	free(parsing_result);
 	if (command_line)
@@ -47,7 +47,7 @@ static int skip_spaces_and_tabs(char *str)
 }
 
 static char	*verif_command_line(char *command_line
-	, t_env **env)
+	, t_env **env, t_vars *vars)
 {
 	t_command_line_parsing_result	*parsing_result;
 
@@ -97,13 +97,13 @@ static char	*verif_command_line(char *command_line
 		}
 		else
 			command_line = process_successful_command(
-					parsing_result, env, command_line);
+					parsing_result, env, command_line, vars);
 		return (command_line);
 	}
 	return (command_line);
 }
 
-int	ft_readline(t_env **env)
+int	ft_readline(t_env **env, t_vars *vars)
 {
 	char							*command_line;
 
@@ -119,7 +119,7 @@ int	ft_readline(t_env **env)
 			free(command_line);
 			break ;
 		}
-		command_line = verif_command_line(command_line, env);
+		command_line = verif_command_line(command_line, env, vars);
 	}
 	return (0);
 }
