@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/17 14:46:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/17 15:51:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,21 @@ static char	*verif_command_line(char *command_line
 			free(parsing_result);
 			free(command_line);
 			command_line = NULL;
+			vars->exit_code = 2;
 			return (command_line);
 		}
 		if (!parsing_result->did_succeed)
 		{
 			free(command_line);
 			command_line = NULL;
+			vars->exit_code = 2;
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);
 		}
 		else if (command_line[0] == '|')
 		{
 			write (2, "Error: too much pipe or in a wrong position !\n", 46);
+			vars->exit_code = 2;
 			free(command_line);
 			command_line = NULL;
 		}
@@ -80,6 +83,7 @@ static char	*verif_command_line(char *command_line
 		{
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
+			vars->exit_code = 2;
 			free(parsing_result);
 			free(command_line);
 			command_line = NULL;
@@ -92,6 +96,7 @@ static char	*verif_command_line(char *command_line
 			write(2, "Command '' not found, but can be installed with !\n", 50);
 			ft_lstclear_commands(&parsing_result->commands);
 			free(parsing_result);
+			vars->exit_code = 2;
 			free(command_line);
 			command_line = NULL;
 		}
