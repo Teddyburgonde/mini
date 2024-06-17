@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/17 14:04:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/17 15:49:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,16 @@ void	update_full_cmd(char ***full_cmd, char *is_valid_cmd)
 	free(is_valid_cmd);
 }
 
-void	build_path(char **path, char **bin_path,
+int	build_path(char **path, char **bin_path,
 	char **is_valid_cmd, char **full_cmd)
 {
 	int		i;
+	char	*basic_cmd;
 	t_bool	successfull;
 
 	i = 0;
 	successfull = FALSE;
+	basic_cmd = copy(full_cmd[0]);
 	while (path && path[i])
 	{
 		*bin_path = ft_strjoin(path[i++], "/");
@@ -66,20 +68,21 @@ void	build_path(char **path, char **bin_path,
 	if (successfull == FALSE)
 	{
 		if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
-		{	
 			ft_putstr_fd(" No such file or directory", 2);
-			return ;
-		}
 		if (full_cmd[0][0] == '.')
-		{
 			ft_putstr_fd(" Is a directory\n", 2);
-		}
 		if (full_cmd[0][0] == '/')
 			ft_putstr_fd(" No such file or directory\n", 2);
 		else
-			ft_putstr_fd(" command not found\n", 2);
-		// rajouter un exit_code 127
+		{
+			ft_putstr_fd(basic_cmd, 2);
+			ft_putstr_fd(": command not found\n", 2);
+		}
+		free(basic_cmd);
+		return (127);
 	}
+	free(basic_cmd);
+	return (0);
 }
 
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
@@ -108,7 +111,7 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	}
 	if (access(command_line[0], X_OK) == 0)
 		return (command_line);
-	build_path(path, &bin_path, &is_valid_cmd, command_line);
+	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
 	return (command_line);
 }
 
