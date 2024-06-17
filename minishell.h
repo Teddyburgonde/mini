@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 16:22:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:44:59 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ void	ctrl_d(int signal);
 * Prompt
 */
 
-int		ft_readline(t_env **env);
+int	ft_readline(t_env **env, t_vars *vars);
 
 /*
 * Parsing
@@ -301,7 +301,7 @@ char	**ft_setup_command(t_argument *arg);
 * Command manager
 */
 
-int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd);
+int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars);
 int	cmd_selector(t_env **env, char **command_line,
 		t_vars *vars, t_redirection *redirect);
 
