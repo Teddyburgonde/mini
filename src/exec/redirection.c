@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 11:09:56 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:02:27 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,8 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 			redirection = ft_lstnew_redirection();
 			if (!redirection)
 				return (NULL);
+			redirection->name_infile = NULL;
+			redirection->name_outfile = NULL;
 			redirection->nb_heredoc = nb_hd;
 			tmp_redirection = tmp_command->redirections;
 			save = 0;
@@ -249,6 +251,9 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
+						if (redirection->name_outfile)
+							free(redirection->name_outfile);
+						redirection->name_outfile = NULL;
 					}
 					redirection->outfile_fd = open(tmp_redirection->arg,
 							O_CREAT | O_TRUNC | O_WRONLY, 0644);
@@ -263,6 +268,9 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						close(redirection->infile_fd);
 						redirection->infile_fd = -1;
+						if (redirection->name_infile)
+							free(redirection->name_infile);
+						redirection->name_infile = NULL;
 					}
 					redirection->infile_fd = open(
 							tmp_redirection->arg, O_RDONLY, 0644);
@@ -277,9 +285,13 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 					{
 						close(redirection->outfile_fd);
 						redirection->outfile_fd = -1;
+						if (redirection->name_outfile)
+							free(redirection->name_outfile);
+						redirection->name_outfile = NULL;
 					}
 					redirection->outfile_fd = open(tmp_redirection->arg,
 							O_CREAT | O_APPEND | O_WRONLY, 0644);
+					redirection->name_outfile = ft_strdup(tmp_redirection->arg);
 				}
 				else if (tmp_redirection->e_type == REDIRECTION_HEREDOC
 					&& is_last(tmp_redirection) == tmp_redirection)

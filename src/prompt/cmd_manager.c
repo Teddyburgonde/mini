@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/18 11:34:29 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:26:11 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,7 @@ int	cmd_selector(t_env **env, char **command_line,
 	if (vars->nb_cmd > 1 && vars->child != 0)
 		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0 && ft_strlen(command_line[0]) > 0)
-	{
-		printf("IL EST SUR\n");
 		vars->exit_code = ft_echo(command_line, vars, redirect);
-	}
 	else if (ft_strcmp(command_line[0], "pwd") == 0 && ft_strlen(command_line[0]) > 0) 
 		vars->exit_code = ft_pwd(vars, redirect);
 	else if (ft_strcmp(command_line[0], "unset") == 0 && ft_strlen(command_line[0]) > 0)

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 09:47:35 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:56:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	child_process(t_vars *vars, t_redirection *redirect
 {
 	if (redirect->ambiguous == TRUE)
 		exit(1);
-	ft_flow_redirection(vars, redirect);
+	//ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1)
 	{	
 		write (2, "bash: ", 6);
@@ -30,9 +30,13 @@ int	child_process(t_vars *vars, t_redirection *redirect
 	}
 	if (redirect->outfile_fd == -1)
 	{
-		perror(redirect->name_outfile);
+		ft_putstr_fd(redirect->name_outfile, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		// write(2, "TEST\n", 5);
+		// perror(redirect->name_outfile);
 		exit(1);
 	}
+	ft_flow_redirection(vars, redirect);
 	ft_close_fd(vars);
 	if (actual_cmd != NULL && is_builtins_exec(vars) == 1)
 	{

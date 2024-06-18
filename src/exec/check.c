@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 08:41:59 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:52:12 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_infile(t_redirection_to_expand *redir)
 			if (access(tmp->arg, F_OK) != 0 || access(tmp->arg, R_OK) != 0
 				|| access(tmp->arg, W_OK) != 0)
 			{
-				ft_putstr_fd("Error\nPermission denied\n", 2);
+				ft_putstr_fd("Error\n Permission denied\n", 2);
 				return (1);
 			}
 		}
