@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/17 15:49:32 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 08:09:18 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,26 @@ int	build_path(char **path, char **bin_path,
 	if (successfull == FALSE)
 	{
 		if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
-			ft_putstr_fd(" No such file or directory", 2);
-		if (full_cmd[0][0] == '.')
+		{
+			if (access(full_cmd[0], F_OK) != -1)
+			{
+				if (access(full_cmd[0], X_OK) == -1)
+				{
+					ft_putstr_fd(" Permission denied\n", 2);
+					free(basic_cmd);
+					return (126);
+				}
+			}
+			else
+			{
+				ft_putstr_fd(" No such file or directory\n", 2);
+				free(basic_cmd);
+				return (127);
+			}
+		}
+		else if (full_cmd[0][0] == '.')
 			ft_putstr_fd(" Is a directory\n", 2);
-		if (full_cmd[0][0] == '/')
+		else if (full_cmd[0][0] == '/')
 			ft_putstr_fd(" No such file or directory\n", 2);
 		else
 		{
