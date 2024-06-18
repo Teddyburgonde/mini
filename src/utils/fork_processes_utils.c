@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_processes_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/14 11:56:55 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 11:15:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

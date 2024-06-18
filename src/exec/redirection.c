@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 07:52:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:09:56 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 							tmp_redirection->arg, O_RDONLY, 0644);
 					// modif
 					// penser a le free 
-					redirection->name_infile =  ft_strdup(tmp_redirection->arg);
+					redirection->name_infile = ft_strdup(tmp_redirection->arg);
 				}
 				else if (tmp_redirection->e_type == REDIRECTION_APPEND)
 				{

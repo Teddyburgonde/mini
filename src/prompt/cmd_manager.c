@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 14:45:33 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 11:34:29 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,16 @@ int	cmd_selector(t_env **env, char **command_line,
 	}
 	if (vars->nb_cmd > 1 && vars->child != 0)
 		return (1);
-	if (ft_strcmp(command_line[0], "echo") == 0)
+	if (ft_strcmp(command_line[0], "echo") == 0 && ft_strlen(command_line[0]) > 0)
+	{
+		printf("IL EST SUR\n");
 		vars->exit_code = ft_echo(command_line, vars, redirect);
-	else if (ft_strcmp(command_line[0], "pwd") == 0)
+	}
+	else if (ft_strcmp(command_line[0], "pwd") == 0 && ft_strlen(command_line[0]) > 0) 
 		vars->exit_code = ft_pwd(vars, redirect);
-	else if (ft_strcmp(command_line[0], "unset") == 0)
+	else if (ft_strcmp(command_line[0], "unset") == 0 && ft_strlen(command_line[0]) > 0)
 		vars->exit_code = unset(env, command_line);
-	else if (ft_strcmp(command_line[0], "export") == 0)
+	else if (ft_strcmp(command_line[0], "export") == 0 && ft_strlen(command_line[0]) > 0)
 	{
 		if (command_line[1])
 			export(env, command_line);
@@ -109,12 +112,12 @@ int	cmd_selector(t_env **env, char **command_line,
 				ft_free(envp);
 		}
 	}
-	else if (ft_strcmp(command_line[0], "cd") == 0)
+	else if (ft_strcmp(command_line[0], "cd") == 0 && ft_strlen(command_line[0]) > 0)
 		vars->exit_code = ft_cd(command_line, env);
-	else if (ft_strcmp(command_line[0], "printenv") == 0
-		|| ft_strcmp(command_line[0], "env") == 0)
+	else if ((ft_strcmp(command_line[0], "printenv") == 0
+		|| ft_strcmp(command_line[0], "env") == 0) && ft_strlen(command_line[0]) > 0)
 		exec_env(command_line, vars, redirect);
-	else if (ft_strcmp(command_line[0], "exit") == 0)
+	else if (ft_strcmp(command_line[0], "exit") == 0 && ft_strlen(command_line[0]) > 0)
 		vars->exit_code = ft_exit(command_line);
 	else
 		return (1);

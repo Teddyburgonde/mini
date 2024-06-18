@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 12:10:38 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 10:38:41 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ static t_argument	*ft_expand_vars_in_argument(
 		}
 		else if (argument[i] == '$')
 		{
+			//printf("JJEJEJEJE\n");
 			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
 			if (ft_strcmp(var_name, "$?") == 0
