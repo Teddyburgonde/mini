@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/18 12:26:11 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:47:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ int	cmd_selector(t_env **env, char **command_line,
 	if (vars->nb_cmd > 1 && vars->child != 0)
 		return (1);
 	if (ft_strcmp(command_line[0], "echo") == 0 && ft_strlen(command_line[0]) > 0)
+	{
 		vars->exit_code = ft_echo(command_line, vars, redirect);
+	}
 	else if (ft_strcmp(command_line[0], "pwd") == 0 && ft_strlen(command_line[0]) > 0) 
 		vars->exit_code = ft_pwd(vars, redirect);
 	else if (ft_strcmp(command_line[0], "unset") == 0 && ft_strlen(command_line[0]) > 0)
@@ -132,13 +134,17 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars
 	if (*env)
 	{
 		tmp->redirections = ft_expand_redirections(&cmd->commands->redirections,
-				*env, vars);
+			*env, vars);
 		redirection = stock_redirection(cmd->commands);
 		vars->nb_cmd = ft_lstsize_command(cmd->commands);
 		vars->path = ft_split(lst_search_env("$PATH", *env)->value, ':');
 		vars->cmd = ft_calloc(vars->nb_cmd + 1, sizeof(char **));
 		verif_fill_command_paths(vars, tmp, *env);
-		ft_free(vars->path);
+		if (vars->path)
+		{
+			ft_free(vars->path);
+			vars->path = NULL;
+		}
 		vars->env = env_to_char(*env);
 		fork_processes(vars, &redirection, env);
 		ft_lstclear_commands(&cmd->commands);

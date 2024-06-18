@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/15 10:17:41 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 14:11:04 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env)
 {
 	if (fill_command_paths(vars, tmp, env) == -1)
 	{
+		
 		if (vars->path)
 		{
 			ft_free(vars->path);

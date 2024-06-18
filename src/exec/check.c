@@ -6,12 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 12:52:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:39:41 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../minishell.h"
+#include <dirent.h>
 
 int	check_infile(t_redirection_to_expand *redir)
 {
@@ -69,6 +70,7 @@ int	build_path(char **path, char **bin_path,
 	{
 		if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
 		{
+			DIR *dir = opendir(&full_cmd[0][2]);
 			if (access(full_cmd[0], F_OK) != -1)
 			{
 				if (access(full_cmd[0], X_OK) == -1)
@@ -78,11 +80,13 @@ int	build_path(char **path, char **bin_path,
 					return (126);
 				}
 			}
-			else
+			else if (dir)
 			{
-				ft_putstr_fd(" No such file or directory\n", 2);
+				ft_putstr_fd(basic_cmd, 2);
+				ft_putstr_fd(": No such file or directory\n", 2);
 				free(basic_cmd);
-				return (127);
+				closedir(dir);
+				return (126);
 			}
 		}
 		else if (full_cmd[0][0] == '.')
@@ -93,6 +97,7 @@ int	build_path(char **path, char **bin_path,
 		{
 			ft_putstr_fd(basic_cmd, 2);
 			ft_putstr_fd(": command not found\n", 2);
+			return (127);
 		}
 		free(basic_cmd);
 		return (127);
@@ -106,23 +111,25 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	int		i;
 	char	*bin_path;
 	char	*is_valid_cmd;
+	DIR		*dir;
 
 	i = 0;	
-	(void)vars;
-	//vars->cmd[i] = command_line;
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
 		ft_putstr_fd(command_line[0], 2);
 		ft_putstr_fd(": command not found.\n", 2);
 		vars->exit_code = 127;
-		// ft_free_tab_3d(vars);
-		// if (vars->path)
-		// {
-		// 	ft_free(vars->path);
-		// 	vars->path = NULL;
-		// }
-		// ft_free(vars->full_cmd);
+		return (command_line);
+	}
+	dir = opendir(&command_line[0][2]);
+	if (dir)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(command_line[0], 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		closedir(dir);
+		vars->exit_code = 126;
 		return (command_line);
 	}
 	if (access(command_line[0], X_OK) == 0)
