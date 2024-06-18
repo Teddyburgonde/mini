@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/18 14:47:59 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:53:16 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars
 		tmp->redirections = ft_expand_redirections(&cmd->commands->redirections,
 			*env, vars);
 		redirection = stock_redirection(cmd->commands);
+		// apres ceci l'exit_code 
 		vars->nb_cmd = ft_lstsize_command(cmd->commands);
 		vars->path = ft_split(lst_search_env("$PATH", *env)->value, ':');
 		vars->cmd = ft_calloc(vars->nb_cmd + 1, sizeof(char **));

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 15:39:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:10:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ int	build_path(char **path, char **bin_path,
 				closedir(dir);
 				return (126);
 			}
+			else 
+			{
+				ft_putstr_fd(" No such file or directory\n", 2);
+			}
 		}
 		else if (full_cmd[0][0] == '.')
 			ft_putstr_fd(" Is a directory\n", 2);
@@ -101,6 +105,10 @@ int	build_path(char **path, char **bin_path,
 		}
 		free(basic_cmd);
 		return (127);
+	}
+	else if (successfull == FALSE) 
+	{
+		printf("JE RNENTNNERNERN\n");
 	}
 	free(basic_cmd);
 	return (0);
