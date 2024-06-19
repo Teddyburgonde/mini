@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:54:32 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 07:52:41 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:05:06 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ static char	*ft_strdup(char *s)
 	}
 	return ((char *)tab);
 }
-t_redirection	*stock_redirection(t_command_to_expand *list)
+t_redirection	*stock_redirection(t_command_to_expand *list, t_env *env)
 {
 	t_command_to_expand		*tmp_command;
 	t_redirection_to_expand	*tmp_redirection;
@@ -299,7 +299,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 								O_WRONLY | O_TRUNC | O_CREAT, 0644);
 						if (redirection->infile_fd != -1)
 						{
-							ft_heredoc(redirection, tmp_command->redirections, TRUE);
+							ft_heredoc(redirection, tmp_command->redirections, TRUE, env);
 							close(redirection->infile_fd);
 							redirection->infile_fd = -1;
 							redirection->infile_fd = open(
@@ -309,7 +309,7 @@ t_redirection	*stock_redirection(t_command_to_expand *list)
 							perror("Error opening heredoc files");
 					}
 					else
-						ft_heredoc(redirection, tmp_command->redirections, FALSE);
+						ft_heredoc(redirection, tmp_command->redirections, FALSE, env);
 					heredoc = TRUE;
 				}
 				tmp_redirection = tmp_redirection->next;

@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/17 14:55:50 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 11:06:41 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,10 +401,10 @@ void	set_interactive_mode(int	set);
 * Exec
 */
 
-t_redirection	*stock_redirection(t_command_to_expand *list);
+t_redirection	*stock_redirection(t_command_to_expand *list, t_env *env);
 t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
 void	ft_heredoc(t_redirection *redirection,
-		t_redirection_to_expand *all, t_bool save);
+			t_redirection_to_expand *all, t_bool save, t_env *env);
 int	check_infile(t_redirection_to_expand *redir);
 int	open_files(t_vars *vars, t_redirection_to_expand *redir);
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
