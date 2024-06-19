@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/14 12:18:27 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/18 10:59:54 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,8 @@ static int	need_to_be_expand(t_redirection_to_expand *redirection,
 		if (redirection->arg[i] == '$' && in_quote == FALSE)
 		{
 			var_name = get_var_name(&redirection->arg[i]);
-			if (lst_search_env(var_name, env) || ft_strcmp(var_name, "$?") == 0)
+			if (lst_search_env(var_name, env) || ft_strcmp(var_name, "$?") == 0
+				|| (var_name[0] == '$' && var_name[1] == '?'))
 			{
 				free (var_name);
 				return (TRUE);

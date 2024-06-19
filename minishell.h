@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 15:45:14 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:23:56 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -402,10 +402,11 @@ void	set_interactive_mode(int	set);
 * Exec
 */
 
-t_redirection	*stock_redirection(t_command_to_expand *list);
+t_redirection	*stock_redirection(t_command_to_expand *list, t_env *env, t_vars *vars);
 t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
 void	ft_heredoc(t_redirection *redirection,
-		t_redirection_to_expand *all, t_bool save);
+		t_redirection_to_expand *all, t_bool save,
+			t_env *env, t_vars *vars);
 int	check_infile(t_redirection_to_expand *redir);
 int	open_files(t_vars *vars, t_redirection_to_expand *redir);
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
@@ -428,7 +429,7 @@ t_bool is_builtins_parsing(char **str);
 void	ft_flow_redirection(t_vars *vars, t_redirection *redirect);
 
  /*
-* GNL
+* GNL // Sa dégage
 */
 
 char *ft_strjoin_mod(char *s1, char *s2);
