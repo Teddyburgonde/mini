@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 08:58:18 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:20:08 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	build_path(char **path, char **bin_path,
 	int		i;
 	char	*basic_cmd;
 	t_bool	successfull;
+	DIR *dir;
 
 	i = 0;
 	successfull = FALSE;
@@ -69,42 +70,31 @@ int	build_path(char **path, char **bin_path,
 	}
 	if (successfull == FALSE)
 	{
-		if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
+		dir = opendir(full_cmd[0]);
+		
+		if (ft_strcspn(full_cmd[0], "/") < ft_strlen(full_cmd[0]))
 		{
-			DIR *dir = opendir(&full_cmd[0][2]);
-			if (access(full_cmd[0], F_OK) != -1)
+			if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
 			{
-				if (access(full_cmd[0], X_OK) == -1)
+				dir = opendir(&full_cmd[0][2]);
+				if (dir)
 				{
-					ft_putstr_fd(" Permission denied\n", 2);
-					free(basic_cmd);
+					ft_putstr_fd(" Is a directory\n", 2);
 					return (126);
 				}
-			}
-			else if (dir)
-			{
-				ft_putstr_fd(basic_cmd, 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-				free(basic_cmd);
-				closedir(dir);
-				return (126);
+				else
+				{
+					ft_putstr_fd(" No such file or directory\n", 2);
+					return (127);
+				}
 			}
 			else 
 			{
 				ft_putstr_fd(" No such file or directory\n", 2);
+				return (127);
 			}
 		}
-		else if (full_cmd[0][0] == '.')
-			ft_putstr_fd(" Is a directory\n", 2);
-		else if (full_cmd[0][0] == '/')
-			ft_putstr_fd(" No such file or directory\n", 2);
-		else
-		{
-			ft_putstr_fd(basic_cmd, 2);
-			ft_putstr_fd(": command not found\n", 2);
-			return (127);
-		}
-		free(basic_cmd);
+		ft_putstr_fd(" command not found\n", 2);
 		return (127);
 	}
 	free(basic_cmd);
@@ -122,27 +112,30 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
-		printf("JE PASSSSSSSSSSSSSSSSSSSS\n");
 		ft_putstr_fd(command_line[0], 2);
 		ft_putstr_fd(" command not found.\n", 2);
 		vars->exit_code = 127;
 		return (command_line);
 	}
-	dir = opendir(&command_line[0][2]);
-	if (dir)
+	if (access(command_line[0], X_OK) == 0)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(command_line[0], 2);
-		ft_putstr_fd(": Is a directory\n", 2);
+		dir = opendir(command_line[0]);
+		if (dir && ft_strcspn(command_line[0], "/") == ft_strlen(command_line[0]))
+		{	
+			ft_putstr_fd(" command not found\n", 2);
+			vars->exit_code = 127;
+			closedir(dir);
+			return (command_line);
+		}
+		else if (dir && command_line[0][0] == '.' && command_line[0][1] == '/')
+		{
+			ft_putstr_fd(" Is a directory\n", 2);
+			vars->exit_code = 126; 
+			return (command_line);
+		}
 		closedir(dir);
-		vars->exit_code = 126;
 		return (command_line);
 	}
-	// ! j'ai viré cette ligne 19/06/2024
-	// if (access(command_line[0], X_OK) == 0)
-	// {
-	// 	return (command_line);
-	// }
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
 	return (command_line);
 }

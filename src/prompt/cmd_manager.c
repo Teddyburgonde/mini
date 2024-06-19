@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/18 16:53:16 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:43:58 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	cmd_selector(t_env **env, char **command_line,
 	else if (ft_strcmp(command_line[0], "export") == 0 && ft_strlen(command_line[0]) > 0)
 	{
 		if (command_line[1])
-			export(env, command_line);
+			vars->exit_code = export(env, command_line);
 		else
 		{
 			envp = env_to_char_export(tmp);
