@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/19 15:24:11 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/19 16:40:15 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ int	cmd_selector(t_env **env, char **command_line,
 	else if (ft_strcmp(command_line[0], "pwd") == 0 && ft_strlen(command_line[0]) > 0) 
 		vars->exit_code = ft_pwd(vars, redirect);
 	else if (ft_strcmp(command_line[0], "unset") == 0 && ft_strlen(command_line[0]) > 0)
+	{
 		vars->exit_code = unset(env, command_line);
+		//printf("%d\n", vars->exit_code);
+	}
 	else if (ft_strcmp(command_line[0], "export") == 0 && ft_strlen(command_line[0]) > 0)
 	{
 		if (command_line[1])

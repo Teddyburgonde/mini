@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 15:20:08 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:09:13 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	build_path(char **path, char **bin_path,
 				else
 				{
 					ft_putstr_fd(" No such file or directory\n", 2);
-					return (127);
+					return (126);
 				}
 			}
 			else 
