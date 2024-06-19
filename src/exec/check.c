@@ -6,12 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 08:09:18 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:20:08 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../minishell.h"
+#include <dirent.h>
+#include <unistd.h>
 
 int	check_infile(t_redirection_to_expand *redir)
 {
@@ -25,7 +27,7 @@ int	check_infile(t_redirection_to_expand *redir)
 			if (access(tmp->arg, F_OK) != 0 || access(tmp->arg, R_OK) != 0
 				|| access(tmp->arg, W_OK) != 0)
 			{
-				ft_putstr_fd("Error\nPermission denied\n", 2);
+				ft_putstr_fd("Error\n Permission denied\n", 2);
 				return (1);
 			}
 		}
@@ -48,6 +50,7 @@ int	build_path(char **path, char **bin_path,
 	int		i;
 	char	*basic_cmd;
 	t_bool	successfull;
+	DIR *dir;
 
 	i = 0;
 	successfull = FALSE;
@@ -67,34 +70,31 @@ int	build_path(char **path, char **bin_path,
 	}
 	if (successfull == FALSE)
 	{
-		if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
+		dir = opendir(full_cmd[0]);
+		
+		if (ft_strcspn(full_cmd[0], "/") < ft_strlen(full_cmd[0]))
 		{
-			if (access(full_cmd[0], F_OK) != -1)
+			if (full_cmd[0][0] == '.' && full_cmd[0][1] == '/')
 			{
-				if (access(full_cmd[0], X_OK) == -1)
+				dir = opendir(&full_cmd[0][2]);
+				if (dir)
 				{
-					ft_putstr_fd(" Permission denied\n", 2);
-					free(basic_cmd);
+					ft_putstr_fd(" Is a directory\n", 2);
 					return (126);
 				}
+				else
+				{
+					ft_putstr_fd(" No such file or directory\n", 2);
+					return (127);
+				}
 			}
-			else
+			else 
 			{
 				ft_putstr_fd(" No such file or directory\n", 2);
-				free(basic_cmd);
 				return (127);
 			}
 		}
-		else if (full_cmd[0][0] == '.')
-			ft_putstr_fd(" Is a directory\n", 2);
-		else if (full_cmd[0][0] == '/')
-			ft_putstr_fd(" No such file or directory\n", 2);
-		else
-		{
-			ft_putstr_fd(basic_cmd, 2);
-			ft_putstr_fd(": command not found\n", 2);
-		}
-		free(basic_cmd);
+		ft_putstr_fd(" command not found\n", 2);
 		return (127);
 	}
 	free(basic_cmd);
@@ -106,27 +106,36 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	int		i;
 	char	*bin_path;
 	char	*is_valid_cmd;
+	DIR		*dir;
 
-	i = 0;	
-	(void)vars;
-	//vars->cmd[i] = command_line;
+	i = 0;
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
 		ft_putstr_fd(command_line[0], 2);
-		ft_putstr_fd(": command not found.\n", 2);
+		ft_putstr_fd(" command not found.\n", 2);
 		vars->exit_code = 127;
-		// ft_free_tab_3d(vars);
-		// if (vars->path)
-		// {
-		// 	ft_free(vars->path);
-		// 	vars->path = NULL;
-		// }
-		// ft_free(vars->full_cmd);
 		return (command_line);
 	}
 	if (access(command_line[0], X_OK) == 0)
+	{
+		dir = opendir(command_line[0]);
+		if (dir && ft_strcspn(command_line[0], "/") == ft_strlen(command_line[0]))
+		{	
+			ft_putstr_fd(" command not found\n", 2);
+			vars->exit_code = 127;
+			closedir(dir);
+			return (command_line);
+		}
+		else if (dir && command_line[0][0] == '.' && command_line[0][1] == '/')
+		{
+			ft_putstr_fd(" Is a directory\n", 2);
+			vars->exit_code = 126; 
+			return (command_line);
+		}
+		closedir(dir);
 		return (command_line);
+	}
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
 	return (command_line);
 }

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 10:36:50 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:27:27 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	ft_remove_env_variable(t_env **env, char *name)
 	prev = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->var_name, name) == 0)
+		if (ft_strcmp(tmp->var_name, name) == 0 
+			&& ft_strlen(tmp->var_name) > 0 && ft_strlen(name) > 0)
 		{
 			if (prev)
 				prev->next = tmp->next;
@@ -53,7 +54,7 @@ int	unset(t_env **env, char **names)
 		return (1);
 	while (names[i])
 	{
-		if (ft_strcmp(names[i], "SHELL") == 0)
+		if (ft_strcmp(names[i], "SHELL") == 0 && ft_strlen(names[i]) > 0)
 			save = 1;
 		if (save == 0 && ft_remove_env_variable(env, names[i]) != 0)
 			save = 1;

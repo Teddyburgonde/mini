@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
 /*   Updated: 2024/06/19 15:23:56 by rgobet           ###   ########.fr       */
@@ -16,6 +16,7 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <dirent.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -309,7 +310,7 @@ int	cmd_selector(t_env **env, char **command_line,
 * Builtins
 */
 
-void	export(t_env **env, char **cmd);
+int		export(t_env **env, char **cmd);
 int		ft_cd(char **command, t_env **env);
 int		ft_echo(char **command, t_vars *vars, t_redirection *redirect);
 int		ft_pwd(t_vars *vars, t_redirection *redirect);

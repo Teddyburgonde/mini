@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/17 08:08:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:47:32 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,6 @@ static int	verif_export(char *str)
 		return (1);
 	}
 	len_mid = ft_strcspn(str, "=");
-	// MODIF 17 JUIN 2024 j'ai enlevé le if pour que export A- passe dans la boucle
-	// et on affiche le bon message d'erreur
-	// if (len_mid == ft_strlen(str))
-	// {
-	// 	//ft_putstr_fd("': not a valid identifier\n", 2);
-	// 	return (2);
-	// }
 	if (str[len_mid - 1] == '+')
 		len_mid--;
 	else
@@ -297,7 +290,7 @@ static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char 
 	else
 		hide_and_update_env_var(tmp_env, cmd, var_name);
 }
-void	export(t_env **env, char **cmd)
+int	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;
 	char	*var_name;
@@ -307,6 +300,7 @@ void	export(t_env **env, char **cmd)
 
 	i = 1;
 	value = NULL;
+	export_status = 0;
 	while (cmd[i] != NULL)
 	{
 		export_status = verif_export(cmd[i]);
@@ -323,4 +317,5 @@ void	export(t_env **env, char **cmd)
 			handle_export_status_2((env), tmp_env, cmd[i], var_name, value);
 		i++;
 	}
+	return (export_status);
 }

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
 /*   Updated: 2024/06/19 15:55:54 by rgobet           ###   ########.fr       */
@@ -194,8 +194,8 @@ static void	fill_tmp_content(char **tmp_content, t_redirection *redirection,
 	{
 		free(*tmp_content);
 		*tmp_content = NULL;
+		//exit (500);
 		// close(fd_tmp);
-		// unlink("tmp_heredoc");
 		return ;
 	}
 	else
@@ -258,3 +258,4 @@ void	ft_heredoc(t_redirection *redirection,
 		all = all->next;
 	}
 }
+
