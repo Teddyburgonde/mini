@@ -6,13 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 17:10:30 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 08:58:18 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../minishell.h"
 #include <dirent.h>
+#include <unistd.h>
 
 int	check_infile(t_redirection_to_expand *redir)
 {
@@ -106,10 +107,6 @@ int	build_path(char **path, char **bin_path,
 		free(basic_cmd);
 		return (127);
 	}
-	else if (successfull == FALSE) 
-	{
-		printf("JE RNENTNNERNERN\n");
-	}
 	free(basic_cmd);
 	return (0);
 }
@@ -121,12 +118,13 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 	char	*is_valid_cmd;
 	DIR		*dir;
 
-	i = 0;	
+	i = 0;
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
 	{
+		printf("JE PASSSSSSSSSSSSSSSSSSSS\n");
 		ft_putstr_fd(command_line[0], 2);
-		ft_putstr_fd(": command not found.\n", 2);
+		ft_putstr_fd(" command not found.\n", 2);
 		vars->exit_code = 127;
 		return (command_line);
 	}
@@ -140,8 +138,11 @@ char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line)
 		vars->exit_code = 126;
 		return (command_line);
 	}
-	if (access(command_line[0], X_OK) == 0)
-		return (command_line);
+	// ! j'ai viré cette ligne 19/06/2024
+	// if (access(command_line[0], X_OK) == 0)
+	// {
+	// 	return (command_line);
+	// }
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
 	return (command_line);
 }
