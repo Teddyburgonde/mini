@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/19 16:40:15 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:41:46 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars
 				*env, vars);
 		redirection = stock_redirection(cmd->commands, *env, vars);
 		vars->nb_cmd = ft_lstsize_command(cmd->commands);
+		//--- Looking for a value that does not exist, PATH has been unset ---//
+		//--- Verify in the env linked list if the VARIABLE exists, if not, do not do that ---//
 		vars->path = ft_split(lst_search_env("$PATH", *env)->value, ':');
 		vars->cmd = ft_calloc(vars->nb_cmd + 1, sizeof(char **));
 		verif_fill_command_paths(vars, tmp, *env);

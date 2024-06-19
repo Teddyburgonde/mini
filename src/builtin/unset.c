@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/19 16:49:18 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:42:50 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,24 @@ int	ft_remove_env_variable(t_env **env, char *name)
 int	unset(t_env **env, char **names)
 {
 	int		i;
-	int		save;
 
 	i = 1;
-	save = 0;
-	// modif le 17 juin 2024 
 	if (!env || !*env)
+	{
 		return (1);
+	}
 	while (names[i])
 	{
-		if (ft_strcmp(names[i], "SHELL") == 0 && ft_strlen(names[i]) > 0)
+		/* if (ft_strcmp(names[i], "SHELL") == 0 && ft_strlen(names[i]) > 0)
 		{
 			save = 0;
 		}
 		if (ft_strcmp(names[i], "PATH") == 0 && ft_strlen(names[i]) > 0)
 		{
 			save = 0;
-		}
-		if (save == 0 && ft_remove_env_variable(env, names[i]) != 0)
-			save = 0;
+		} */
+		ft_remove_env_variable(env, names[i]);
 		i++;
 	}
-	return (save);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 16:24:33 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:48:13 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	ft_cd(char **command, t_env **env)
 	t_env	*current;
 
 	current = *env;
-	check_error_ft_cd(command);
+	if (check_error_ft_cd(command) == 1)
+		return (1);
 	current = find_env_by_var_name(*env, "OLDPWD");
 	path_current = getcwd(NULL, 0);
 	free(current->full_path);
