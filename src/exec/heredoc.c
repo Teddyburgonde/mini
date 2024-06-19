@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 13:04:36 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/19 15:55:54 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,23 @@ static t_bool	need_to_be_expand(char *str, t_env *env)
 }
 
 // Malloc a faire et a verif les index.
-static int	ft_strlen_with_expand(char *str, t_env *env)
+static int	ft_strlen_with_expand(char *str, t_env *env, t_vars *vars)
 {
 	int		i;
 	int		j;
 	int		count;
 	char	*var_name;
+	char	*exit_code;
 	t_env	*var;
 
 	i = 0;
 	j = 0;
 	count = 0;
-	while (str && str[i]) // Verif "$USER"
+	while (str && str[i])
 	{
-		count += j + 1;
+		count += j;
 		j = 0;
-		if (str[i] == '$') // ADD $?
+		if (str[i] == '$')
 		{
 			var_name = get_var_name(&str[i]);
 			if (var_name)
@@ -69,27 +70,36 @@ static int	ft_strlen_with_expand(char *str, t_env *env)
 						j++;
 				}
 			}
-			if (var_name == NULL || var_name[0] == 0) // Si la var existe pas
+			if (var_name == NULL || var_name[0] == 0)
 			{
 				j = i;
 				i = skip_dolar_var(str, i);
 				count -= j - i;
 			}
 			else if (var_name[0] == '$' && var_name[1] == '?')
-				count++; // Size du itoa
+			{
+				exit_code = ft_itoa(vars->exit_code);
+				while (exit_code && exit_code[j])
+					j++;
+				i += 2;
+				free(exit_code);
+			}
 			else
 				i = skip_dolar_var(str, i);
 			free(var_name);
 		}
 		if (str[i] && str[i] != '$')
+		{
 			i++;
+			count++;
+		}
 	}
 	if (j != 0)
 		return (count + j);
 	return (count);
 }
 
-static char	*expand_line(char *str, t_env *env)
+static char	*expand_line(char *str, t_env *env, t_vars *vars)
 {
 	int		i;
 	int		t;
@@ -97,12 +107,13 @@ static char	*expand_line(char *str, t_env *env)
 	int		size;
 	char	*tmp;
 	char	*var_name;
+	char	*exit_code;
 	t_env	*var;
 
 	i = 0;
 	t = 0;
 	j = 0;
-	size = ft_strlen_with_expand(str, env) + 1;
+	size = ft_strlen_with_expand(str, env, vars) + 1;
 	tmp = copy(str);
 	free(str);
 	str = malloc(sizeof(char) * size);
@@ -111,11 +122,11 @@ static char	*expand_line(char *str, t_env *env)
 		str = NULL;
 		return (str);
 	}
-	while (tmp && tmp[t])
+	while (tmp && tmp[t]) // Verif $?$USER
 	{
 		i += j;
 		j = 0;
-		if (tmp[t] == '$') // ADD $?
+		if (tmp[t] == '$')
 		{
 			var_name = get_var_name(&tmp[t]);
 			if (var_name == NULL || var_name[0] == 0)
@@ -126,6 +137,16 @@ static char	*expand_line(char *str, t_env *env)
 			else if (tmp[t] == '$' && (tmp[t + 1] == SPACE
 					|| tmp[t + 1] == TAB || tmp[t + 1] == NEW_LINE))
 				str[i + j] = tmp[t];
+			else if (var_name[0] == '$' && var_name[1] == '?')
+			{
+				exit_code = ft_itoa(vars->exit_code);
+				while (exit_code && exit_code[j])
+				{
+					str[i + j] = exit_code[j];
+					j++;
+				}
+				free(exit_code);
+			}
 			else
 			{
 				var = lst_search_env(var_name, env);
@@ -138,13 +159,16 @@ static char	*expand_line(char *str, t_env *env)
 					}
 				}
 			}
-			t = skip_dolar_var(tmp, t) - 1;
+			if (tmp[t] == '$' && tmp[t + 1] == '?')
+				t += 2;
+			else
+				t = skip_dolar_var(tmp, t) - 1;
 			free(var_name);
 			j--;
 		}
 		else
 			str[i] = tmp[t];
-		if (tmp[t])
+		if (tmp[t] && tmp[t] != '$')
 			t++;
 		i++;
 	}
@@ -153,8 +177,8 @@ static char	*expand_line(char *str, t_env *env)
 	return (str);
 }
 
-void	fill_tmp_content(char **tmp_content, t_redirection *redirection,
-	int fd_tmp, t_env *env)
+static void	fill_tmp_content(char **tmp_content, t_redirection *redirection,
+	int fd_tmp, t_env *env, t_vars *vars)
 {
 	t_redirection	*tmp_redirection;
 
@@ -177,14 +201,15 @@ void	fill_tmp_content(char **tmp_content, t_redirection *redirection,
 	else
 	{
 		if (need_to_be_expand(*tmp_content, env) >= TRUE)
-			*tmp_content = expand_line(*tmp_content, env);
+			*tmp_content = expand_line(*tmp_content, env, vars);
 		ft_putstr_fd(*tmp_content, fd_tmp);
 		ft_putstr_fd("\n", fd_tmp);
 	}
 }
 
 void	ft_heredoc(t_redirection *redirection,
-		t_redirection_to_expand *all, t_bool save, t_env *env)
+		t_redirection_to_expand *all, t_bool save,
+			t_env *env, t_vars *vars)
 {
 	char			*tmp_content;
 	int				count;
@@ -204,7 +229,7 @@ void	ft_heredoc(t_redirection *redirection,
 					// 	return ;
 					while (1)
 					{
-						fill_tmp_content(&tmp_content, redirection, redirection->infile_fd, env);
+						fill_tmp_content(&tmp_content, redirection, redirection->infile_fd, env, vars);
 						if (tmp_content == NULL)
 							return ;
 						else
