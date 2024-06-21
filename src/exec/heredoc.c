@@ -6,12 +6,11 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 07:29:18 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 13:48:04 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../minishell.h"
-#include <unistd.h>
+#include "../../minishell.h"
 
 static t_bool	need_to_be_expand(char *str, t_env *env)
 {

@@ -6,13 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 09:59:34 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 13:47:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char **error_command_for_find_path(char **command_line, t_vars *vars)
+char	**error_command_for_find_path(char **command_line, t_vars *vars)
 {
 	if (command_line == NULL || command_line[0] == NULL
 		|| command_line[0][0] == '\0')
@@ -23,6 +23,24 @@ char **error_command_for_find_path(char **command_line, t_vars *vars)
 		return (command_line);
 	}
 	return (NULL);
+}
+
+int	access_dir(char **command_line, DIR *dir, t_vars *vars)
+{
+	if (dir)
+	{
+		if (command_line[0][0] == '.' && command_line[0][1] == '/')
+		{
+			ft_putstr_fd(" Is a directory\n", 2);
+			vars->exit_code = 126;
+		}
+		else if (ft_strcspn(command_line[0], "/") == ft_strlen(command_line[0]))
+		{
+			ft_putstr_fd(" command not found\n", 2);
+			vars->exit_code = 127;
+		}
+	}
+	return (vars->exit_code);
 }
 
 char	**find_the_accessible_path(char **path,
@@ -43,21 +61,13 @@ char	**find_the_accessible_path(char **path,
 		dir = opendir(command_line[0]);
 		if (dir)
 		{
-			if (command_line[0][0] == '.' && command_line[0][1] == '/')
-			{
-				ft_putstr_fd(" Is a directory\n", 2);
-				vars->exit_code = 126;
-			}
-			else if (ft_strcspn(command_line[0], "/") == ft_strlen(command_line[0]))
-			{
-				ft_putstr_fd(" command not found\n", 2);
-				vars->exit_code = 127;
-			}
+			vars->exit_code = access_dir(command_line, dir, vars);
+			closedir(dir);
 		}
-		closedir(dir);
+		else
+			vars->exit_code = 126;
 		return (command_line);
 	}
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
 	return (command_line);
 }
-

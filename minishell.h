@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 09:52:08 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:40:40 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,12 @@ void	error_close_files(t_redirection *redirect);
 void	ft_close_fd(t_vars *vars);
 t_bool	is_builtins_exec(t_vars *vars);
 t_bool	is_builtins_parsing(char **str);
+void	copy_content(char *tab, const char *s1, int len);
+char 	*allocate_tab(const char *s1, int *len);
+char	*allocate_and_prepare_tab(const char *s1, const char *s2);
+void	copy_and_concatenante(char *tab, const char *s1, const char *s2);
+char	*ft_allocate_tab(const char *s1, const char *s2, char *reject);
+void	copy_tab(char *tab, const char *s1, const char *s2, char *reject);
 
 /*
 * Env
@@ -349,7 +355,6 @@ void	set_interactive_mode(int	set);
 */
 
 void	ft_heredoc(t_redirection *redirection,t_redirection_to_expand *all, t_bool save, t_env *env, t_vars *vars);
-int		check_infile(t_redirection_to_expand *redir);
 int		open_files(t_vars *vars, t_redirection_to_expand *redir);
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
 int		build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
