@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin_until_utils.c                           :+:      :+:    :+:   */
+/*   ft_strjoin_quoted_arg_utils.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/21 16:38:53 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 19:49:17 by tebandam         ###   ########.fr       */
+/*   Created: 2024/06/21 19:46:09 by tebandam          #+#    #+#             */
+/*   Updated: 2024/06/21 19:52:10 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_allocate_tab(const char *s1, const char *s2, char *reject)
+char	*allocate_tab_quoted(const char *s1, const char *s2, char *reject)
 {
 	char	*tab;
 	size_t	len1;
@@ -23,12 +23,15 @@ char	*ft_allocate_tab(const char *s1, const char *s2, char *reject)
 	if (s1)
 		len1 = ft_strlen(s1);
 	if (s2)
-		len2 = ft_strcspn(s2, reject);
-	tab = malloc((1 + len1 + len2) * sizeof(char));
+		len2 = ft_strcspn(&s2[1], reject) + 2;
+	tab = malloc((len1 + len2 + 1) * sizeof(char));
+	if (!tab)
+		return (NULL);
 	return (tab);
 }
 
-void	copy_tab(char *tab, const char *s1, const char *s2, char *reject)
+void	copy_and_concatenate_quoted_arg(char *tab, const char *s1,
+	const char *s2, char *reject)
 {
 	int	i;
 	int	j;
@@ -45,12 +48,12 @@ void	copy_tab(char *tab, const char *s1, const char *s2, char *reject)
 	}
 	if (s2)
 	{
-		while (j < ft_strcspn(s2, reject))
+		while (j < ft_strcspn(&s2[1], reject) + 2)
 		{
 			tab[i] = s2[j];
-			i++;
 			j++;
+			i++;
 		}
 	}
-	tab[i] = 0;
+	tab[i] = '\0';
 }

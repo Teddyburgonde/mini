@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 15:07:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 15:08:14 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:57:40 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 char	*allocate_and_prepare_tab(const char *s1, const char *s2)
 {
-	char *tab;
+	char	*tab;
 	size_t	len1;
 	size_t	len2;
 
 	len1 = 0;
 	len2 = 0;
-
 	if (s1)
 		len1 = ft_strlen(s1);
 	if (s2)

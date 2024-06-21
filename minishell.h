@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 16:40:40 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:43:02 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,9 @@ char	*ft_skip_arg(const char *str, char *reject);
 char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
 char	*ft_strjoin_file(char *s1);
+char 	*allocate_tab_quoted(const char *s1, const char *s2, char *reject);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
+void	copy_and_concatenate_quoted_arg(char *tab, const char *s1, const char *s2, char *reject);
 
 t_command_line_parsing_result		*ft_parse_command_line(char *command_line);
 t_command_parsing_result			*ft_allocated_result(void);

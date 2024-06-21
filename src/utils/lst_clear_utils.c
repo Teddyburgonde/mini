@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 12:47:43 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 12:52:33 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:56:23 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	ft_lstclear_commands(t_command_to_expand **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		// if (tmp->redirections)
-		// 	ft_lstclear_redirections(&tmp->redirections);
 		if (tmp->arguments)
 			ft_lstclear_arguments(&tmp->arguments);
 		free(tmp);

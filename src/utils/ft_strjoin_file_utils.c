@@ -6,24 +6,24 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 15:00:23 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 15:05:57 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:53:58 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char *allocate_tab(const char *s1, int *len)
+char	*allocate_tab(const char *s1, int *len)
 {
-	char *tab;
+	char	*tab;
 	size_t	length;
-	
+
 	if (s1[0] != '\'' && s1[0] != '"')
 	{
 		length = ft_strcspn(s1, "<>| \n\t");
 		tab = malloc((1 + length) * sizeof(char));
 		*len = length;
 	}
-	else 
+	else
 	{
 		length = ft_strcspn(&s1[1], "<>| \n\t");
 		tab = malloc((3 + length) * sizeof(char));
@@ -44,4 +44,3 @@ void	copy_content(char *tab, const char *s1, int len)
 	}
 	tab[i] = 0;
 }
-
