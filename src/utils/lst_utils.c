@@ -3,140 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/12 16:29:23 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/20 20:23:49 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_lstclear_redirections(t_redirection_to_expand **lst)
+void	close_file_descriptors(t_redirection *node)
 {
-	t_redirection_to_expand	*tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
+	if (node->infile_fd == STDIN_FILENO || node->infile_fd == STDOUT_FILENO)
+		node->infile_fd = -1;
+	if (node->outfile_fd == STDIN_FILENO || node->outfile_fd == STDOUT_FILENO)
+		node->outfile_fd = -1;
+	if (node->outfile_fd != -1)
 	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		if (tmp->arg)
-			free(tmp->arg);
-		free(tmp);
+		close(node->outfile_fd);
+		node->outfile_fd = -1;
+	}
+	if (node->infile_fd != -1)
+	{
+		close(node->infile_fd);
+		node->infile_fd = -1;
 	}
 }
 
-void	ft_lstclear_arguments(t_argument_to_expand **lst)
+static void free_node_resources(t_redirection *node) 
 {
-	t_argument_to_expand	*tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		if (tmp->content)
-			free(tmp->content);
-		free(tmp);
-	}
+    if (node->e_position == HERE)
+        unlink(node->file_heredoc);
+    if (node->limiter)
+        free(node->limiter);
+    if (node->file_heredoc)
+        free(node->file_heredoc);
 }
 
-void	ft_lstclear_commands(t_command_to_expand **lst)
+static void	clear_node(t_redirection *node)
 {
-	t_command_to_expand	*tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		// if (tmp->redirections)
-		// 	ft_lstclear_redirections(&tmp->redirections);
-		if (tmp->arguments)
-			ft_lstclear_arguments(&tmp->arguments);
-		free(tmp);
-	}
+	if (!node)
+        return;
+    close_file_descriptors(node);
+    free_node_resources(node);
+    free(node);
 }
 
-// int	ft_lstsize_expand(t_char_list *lst)
-// {
-// 	t_char_list	*tmp;
-// 	t_bool		in_quote;
-// 	int			size;
-
-// 	tmp = lst;
-// 	size = 0;
-// 	if (tmp->value == '\'' || tmp->value == '"')
-// 	{
-// 		size++;
-// 		in_quote = TRUE;
-// 		tmp = tmp->next;
-// 	}
-// 	else
-// 		in_quote = FALSE;
-// 	while (tmp && in_quote == FALSE)
-// 	{
-// 		if (tmp->value == SPACE || tmp->value == TAB || tmp->value == NEW_LINE)
-// 			break ;
-// 		else if (tmp->value == '\'' || tmp->value == '"')
-// 			break ;
-// 		else
-// 		{
-// 			tmp = tmp->next;
-// 			size++;
-// 		}
-// 	}
-// 	while (tmp && in_quote == TRUE)
-// 	{
-// 		if (tmp->value == '\'' || tmp->value == '"')
-// 		{
-// 			in_quote = FALSE;
-// 			size++;
-// 		}
-// 		else
-// 		{
-// 			tmp = tmp->next;
-// 			size++;
-// 		}
-// 	}
-// 	return (size);
-// }
-
-void	ft_lstclear_char_list(t_char_list **lst)
-{
-	t_char_list	*tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		free(tmp);
-	}
-}
-
-void	ft_lstclear_argument(t_argument **lst)
-{
-	t_argument	*tmp;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		tmp = *lst;
-		*lst = (*lst)->next;
-		if (tmp->chars)
-			ft_lstclear_char_list(&tmp->chars);
-		free(tmp);
-	}
-}
-
-void ft_lstclear_final_redirection(t_redirection **lst)
+void	ft_lstclear_final_redirection(t_redirection **lst)
 {
 	t_redirection	*tmp;
 
@@ -146,26 +59,7 @@ void ft_lstclear_final_redirection(t_redirection **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		if (tmp->e_position == HERE)
-			unlink(tmp->file_heredoc);
-		if (tmp->limiter)
-			free(tmp->limiter);
-		if (tmp->file_heredoc)
-			free(tmp->file_heredoc);
-		if (tmp->infile_fd == STDIN_FILENO || tmp->infile_fd == STDOUT_FILENO)
-			tmp->infile_fd = -1;
-		if (tmp->outfile_fd == STDIN_FILENO || tmp->outfile_fd == STDOUT_FILENO)
-			tmp->outfile_fd = -1;
-		if (tmp->outfile_fd != -1)
-		{
-			close(tmp->outfile_fd);
-			tmp->outfile_fd = -1;
-		}
-		if (tmp->infile_fd != -1)
-		{
-			close(tmp->infile_fd);
-			tmp->infile_fd = -1;
-		}
-		free(tmp);
+		clear_node(tmp);
 	}
 }
+

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 15:55:54 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/20 07:29:18 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ static char	*expand_line(char *str, t_env *env, t_vars *vars)
 				t = skip_dolar_var(tmp, t);
 				continue ;
 			}
-			else if (tmp[t] == '$' && (tmp[t + 1] == SPACE
-					|| tmp[t + 1] == TAB || tmp[t + 1] == NEW_LINE))
+			else if (tmp[t] == '$' && (tmp[t + 1] == ' '
+					|| tmp[t + 1] == '\t' || tmp[t + 1] == '\n'))
 				str[i + j] = tmp[t];
 			else if (var_name[0] == '$' && var_name[1] == '?')
 			{

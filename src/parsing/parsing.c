@@ -6,15 +6,12 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 10:38:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 14:09:07 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-
-
-//exit code synstax error exit code 2 
 t_argument_parsing_result	*parse_quote(const char *remaining_line,
 	t_argument_parsing_result *result)
 {
@@ -183,7 +180,7 @@ t_command_line_parsing_result	*parsing_command(
 			if (ft_strlen(remaining_line) == 0 || remaining_line[0] == '|')
 			{
 				ft_putstr_fd(
-						"minishell: syntax error near unexpected token `", 2);
+					"minishell: syntax error near unexpected token `", 2);
 				ft_putstr_fd(remaining_line, 2);
 				write (1, "'\n", 2);
 				result->did_succeed = FALSE;

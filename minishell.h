@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 15:23:56 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/21 09:52:08 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,12 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <limits.h>
-# define NEW_LINE '\n'
-# define SPACE ' '
-# define RIGHT '>'
-# define LEFT '<'
-# define TAB '\t'
-# define PIPE '|'
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
+# include <string.h>
 
 typedef enum s_bool {
 	TRUE = 1,
 	FALSE = 0
 }	t_bool;
-
-
 
 /*
 * Global variables
@@ -100,7 +89,6 @@ typedef struct s_redirection_to_expand
 }			t_redirection_to_expand;
 
 typedef struct s_command_to_expand {
-
 	t_argument_to_expand		*arguments;
 	t_redirection_to_expand		*redirections;
 
@@ -108,7 +96,6 @@ typedef struct s_command_to_expand {
 }	t_command_to_expand;
 
 typedef struct command_line_parsing_result {
-
 	t_bool				did_succeed;
 
 	t_command_to_expand	*commands;
@@ -134,7 +121,6 @@ typedef struct redirection_parsing_result {
 }	t_redirection_parsing_result;
 
 typedef struct argument_parsing_result {
-
 	t_bool					did_succeed;
 
 	t_argument_to_expand	*argument;
@@ -148,16 +134,14 @@ typedef struct argument_parsing_result {
 */
 
 typedef struct s_char_list {
-
 	char				value;
 	t_bool				last_pos;
-	t_bool				was_in_a_variable; // Maybe sa degage
+	t_bool				was_in_a_variable;
 
 	struct s_char_list	*next;
 }	t_char_list;
 
 typedef struct s_argument {
-
 	t_char_list			*chars;
 
 	struct s_argument	*next;	
@@ -167,16 +151,14 @@ typedef struct s_argument {
 * Expand redirections
 */
 
-// e_type va peut-etre sauter
-
 typedef struct s_redirection {
 	int						infile_fd;
 	int						outfile_fd;
 	int						nb_heredoc;
 	char					*file_heredoc;
 	char					*limiter;
-	char                    *name_infile;
-	char                    *name_outfile;	
+	char					*name_infile;
+	char					*name_outfile;	
 	enum
 	{
 		HERE,
@@ -190,6 +172,7 @@ typedef struct s_redirection {
 /*
 * Utilitaries
 */
+
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_strchr(char *s, int c);
 void	ft_putstr_fd(char *s, int fd);
@@ -205,7 +188,6 @@ int		ft_strcspn(const char *s, char *reject);
 int		skip_dolar_var(char *argument, int index);
 int		ft_atoi(const char *str);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
-char	*get_next_line(int fd);
 int		ft_lstsize_command(t_command_to_expand *cmd);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 int		ft_lstsize_env(t_env *env);
@@ -218,19 +200,19 @@ void	ft_exit_message_2(char *command);
 void	ft_exit_message_too_many_arguments(void);
 void	ft_exit_message_argument_required(char *command);
 int		ft_isdigit(int c);
-t_bool	is_builtins_exec(t_vars *vars);
-t_bool	is_builtins_parsing(char **str);
 void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp);
 int		choice_pipe_setup(t_vars *vars);
 int		setup_pipe(int *pipe_fd);
 void	initialize_vars(t_vars *vars);
 int		wait_process(t_vars *vars);
-int	process(t_vars *vars, t_redirection *redirect, t_env **env);
+int		process(t_vars *vars, t_redirection *redirect, t_env **env);
 void	handle_pipe_closing(t_vars *vars);
-int	child_process(t_vars *vars, t_redirection *redirect
-		, char **actual_cmd, t_env **env);
+int		child_process(t_vars *vars, t_redirection *redirect,
+			char **actual_cmd, t_env **env);
 void	error_close_files(t_redirection *redirect);
 void	ft_close_fd(t_vars *vars);
+t_bool	is_builtins_exec(t_vars *vars);
+t_bool	is_builtins_parsing(char **str);
 
 /*
 * Env
@@ -246,12 +228,13 @@ char	**env_to_char_export(t_env *env);
 
 void	ft_ctrl_c(int signal);
 void	ctrl_d(int signal);
+void	run_signals(void);
 
 /*
 * Prompt
 */
 
-int	ft_readline(t_env **env, t_vars *vars);
+int		ft_readline(t_env **env, t_vars *vars);
 
 /*
 * Parsing
@@ -259,38 +242,30 @@ int	ft_readline(t_env **env, t_vars *vars);
 
 char	*skip_spaces(const char *str);
 char	*skip_one_character(const char *str);
-char	*skip_quote(
-			const char *str, char c, t_argument_parsing_result *result);
+char	*skip_quote(const char *str, char c, t_argument_parsing_result *result);
 char	*ft_skip_arg(const char *str, char *reject);
 char	*ft_strjoin_until(char *s1, const char *s2, char *reject);
 char	*ft_strjoin_arg(char *s1, const char *s2);
 char	*ft_strjoin_file(char *s1);
 char	*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
 
-t_command_line_parsing_result	*ft_parse_command_line(char *command_line);
-
-t_redirection_parsing_result	*parse_redirection(char *str);
-
-t_command_parsing_result		*ft_allocated_result(void);
-t_command_parsing_result		*redirections(
-			t_command_parsing_result *result, char *remaining_line,
-			t_redirection_parsing_result *redirection_result);
-t_command_parsing_result		*arguments(
-			t_command_parsing_result *result,
-			t_argument_parsing_result *argument_result, char *remaining_line);
-
-t_argument_parsing_result		*parse_quote(const char *remaining_line,
-			t_argument_parsing_result *result);
-t_argument_parsing_result		*is_parsing_arg(const char *remaining_line,
-			t_argument_parsing_result *result);
-
-t_command_parsing_result		*parse_command(char *command_line);
-t_command_parsing_result		*ft_redirections_arguments(
-			char **remaining_line, t_command_parsing_result *result,
-			t_redirection_parsing_result *redirection_result,
-			t_argument_parsing_result *argument_result);
-t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
-		t_env *env, t_vars *vars);
+t_command_line_parsing_result		*ft_parse_command_line(char *command_line);
+t_command_parsing_result			*ft_allocated_result(void);
+t_command_parsing_result			*redirections(t_command_parsing_result *result,
+	char *remaining_line, t_redirection_parsing_result *redirection_result);
+t_command_parsing_result			*arguments(t_command_parsing_result *result,
+	t_argument_parsing_result *argument_result, char *remaining_line);
+t_command_parsing_result			*parse_command(char *command_line);
+t_command_parsing_result			*ft_redirections_arguments(char **remaining_line,
+	t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,
+	t_argument_parsing_result *argument_result);
+t_argument_parsing_result			*is_parsing_arg(const char *remaining_line,
+	t_argument_parsing_result *result);
+t_argument_parsing_result			*parse_quote(const char *remaining_line,
+	t_argument_parsing_result *result);
+t_redirection_parsing_result		*parse_redirection(char *str);
+t_argument							*ft_expand_argument(const t_argument_to_expand	*argument,
+	t_env *env, t_vars *vars);
 
 /*
 * Setup command
@@ -302,9 +277,8 @@ char	**ft_setup_command(t_argument *arg);
 * Command manager
 */
 
-int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars);
-int	cmd_selector(t_env **env, char **command_line,
-		t_vars *vars, t_redirection *redirect);
+int		ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars);
+int		cmd_selector(t_env **env, char **command_line, t_vars *vars, t_redirection *redirect);
 
 /*
 * Builtins
@@ -314,21 +288,26 @@ int		export(t_env **env, char **cmd);
 int		ft_cd(char **command, t_env **env);
 int		ft_echo(char **command, t_vars *vars, t_redirection *redirect);
 int		ft_pwd(t_vars *vars, t_redirection *redirect);
-int	unset(t_env **env, char **names);
+int		unset(t_env **env, char **names);
 int		ft_exit(char **command);
+int		is_there_an_option_n(char **command);
+void	print_with_option_n(char **command);
+void	print_not_option_n(char **command);
+void	print_with_option_n_fd(char **command, int fd);
+void	print_not_option_n_fd(char **command, int fd);
+int		has_invalid_argument(char *arg, char *next_arg);
 
 /*
 * Chain list
 */
 
-t_env	*ft_lstnew_env(void);
-t_env	*lst_search_env(char *s, t_env *env);
-
-t_argument_to_expand				*lst_new_argument_parsing_result(void);
-t_command_to_expand					*lst_new_command_parsing_result(void);
-t_redirection_to_expand				*lst_new_redirection_parsing_result(void);
-t_char_list							*lst_new_char_list(void);
-t_argument							*lst_new_argument(void);
+t_env						*ft_lstnew_env(void);
+t_env						*lst_search_env(char *s, t_env *env);
+t_argument_to_expand		*lst_new_argument_parsing_result(void);
+t_command_to_expand			*lst_new_command_parsing_result(void);
+t_redirection_to_expand		*lst_new_redirection_parsing_result(void);
+t_char_list					*lst_new_char_list(void);
+t_argument					*lst_new_argument(void);
 
 void	ft_lstclear_env(t_env **lst);
 void	ft_lstclear_commands(t_command_to_expand **lst);
@@ -345,10 +324,7 @@ void	ft_lstadd_back_argument(t_argument **lst, t_argument *new);
 void	ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new);
 void	ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new);
 
-
-t_redirection	*ft_lstnew_redirection(void);
-
-// int		ft_lstsize_expand(t_char_list *lst);
+t_redirection				*ft_lstnew_redirection(void);
 
 void	ft_lstclear_argument(t_argument **lst);
 void	ft_lstclear_char_list(t_char_list **lst);
@@ -362,201 +338,54 @@ void	ft_free_vars_input(char *command_line, char **env);
 void	ft_free_tab_3d(t_vars *vars);
 void 	ft_lstclear_final_redirection(t_redirection **lst);
 
-
 /*
 * Exit_status
 */
 void	wait_pids(t_vars *vars);
 void	set_interactive_mode(int	set);
 
-// ici 
-
-// # ifndef BUFFER_SIZE
-// #  define BUFFER_SIZE 1
-// # endif
-
-// typedef struct s_vars{
-// 	enum{
-// 		APPEND,
-// 		OUTFILE,
-// 		UNASIGN
-// 	}	e_last;
-// 	pid_t	child;
-// 	int		fd_infile;
-// 	int		fd_outfile;
-// 	int		fd_append;
-// 	int		nb_out;
-// 	int		nb_cmd;
-// 	char	**path;
-// 	char	***cmd;
-// 	char	**full_cmd;
-// 	int		pipe_1[2];
-// 	int		tmp_fd;
-// 	// A malloc sur nb_hd, la liste chainee sera parcouru lors de l'utilisation des hd
-// 	int		nb_hd;
-// 	int		hd_w;
-// 	int		hd_r;
-// }	t_vars;
-
 /*
 * Exec
 */
 
-t_redirection	*stock_redirection(t_command_to_expand *list, t_env *env, t_vars *vars);
-t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
-void	ft_heredoc(t_redirection *redirection,
-		t_redirection_to_expand *all, t_bool save,
-			t_env *env, t_vars *vars);
-int	check_infile(t_redirection_to_expand *redir);
-int	open_files(t_vars *vars, t_redirection_to_expand *redir);
+void	ft_heredoc(t_redirection *redirection,t_redirection_to_expand *all, t_bool save, t_env *env, t_vars *vars);
+int		check_infile(t_redirection_to_expand *redir);
+int		open_files(t_vars *vars, t_redirection_to_expand *redir);
 char	**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
-int		build_path(char **path, char **bin_path,
-			char **is_valid_cmd, char **full_cmd);
+int		build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
 void	update_full_cmd(char ***full_cmd, char *is_valid_cmd);
 int		verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env);
 int		fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp);
 void	capture_and_redirection(char *tab, char *tmp, t_vars *vars);
 void	open_fd_infile(t_vars *vars);
 void	open_hd_w(t_vars *vars);
-void	verif_tab(char *tab);
-void pipe_command_redirection_even(t_redirection *redirect, t_vars *vars);
-void pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars);
-void last_command_redirection_odd(t_redirection *redirect, t_vars *vars);
-void first_command_redirection(t_vars *vars, t_redirection *redirect);
-void last_command_redirection_even(t_redirection *redirect, t_vars *vars);
-t_bool	is_builtins_exec(t_vars *vars);
-t_bool is_builtins_parsing(char **str);
+void	pipe_command_redirection_even(t_redirection *redirect, t_vars *vars);
+void	pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars);
+void	last_command_redirection_odd(t_redirection *redirect, t_vars *vars);
+void	first_command_redirection(t_vars *vars, t_redirection *redirect);
+void	last_command_redirection_even(t_redirection *redirect, t_vars *vars);
 void	ft_flow_redirection(t_vars *vars, t_redirection *redirect);
+char	*get_var_name(char *str);
+t_bool	is_builtins_exec(t_vars *vars);
+t_bool	is_builtins_parsing(char **str);
+t_redirection_to_expand	*is_last(t_redirection_to_expand *tmp);
+t_redirection			*stock_redirection(t_command_to_expand *list, t_env *env, t_vars *vars);
 
  /*
 * GNL // Sa dégage
 */
 
-char *ft_strjoin_mod(char *s1, char *s2);
-char *read_loop(char *buf, char *stock, int *len, int fd);
-char *ft_strchr_rl(const char *s, int c);
-char *read_line(int fd, char *stock);
+char	*ft_strjoin_mod(char *s1, char *s2);
+char	*read_loop(char *buf, char *stock, int *len, int fd);
+char	*ft_strchr_rl(const char *s, int c);
+char	*read_line(int fd, char *stock);
 char	*ft_strdup_gnl(const char *s);
 char	*ft_substr_gnl(char const *s, unsigned int start, size_t len);
 char	*extract_line(char *stock);
-//char	*ft_strdup(const char *s);
 char	*extract_surplus_line(char *stock);
-char	*get_next_line(int fd);
 
-
-
-
-
-
-
-
-
-t_redirection	*ft_lstlast_redirection(t_redirection *lst);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// No needed now
-
-// t_argument_to_expand *original_arguments;
-// t_argument_to_expand *arguments_with_parameters_expanded =NULL;
-// t_argument_to_expand *arguments_with_quotes_expanded =NULL;
-
-// while ()
-
-
-// a appeller pour chaque argument (ou argument de redirection)
-// t_argument_to_expand* ft_expand_parameters(t_argument_to_expand argument) {
-
-// }
-
-// t_argument_to_expand* ft_expand_quotes(t_argument_to_expand argument) {
-
-// }
-
-
-
-// parsing 
-// fork , ecouter exit status du dernier
-// waitpid 
-
-// cas particulier : une seul command et que c'est un builtind -> il ne faut pas fork !
-// builtind dans le process parent si il y a une seul command
-// sur le cd et le pwd est set avec env
-// si la taille est de 1 , faire une autre route 
-
-// parsing dans les fork 
-// couper les espaces -> problematique -> si dans la variable tu as une
-// quote
-
-// flag caractere , associer une valeur pour dire si elle est special ou pas 
-// struct le caractere et le bool 
-// 
-
-// "" '' $ 
-
-
-// printf "%s\n" $VAR
-
-// yi
-// yfieif
-// ihwf
-
-// printf "%s\n" "$VAR"
-
-// yi yfieif ihwf
-
-
-
-// Si $VAR existe pas echo va print du vide mais qu'est-ce que 
-// sa fait pour d'autre fonction
-
-
-/*
-* Split sur SPACE / NEW_LINE / TAB et si le premier char 
-* est une double quote ou simple
-* t_arg contient les arg et on avance a chaque appelle de fonction 
-* envoie l'adresse de la liste chainee final qui contient 
-* les arg avec les variable expand split.
-*
-* Le was_in_variable est important pour eviter d'expand une
-* variable dans une autre variable par exemple.
-*/
-
-
-
-// rgobet@2G5:~$ printf "%s\n" "$VAR"
-// test test
-// rgobet@2G5:~$ printf "%s\n" $VAR
-// test
-// test
-
-// chars -> liste chainee
-// 	value -> char
-// 	was_in_variable -> bool
-
-// Si il existe redef la var en question sinon ajoute a la liste
-// export vide affiche env
-// unset sans rien sa fait rien
-// env si tu met un truc derriere il le prend comme un fichier si il existe il se passe rien
-// sinon il dit que le fichier n'existe pas si il y a un fichier existant et d'autre argument
-// env fait rien
-
-t_redirection_to_expand		*expand_redirection(
-			t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
-
-t_redirection_to_expand		*ft_expand_redirections(
-			t_redirection_to_expand **redirection, t_env *env, t_vars *vars);
-char	*get_var_name(char *str);
+t_redirection				*ft_lstlast_redirection(t_redirection *lst);
+t_redirection_to_expand		*expand_redirection(t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
+t_redirection_to_expand		*ft_expand_redirections(t_redirection_to_expand **redirection, t_env *env, t_vars *vars);
 
 #endif

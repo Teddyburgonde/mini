@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/19 15:47:32 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:09:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,6 @@ static void	update_env_var(t_env *tmp_env, char *cmd, char *value)
 	tmp_env->full_path = copy(cmd);
 }
 
-
-// ?????????
 static void	free_full_path(t_env *tmp_env, char *cmd, char *value)
 {
 	free(tmp_env->full_path);
@@ -214,7 +212,8 @@ static void	free_full_path(t_env *tmp_env, char *cmd, char *value)
 	free(value);
 }
 
-static void	add_modified_env_var(t_env **env, char *cmd, char *var_name, char *value)
+static void	add_modified_env_var(t_env **env, char *cmd,
+	char *var_name, char *value)
 {
 	t_env	*tmp_env;
 	char	*tmp;
@@ -234,7 +233,8 @@ static void	add_modified_env_var(t_env **env, char *cmd, char *var_name, char *v
 	ft_lstadd_back_env(env, tmp_env);
 }
 
-static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value, int hide)
+static void	add_new_env_var(t_env **env, char *cmd,
+	char *var_name, char *value, int hide)
 {
 	t_env	*tmp_env;
 
@@ -249,7 +249,9 @@ static void	add_new_env_var(t_env **env, char *cmd, char *var_name, char *value,
 	tmp_env->next = NULL;
 	ft_lstadd_back_env(env, tmp_env);
 }
-static void	handle_export_status_0(t_env **env, t_env *tmp_env, char *cmd, char *var_name, char *value)
+
+static void	handle_export_status_0(t_env **env, t_env *tmp_env,
+	char *cmd, char *var_name, char *value)
 {
 	if (!tmp_env && var_name[ft_strlen(var_name) - 1] != '+')
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:24:57 by tebandam          #+#    #+#             */
-/*   Updated: 2024/05/29 16:44:48 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/20 10:31:20 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*skip_spaces(const char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] == NEW_LINE || str[i] == TAB) || str[i] == SPACE)
+		if ((str[i] == '\n' || str[i] == '\t') || str[i] == ' ')
 			i++;
 		else
 			break ;
@@ -60,10 +60,10 @@ int	skip_dolar_var(char *argument, int index)
 
 	i = index;
 	while (argument[i] != 0
-		&& argument[i] != SPACE && argument[i] != NEW_LINE &&
-		argument[i] != TAB && argument[i] != PIPE &&
-		argument[i] != LEFT && argument[i] != RIGHT &&
-		argument[i] != '\'' && argument[i] != '"')
+		&& argument[i] != ' ' && argument[i] != '\n'
+		&& argument[i] != '\t' && argument[i] != '|'
+		&& argument[i] != '<' && argument[i] != '>'
+		&& argument[i] != '\'' && argument[i] != '"')
 		i++;
 	return (i);
 }

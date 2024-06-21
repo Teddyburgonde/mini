@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:39:20 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 16:34:02 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 10:28:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_exit_message_0(void)
 {
 	printf("exit\n");
-	//exit code 0 cependant la tu peux quitter le programme
 	exit (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:07:59 by rgobet            #+#    #+#             */
-/*   Updated: 2024/05/20 14:51:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 12:52:10 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,3 @@ void	ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new)
 	ptr_last_element = ft_lstlast_redirection(*lst);
 	ptr_last_element->next = new;
 }
-

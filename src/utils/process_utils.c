@@ -6,21 +6,19 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 21:22:31 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 12:56:55 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 10:40:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <string.h>
 
 int	child_process(t_vars *vars, t_redirection *redirect
 		, char **actual_cmd, t_env **env)
 {
 	if (redirect->ambiguous == TRUE)
 		exit(1);
-	//ft_flow_redirection(vars, redirect);
 	if (redirect->infile_fd == -1)
-	{	
+	{
 		write (2, "bash: ", 6);
 		ft_putstr_fd(redirect->name_infile, 2);
 		write (2, ":", 1);
@@ -32,8 +30,6 @@ int	child_process(t_vars *vars, t_redirection *redirect
 	{
 		ft_putstr_fd(redirect->name_outfile, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
-		// write(2, "TEST\n", 5);
-		// perror(redirect->name_outfile);
 		exit(1);
 	}
 	ft_flow_redirection(vars, redirect);
@@ -48,7 +44,6 @@ int	child_process(t_vars *vars, t_redirection *redirect
 	execve(actual_cmd[0], actual_cmd, vars->env);
 	ft_close_fd(vars);
 	error_close_files(redirect);
-	//perror("Execve");
 	return (1);
 }
 
@@ -66,25 +61,10 @@ void	error_close_files(t_redirection *redirect)
 	}
 }
 
-// void	close_pipe(int *pipe_fd)
-// {
-// 	if (pipe_fd[0] != -1)
-// 	{
-// 		close(pipe_fd[0]);
-// 		pipe_fd[0] = -1;
-// 	}
-// 	if (pipe_fd[1] != -1)
-// 	{
-// 		close(pipe_fd[1]);
-// 		pipe_fd[1] = -1;
-// 	}
-// }
-
 void	handle_pipe_closing(t_vars *vars)
 {
 	if ((vars->cmd_index - 1) % 2 == 1 && vars->nb_cmd > 1)
 	{
-		// close_pipe(vars->pipe_1);
 		if (vars->pipe_1[1] != -1)
 		{
 			close(vars->pipe_1[1]);
@@ -98,7 +78,6 @@ void	handle_pipe_closing(t_vars *vars)
 	}
 	else if ((vars->cmd_index - 1) % 2 == 0 && vars->nb_cmd > 1)
 	{
-		// close_pipe(vars->pipe_2);
 		if (vars->pipe_1[0] != -1)
 		{
 			close(vars->pipe_1[0]);
