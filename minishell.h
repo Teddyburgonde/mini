@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 07:57:34 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:18:46 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,18 @@ char							*ft_allocate_tab(const char *s1,
 									const char *s2, char *reject);
 void							copy_tab(char *tab, const char *s1,
 									const char *s2, char *reject);
+int								skip_spaces_and_tabs(char *str);
+int								check_spaces_and_tabs(char *command_line,
+									t_command_line_parsing_result *parsing_result,
+									t_vars *vars);
+void							add_history_and_parse(char *command_line,
+									t_command_line_parsing_result	**parsing_result);
+int	handle_parsing_errors(t_command_line_parsing_result	*parsing_result,
+									char *command_line, t_vars *vars);
+int								check_pipe_position(char *command_line, t_vars *vars);
+int								check_empty_quotes(char *command_line,
+									t_command_line_parsing_result	*parsing_result,
+									t_vars *vars);
 
 /*
 * Env

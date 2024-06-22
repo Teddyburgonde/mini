@@ -56,6 +56,8 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/ft_strjoin_arg_utils.c \
 			src/utils/ft_strjoin_until_utils.c \
 			src/utils/ft_strjoin_quoted_arg_utils.c  \
+			src/utils/verif_command_line_utils.c \
+			src/utils/skips_utils.c \
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)
