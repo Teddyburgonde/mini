@@ -21,9 +21,9 @@ char	*get_var_name(char *str)
 	var_name = malloc((strcspn(str, "<>\'\"| \n\t") + 1) * sizeof(char));
 	if (!var_name)
 		return (NULL);
-	while (str[i] && str[i] != SPACE && str[i] != NEW_LINE
-		&& str[i] != TAB && str[i] != PIPE && str[i] != LEFT
-		&& str[i] != RIGHT && str[i] != '\'' && str[i] != '"')
+	while (str[i] && str[i] != ' ' && str[i] != '\n'
+		&& str[i] != '\t' && str[i] != '|' && str[i] != '<'
+		&& str[i] != '>' && str[i] != '\'' && str[i] != '"')
 	{
 		var_name[i] = str[i];
 		i++;
@@ -115,7 +115,6 @@ static t_argument	*ft_expand_vars_in_argument(
 		}
 		else if (argument[i] == '$')
 		{
-			//printf("JJEJEJEJE\n");
 			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
 			if (ft_strcmp(var_name, "$?") == 0
@@ -153,8 +152,8 @@ static t_argument	*ft_expand_vars_in_argument(
 			else if ((argument[i] == '$' && argument[i + 1] == 0)
 				|| (argument[i] == '$' && argument[i + 1] == '"'
 					&& in_quote == TRUE)
-				|| ((argument[i] == '$' && (argument[i + 1] == SPACE
-				|| argument[i + 1] == TAB || argument[i + 1] == NEW_LINE))))
+				|| ((argument[i] == '$' && (argument[i + 1] == ' '
+				|| argument[i + 1] == '\t' || argument[i + 1] == '\n'))))
 			{
 				tmp = lst_new_char_list();
 				if (!tmp)
@@ -190,105 +189,6 @@ static t_argument	*ft_expand_vars_in_argument(
 	return (arg);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Problem tmp2 is link to tmp .. But I need a var which keep the first node of each char_list
-
-/*
-
-static void	ft_split_argument(t_argument **argument_to_split,
-	t_argument **args)
-{
-	int			in;
-	t_char_list	*arg;
-	t_argument	*tmp;
-	t_argument	*first_node;
-	t_char_list	*next;
-	t_argument	*splitted_arguments;
-	t_bool		in_quote;
-
-	splitted_arguments = lst_new_argument();
-	if (!splitted_arguments)
-		return ;
-	in = 0;
-	first_node = *argument_to_split;
-	tmp = *argument_to_split;
-	if (tmp->chars->value == '"'
-		|| tmp->chars->value == '\'')
-		in_quote = TRUE;
-	else
-		in_quote = FALSE;
-	while (tmp->chars && in_quote == FALSE)
-	{
-		if (tmp->chars->value == SPACE
-			|| tmp->chars->value == TAB
-			|| tmp->chars->value == NEW_LINE)
-			break ;
-		arg = lst_new_char_list();
-		arg->value = tmp->chars->value;
-		arg->was_in_a_variable = tmp->chars->was_in_a_variable;
-		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		tmp->chars = tmp->chars->next;
-	}
-	while (tmp->chars && in_quote == TRUE)
-	{
-		if (tmp->chars->value == '\''
-			|| tmp->chars->value == '"')
-		{
-			if (in == 1)
-				in_quote = FALSE;
-			else
-				in++;
-		}
-		arg = lst_new_char_list();
-		arg->value = tmp->chars->value;
-		arg->was_in_a_variable = tmp->chars->was_in_a_variable;
-		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		tmp->chars = tmp->chars->next;
-	}
-	ft_lstadd_back_argument(args, splitted_arguments);
-	if (tmp->chars == NULL)
-	{
-		tmp = tmp->next;
-		*argument_to_split = (*argument_to_split)->next;
-		while (first_node->chars)
-		{
-			next = first_node->chars->next;
-			free(first_node->chars);
-			first_node->chars = next;
-		}
-		free(first_node);
-	}
-}
-
-*/
-
-// Mettre en place une variable permettant de trouver ou nous en sommes.
-// Sans avoir a retrouver les premiers nodes les frees seront bien plus simple.
-// Le fonctionnement en lui meme de la fonction est correcte.
-
 static t_argument	*ft_get_last_pos(t_argument *lst)
 {
 	t_char_list	*tmp;
@@ -306,10 +206,6 @@ static t_argument	*ft_get_last_pos(t_argument *lst)
 	}
 	return (NULL);
 }
-
-// Le argument_to_split se synchro avec tmp ste pd
-// Maybe faire une var t_char_list dans le get
-// peut etre que y a que le arg qui est synchro
 
 static int	ft_split_argument(t_argument *argument_to_split,
 	t_argument **args)
@@ -356,9 +252,9 @@ static int	ft_split_argument(t_argument *argument_to_split,
 			&& quote_in_var == TRUE)
 			quote_in_var = FALSE;
 		if (quote_in_var == FALSE
-			&& (tmp_char->value == SPACE
-				|| tmp_char->value == TAB
-				|| tmp_char->value == NEW_LINE))
+			&& (tmp_char->value == ' '
+				|| tmp_char->value == '\t'
+				|| tmp_char->value == '\n'))
 			break ;
 		if (tmp_char->value == '\'' || tmp_char->value == '"')
 			tmp_char = tmp_char->next;
@@ -405,8 +301,8 @@ static int	ft_split_argument(t_argument *argument_to_split,
 		else if (tmp_char)
 			tmp_char = tmp_char->next;
 	}
-	while (tmp_char && tmp_char->value != SPACE
-		&& tmp_char->value != TAB && tmp_char->value != NEW_LINE)
+	while (tmp_char && tmp_char->value != ' '
+		&& tmp_char->value != '\t' && tmp_char->value != '\n')
 	{
 		arg = lst_new_char_list();
 		if (!arg)
@@ -430,28 +326,6 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	tmp_char->last_pos = TRUE;
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -564,10 +438,6 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 			argument_with_expanded_vars);
 		tmp_to_expand = tmp_to_expand->next;
 	}
-	// Si VAR="sdf$x" -> "sdfxxxx" -> "sdf", "xxxx" sont deux args differents
-	// Problem "fer" for fir -> while only two times !
-	// Add a head and a tail can't resolve the problem.
-	// Maybe erase and recreate ft_split_argument to be able to think about a new solution.
 	splitted_arguments = NULL;
 	if (args_with_expanded_vars != NULL)
 	{
@@ -583,6 +453,3 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		return (NULL);
 	return (splitted_arguments);
 }
-
-// Modif et supp t_splitted_argument car faut utiliser t_argument
-// Chaque arg = un node et chaque node de t_char_list = une lettre

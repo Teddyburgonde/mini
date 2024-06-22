@@ -22,6 +22,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/exec/heredoc.c \
 			src/exec/path.c \
 			src/exec/flow_redirections.c \
+			src/exec/build_path.c \
 			src/utils/parse_command_utils.c \
 			src/utils/minishell_utils.c \
 			src/utils/minishell_utils_copy.c \
@@ -47,7 +48,16 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/process_utils.c \
 			src/utils/close_fd.c \
 			src/utils/exit_status.c \
+			src/utils/copy_utils.c \
+			src/utils/lst_clear_utils.c \
+			src/utils/echo_utils.c \
 			src/error_free/free_error.c \
+			src/utils/ft_strjoin_file_utils.c \
+			src/utils/ft_strjoin_arg_utils.c \
+			src/utils/ft_strjoin_until_utils.c \
+			src/utils/ft_strjoin_quoted_arg_utils.c  \
+			src/utils/verif_command_line_utils.c \
+			src/utils/skips_utils.c \
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)

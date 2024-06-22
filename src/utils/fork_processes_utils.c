@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:20:15 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 11:15:30 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 12:53:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	wait_process(t_vars *vars)
 void	initialize_vars(t_vars *vars)
 {
 	vars->cmd_index = 1;
-    vars->pipe_1[0] = -1;
-    vars->pipe_1[1] = -1;
-    vars->pipe_2[0] = -1;
-    vars->pipe_2[1] = -1;
-    vars->last_child = 0;
+	vars->pipe_1[0] = -1;
+	vars->pipe_1[1] = -1;
+	vars->pipe_2[0] = -1;
+	vars->pipe_2[1] = -1;
+	vars->last_child = 0;
 	vars->child = 0;
 }
 
@@ -60,7 +60,7 @@ int	choice_pipe_setup(t_vars *vars)
 		return (setup_pipe(vars->pipe_2));
 }
 
-void	 process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
+void	process_commands(t_vars *vars, t_redirection **redirect, t_env **envp)
 {
 	t_redirection	*tmp;
 

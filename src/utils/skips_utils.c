@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   skips_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 13:32:46 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 12:45:49 by tebandam         ###   ########.fr       */
+/*   Created: 2024/06/22 11:25:17 by tebandam          #+#    #+#             */
+/*   Updated: 2024/06/22 11:25:31 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+int	skip_spaces_and_tabs(char *str)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
 
-	j = ft_strlen(src);
 	i = 0;
-	if (size != 0)
+	while (str[i])
 	{
-		while (src[i] && i < (size - 1))
-		{
-			dst[i] = src[i];
+		if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32 || str[i] == '\n')
 			i++;
-		}
-		dst[i] = '\0';
+		else
+			return (1);
 	}
-	return (j);
+	return (0);
 }

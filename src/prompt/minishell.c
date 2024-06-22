@@ -6,13 +6,24 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/19 11:36:27 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 19:07:48 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int	g_sig = 0;
+
+int	run_readline(t_env *env, t_vars *vars)
+{
+	if (ft_readline(&env, vars) == 1)
+	{
+		ft_lstclear_env(&env);
+		free(vars);
+		return (1);
+	}
+	return (0);
+}
 
 int	main(int ac, char **av, char *envp[])
 {
@@ -35,14 +46,9 @@ int	main(int ac, char **av, char *envp[])
 	init_env(&env, envp);
 	if (env == NULL)
 		return (1);
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
-	if (ft_readline(&env, vars) == 1)
-	{
-		ft_lstclear_env(&env);
-		free(vars);
+	run_signals();
+	if (run_readline(env, vars) == 1)
 		return (1);
-	}
 	ft_lstclear_env(&env);
 	free(vars);
 	return (0);

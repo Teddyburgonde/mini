@@ -6,15 +6,11 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/19 15:24:11 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/20 16:00:57 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// Met des " " après premier '='
-// Affiche toutes les vars
-// Cache les vars avec value=NULL dans cmd env
 
 static void	exec_env(char **command_line, t_vars *vars, t_redirection *redirect)
 {
@@ -91,15 +87,19 @@ int	cmd_selector(t_env **env, char **command_line,
 	}
 	if (vars->nb_cmd > 1 && vars->child != 0)
 		return (1);
-	if (ft_strcmp(command_line[0], "echo") == 0 && ft_strlen(command_line[0]) > 0)
+	if (ft_strcmp(command_line[0], "echo") == 0
+		&& ft_strlen(command_line[0]) > 0)
 	{
 		vars->exit_code = ft_echo(command_line, vars, redirect);
 	}
-	else if (ft_strcmp(command_line[0], "pwd") == 0 && ft_strlen(command_line[0]) > 0) 
+	else if (ft_strcmp(command_line[0], "pwd") == 0
+		&& ft_strlen(command_line[0]) > 0)
 		vars->exit_code = ft_pwd(vars, redirect);
-	else if (ft_strcmp(command_line[0], "unset") == 0 && ft_strlen(command_line[0]) > 0)
+	else if (ft_strcmp(command_line[0], "unset") == 0
+		&& ft_strlen(command_line[0]) > 0)
 		vars->exit_code = unset(env, command_line);
-	else if (ft_strcmp(command_line[0], "export") == 0 && ft_strlen(command_line[0]) > 0)
+	else if (ft_strcmp(command_line[0], "export") == 0
+		&& ft_strlen(command_line[0]) > 0)
 	{
 		if (command_line[1])
 			vars->exit_code = export(env, command_line);
@@ -111,19 +111,23 @@ int	cmd_selector(t_env **env, char **command_line,
 				ft_free(envp);
 		}
 	}
-	else if (ft_strcmp(command_line[0], "cd") == 0 && ft_strlen(command_line[0]) > 0)
+	else if (ft_strcmp(command_line[0], "cd") == 0
+		&& ft_strlen(command_line[0]) > 0)
 		vars->exit_code = ft_cd(command_line, env);
 	else if ((ft_strcmp(command_line[0], "printenv") == 0
-		|| ft_strcmp(command_line[0], "env") == 0) && ft_strlen(command_line[0]) > 0)
+			|| ft_strcmp(command_line[0], "env") == 0)
+		&& ft_strlen(command_line[0]) > 0)
 		exec_env(command_line, vars, redirect);
-	else if (ft_strcmp(command_line[0], "exit") == 0 && ft_strlen(command_line[0]) > 0)
+	else if (ft_strcmp(command_line[0], "exit") == 0
+		&& ft_strlen(command_line[0]) > 0)
 		vars->exit_code = ft_exit(command_line);
 	else
 		return (1);
 	return (0);
 }
 
-int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars)
+int	ft_cmd_manager(t_env **env,
+	t_command_line_parsing_result *cmd, t_vars *vars)
 {
 	t_command_to_expand				*tmp;
 	t_argument_to_expand			*tmp_arg;
@@ -137,7 +141,8 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars
 				*env, vars);
 		redirection = stock_redirection(cmd->commands, *env, vars);
 		vars->nb_cmd = ft_lstsize_command(cmd->commands);
-		vars->path = ft_split(lst_search_env("$PATH", *env)->value, ':');
+		if (lst_search_env("$PATH", *env) != NULL)
+			vars->path = ft_split((lst_search_env("$PATH", *env))->value, ':');
 		vars->cmd = ft_calloc(vars->nb_cmd + 1, sizeof(char **));
 		verif_fill_command_paths(vars, tmp, *env);
 		if (vars->path)
@@ -147,7 +152,7 @@ int	ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars
 		}
 		vars->env = env_to_char(*env);
 		fork_processes(vars, &redirection, env);
-		ft_lstclear_commands(&cmd->commands);
+		ft_lstclear_commands(&(cmd->commands));
 		free(vars->env);
 	}
 	return (0);

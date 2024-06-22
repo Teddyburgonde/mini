@@ -6,34 +6,39 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:45:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/18 12:27:27 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 18:52:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_remove_env_variable(t_env **env, char *name)
+static void	free_env_variable(t_env *env_var)
 {
-	int	i;
-	t_env *tmp;
-	t_env *prev;
+	if (env_var)
+	{
+		free(env_var->var_name);
+		free(env_var->full_path);
+		free(env_var->value);
+		free(env_var);
+	}
+}
 
-	i = 1;
+static int	ft_remove_env_variable(t_env **env, char *name)
+{
+	t_env	*tmp;
+	t_env	*prev;
+
 	tmp = *env;
 	prev = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->var_name, name) == 0 
-			&& ft_strlen(tmp->var_name) > 0 && ft_strlen(name) > 0)
+		if (ft_strcmp(tmp->var_name, name) == 0)
 		{
 			if (prev)
 				prev->next = tmp->next;
 			else
 				*env = tmp->next;
-			free(tmp->var_name);
-			free(tmp->full_path);
-			free(tmp->value);
-			free(tmp);
+			free_env_variable(tmp);
 			return (0);
 		}
 		prev = tmp;
@@ -45,20 +50,14 @@ int	ft_remove_env_variable(t_env **env, char *name)
 int	unset(t_env **env, char **names)
 {
 	int		i;
-	int		save;
 
 	i = 1;
-	save = 0;
-	// modif le 17 juin 2024 
 	if (!env || !*env)
 		return (1);
 	while (names[i])
 	{
-		if (ft_strcmp(names[i], "SHELL") == 0 && ft_strlen(names[i]) > 0)
-			save = 1;
-		if (save == 0 && ft_remove_env_variable(env, names[i]) != 0)
-			save = 1;
+		ft_remove_env_variable(env, names[i]);
 		i++;
 	}
-	return (save);
+	return (0);
 }

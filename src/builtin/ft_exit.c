@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:36:51 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/16 18:23:12 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:14:11 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,34 @@ static long	ft_atol(const char *nptr)
 	return (minus * nb);
 }
 
+int	has_invalid_argument(char *arg, char *next_arg)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(arg[i]) == 1 && next_arg != NULL)
+	{
+		ft_putstr_fd(" too many arguments\n", 2);
+		return (1);
+	}
+	while (arg[i])
+	{
+		if (arg[i] == '-')
+			exit (156);
+		if (arg[i] == '+')
+			exit (100);
+		if (!ft_isdigit(arg[i]))
+		{
+			ft_putstr_fd(" numeric argument required\n", 2);
+			exit (2);
+		}
+		i++;
+	}
+	if (ft_atol(arg) == 0)
+		ft_exit_message_argument_required(arg);
+	return (0);
+}
+
 int	ft_exit(char **command)
 {
 	unsigned char	tmp;
@@ -57,29 +85,10 @@ int	ft_exit(char **command)
 	if (command[1] == NULL || command[1][0] == '\0'
 		|| ft_strncmp(command[1], "-9223372036854775808", 21) == 0)
 		ft_exit_message_0();
-	if (ft_isdigit(command[1][i]) == 1 && command[2] != NULL)
-	{
-		ft_putstr_fd(" too many arguments\n", 2);
+	if (has_invalid_argument(command[1], command[2]))
 		exit(1);
-	}
-	while (command[1][i])
-	{
-		if (command[1][i] == '-')
-			exit (156);
-		if (command[1][i] == '+')
-			exit (100);
-		if (!ft_isdigit(command[1][i]))
-		{
-			ft_putstr_fd(" numeric argument required\n", 2);
-			exit (2);
-		}
-		i++;
-	}
-	if (ft_atol(command[1]) == 0)
-		ft_exit_message_argument_required(command[1]);
 	tmp = ft_atol(command[1]) % 256;
 	printf("exit\n");
 	exit(tmp);
-	//exit code 0 cependant la tu peux quitter le programme
 	return (0);
 }
