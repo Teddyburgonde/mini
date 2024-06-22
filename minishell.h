@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 07:32:43 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/22 07:57:34 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,39 +198,48 @@ int								double_redirection(char *str);
 int								ft_strcspn(const char *s, char *reject);
 int								skip_dolar_var(char *argument, int index);
 int								ft_atoi(const char *str);
-char							*ft_substr_gnl(char const *s,
-									unsigned int start, size_t len);
 int								ft_lstsize_command(t_command_to_expand *cmd);
-size_t							ft_strlcpy(char *dst, const char *src, size_t size);
+size_t							ft_strlcpy(char *dst,
+									const char *src, size_t size);
 int								ft_lstsize_env(t_env *env);
-int								ft_strncmp(const char *s1, const char *s2, size_t n);
+int								ft_strncmp(const char *s1,
+									const char *s2, size_t n);
 int								ft_strcspn2(const char *s, char *reject);
 char							*ft_itoa(int n);
 char							*copy_without_quote(char *s);
 void							ft_exit_message_0(void);
 void							ft_exit_message_2(char *command);
 void							ft_exit_message_too_many_arguments(void);
-void							ft_exit_message_argument_required(char *command);
+void							ft_exit_message_argument_required(
+									char *command);
 int								ft_isdigit(int c);
-void							process_commands(t_vars *vars, t_redirection **redirect, t_env **envp);
+void							process_commands(t_vars *vars,
+									t_redirection **redirect, t_env **envp);
 int								choice_pipe_setup(t_vars *vars);
 int								setup_pipe(int *pipe_fd);
 void							initialize_vars(t_vars *vars);
 int								wait_process(t_vars *vars);
-int								process(t_vars *vars, t_redirection *redirect, t_env **env);
+int								process(t_vars *vars,
+									t_redirection *redirect, t_env **env);
 void							handle_pipe_closing(t_vars *vars);
-int								child_process(t_vars *vars, t_redirection *redirect,
+int								child_process(t_vars *vars,
+									t_redirection *redirect,
 									char **actual_cmd, t_env **env);
 void							error_close_files(t_redirection *redirect);
 void							ft_close_fd(t_vars *vars);
 t_bool							is_builtins_exec(t_vars *vars);
 t_bool							is_builtins_parsing(char **str);
-void							copy_content(char *tab, const char *s1, int len);
+void							copy_content(char *tab,
+									const char *s1, int len);
 char							*allocate_tab(const char *s1, int *len);
-char							*allocate_and_prepare_tab(const char *s1, const char *s2);
-void							copy_and_concatenante(char *tab, const char *s1, const char *s2);
-char							*ft_allocate_tab(const char *s1, const char *s2, char *reject);
-void							copy_tab(char *tab, const char *s1, const char *s2, char *reject);
+char							*allocate_and_prepare_tab(const char *s1,
+									const char *s2);
+void							copy_and_concatenante(char *tab,
+									const char *s1, const char *s2);
+char							*ft_allocate_tab(const char *s1,
+									const char *s2, char *reject);
+void							copy_tab(char *tab, const char *s1,
+									const char *s2, char *reject);
 
 /*
 * Env
@@ -260,32 +269,44 @@ int								ft_readline(t_env **env, t_vars *vars);
 
 char							*skip_spaces(const char *str);
 char							*skip_one_character(const char *str);
-char							*skip_quote(const char *str, char c, t_argument_parsing_result *result);
+char							*skip_quote(const char *str,
+									char c, t_argument_parsing_result *result);
 char							*ft_skip_arg(const char *str, char *reject);
-char							*ft_strjoin_until(char *s1, const char *s2, char *reject);
+char							*ft_strjoin_until(char *s1,
+									const char *s2, char *reject);
 char							*ft_strjoin_arg(char *s1, const char *s2);
 char							*ft_strjoin_file(char *s1);
-char							*allocate_tab_quoted(const char *s1, const char *s2, char *reject);
-char							*ft_strjoin_quoted_arg(char *s1, const char *s2, char *reject);
-void							copy_and_concatenate_quoted_arg(char *tab, const char *s1,
+char							*allocate_tab_quoted(const char *s1,
+									const char *s2, char *reject);
+char							*ft_strjoin_quoted_arg(char *s1,
+									const char *s2, char *reject);
+void							copy_and_concatenate_quoted_arg(char *tab,
+									const char *s1,
 									const char *s2, char *reject);
 
 t_command_line_parsing_result	*ft_parse_command_line(char *command_line);
 t_command_parsing_result		*ft_allocated_result(void);
 t_command_parsing_result		*redirections(t_command_parsing_result *result,
-									char *remaining_line, t_redirection_parsing_result *redirection_result);
+									char *remaining_line,
+									t_redirection_parsing_result 
+									*redirection_result);
 t_command_parsing_result		*arguments(t_command_parsing_result *result,
-									t_argument_parsing_result *argument_result, char *remaining_line);
+									t_argument_parsing_result *argument_result,
+									char *remaining_line);
 t_command_parsing_result		*parse_command(char *command_line);
-t_command_parsing_result		*ft_redirections_arguments(char **remaining_line,
-									t_command_parsing_result *result, t_redirection_parsing_result *redirection_result,
+t_command_parsing_result		*ft_redirections_arguments(
+									char **remaining_line,
+									t_command_parsing_result *result,
+									t_redirection_parsing_result 
+									*redirection_result,
 									t_argument_parsing_result *argument_result);
 t_argument_parsing_result		*is_parsing_arg(const char *remaining_line,
 									t_argument_parsing_result *result);
 t_argument_parsing_result		*parse_quote(const char *remaining_line,
 									t_argument_parsing_result *result);
 t_redirection_parsing_result	*parse_redirection(char *str);
-t_argument						*ft_expand_argument(const t_argument_to_expand	*argument,
+t_argument						*ft_expand_argument(
+									const t_argument_to_expand	*argument,
 									t_env *env, t_vars *vars);
 
 /*
@@ -298,8 +319,12 @@ char							**ft_setup_command(t_argument *arg);
 * Command manager
 */
 
-int								ft_cmd_manager(t_env **env, t_command_line_parsing_result *cmd, t_vars *vars);
-int								cmd_selector(t_env **env, char **command_line, t_vars *vars, t_redirection *redirect);
+int								ft_cmd_manager(t_env **env,
+									t_command_line_parsing_result *cmd,
+									t_vars *vars);
+int								cmd_selector(t_env **env,
+									char **command_line,
+									t_vars *vars, t_redirection *redirect);
 
 /*
 * Builtins
@@ -307,7 +332,8 @@ int								cmd_selector(t_env **env, char **command_line, t_vars *vars, t_redire
 
 int								export(t_env **env, char **cmd);
 int								ft_cd(char **command, t_env **env);
-int								ft_echo(char **command, t_vars *vars, t_redirection *redirect);
+int								ft_echo(char **command,
+									t_vars *vars, t_redirection *redirect);
 int								ft_pwd(t_vars *vars, t_redirection *redirect);
 int								unset(t_env **env, char **names);
 int								ft_exit(char **command);
@@ -331,18 +357,26 @@ t_char_list						*lst_new_char_list(void);
 t_argument						*lst_new_argument(void);
 void							ft_lstclear_env(t_env **lst);
 void							ft_lstclear_commands(t_command_to_expand **lst);
-void							ft_lstclear_arguments(t_argument_to_expand **lst);
-void							ft_lstclear_redirections(t_redirection_to_expand **lst);
+void							ft_lstclear_arguments(
+									t_argument_to_expand **lst);
+void							ft_lstclear_redirections(
+									t_redirection_to_expand **lst);
 void							ft_lstadd_back_env(t_env **lst, t_env *new);
 void							ft_command_to_expand_addback(
-									t_command_to_expand **lst, t_command_to_expand *new);
+									t_command_to_expand **lst,
+									t_command_to_expand *new);
 void							ft_redirection_to_expand_addback(
-									t_redirection_to_expand **lst, t_redirection_to_expand *new);
+									t_redirection_to_expand **lst,
+									t_redirection_to_expand *new);
 void							ft_argument_to_expand_addback(
-									t_argument_to_expand **lst, t_argument_to_expand *new);
-void							ft_lstadd_back_argument(t_argument **lst, t_argument *new);
-void							ft_lstadd_back_char_list(t_char_list **lst, t_char_list *new);
-void							ft_lstadd_back_redirection(t_redirection **lst, t_redirection *new);
+									t_argument_to_expand **lst,
+									t_argument_to_expand *new);
+void							ft_lstadd_back_argument(
+									t_argument **lst, t_argument *new);
+void							ft_lstadd_back_char_list(
+									t_char_list **lst, t_char_list *new);
+void							ft_lstadd_back_redirection(
+									t_redirection **lst, t_redirection *new);
 t_redirection					*ft_lstnew_redirection(void);
 void							ft_lstclear_argument(t_argument **lst);
 void							ft_lstclear_char_list(t_char_list **lst);
@@ -352,9 +386,11 @@ void							ft_lstclear_char_list(t_char_list **lst);
 */
 
 void							ft_free(char **tab);
-void							ft_free_vars_input(char *command_line, char **env);
+void							ft_free_vars_input(
+									char *command_line, char **env);
 void							ft_free_tab_3d(t_vars *vars);
-void							ft_lstclear_final_redirection(t_redirection **lst);
+void							ft_lstclear_final_redirection(
+									t_redirection **lst);
 
 /*
 * Exit_status
@@ -366,42 +402,52 @@ void							set_interactive_mode(int set);
 * Exec
 */
 
-void							ft_heredoc(t_redirection *redirection, t_redirection_to_expand *all, t_bool save, t_env *env, t_vars *vars);
-int								open_files(t_vars *vars, t_redirection_to_expand *redir);
-char							**find_the_accessible_path(char **path, t_vars *vars, char **command_line);
-int								build_path(char **path, char **bin_path, char **is_valid_cmd, char **full_cmd);
-void							update_full_cmd(char ***full_cmd, char *is_valid_cmd);
-int								verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env);
-int								fork_processes(t_vars *vars, t_redirection **redirect, t_env **envp);
-void							capture_and_redirection(char *tab, char *tmp, t_vars *vars);
+void							ft_heredoc(t_redirection *redirection,
+									t_redirection_to_expand *all,
+									t_bool save, t_env *env, t_vars *vars);
+int								open_files(t_vars *vars,
+									t_redirection_to_expand *redir);
+char							**find_the_accessible_path(char **path,
+									t_vars *vars, char **command_line);
+int								build_path(char **path,
+									char **bin_path,
+									char **is_valid_cmd, char **full_cmd);
+void							update_full_cmd(char ***full_cmd,
+									char *is_valid_cmd);
+int								verif_fill_command_paths(
+									t_vars *vars, t_command_to_expand *tmp,
+									t_env *env);
+int								fork_processes(t_vars *vars,
+									t_redirection **redirect, t_env **envp);
+void							capture_and_redirection(
+									char *tab, char *tmp, t_vars *vars);
 void							open_fd_infile(t_vars *vars);
 void							open_hd_w(t_vars *vars);
-void							pipe_command_redirection_even(t_redirection *redirect, t_vars *vars);
-void							pipe_command_redirection_odd(t_redirection *redirect, t_vars *vars);
-void							last_command_redirection_odd(t_redirection *redirect, t_vars *vars);
-void							first_command_redirection(t_vars *vars, t_redirection *redirect);
-void							last_command_redirection_even(t_redirection *redirect, t_vars *vars);
-void							ft_flow_redirection(t_vars *vars, t_redirection *redirect);
+void							pipe_command_redirection_even(
+									t_redirection *redirect, t_vars *vars);
+void							pipe_command_redirection_odd(
+									t_redirection *redirect, t_vars *vars);
+void							last_command_redirection_odd(
+									t_redirection *redirect, t_vars *vars);
+void							first_command_redirection(t_vars *vars,
+									t_redirection *redirect);
+void							last_command_redirection_even(
+									t_redirection *redirect, t_vars *vars);
+void							ft_flow_redirection(t_vars *vars,
+									t_redirection *redirect);
 char							*get_var_name(char *str);
 t_bool							is_builtins_exec(t_vars *vars);
 t_bool							is_builtins_parsing(char **str);
 t_redirection_to_expand			*is_last(t_redirection_to_expand *tmp);
-t_redirection					*stock_redirection(t_command_to_expand *list, t_env *env, t_vars *vars);
-
-/*
-* GNL // Sa dégage
-*/
-
+t_redirection					*stock_redirection(t_command_to_expand *list,
+									t_env *env, t_vars *vars);
 char							*ft_strjoin_mod(char *s1, char *s2);
-char							*read_loop(char *buf, char *stock, int *len, int fd);
-char							*ft_strchr_rl(const char *s, int c);
-char							*read_line(int fd, char *stock);
-char							*ft_strdup_gnl(const char *s);
-char							*ft_substr_gnl(char const *s, unsigned int start, size_t len);
-char							*extract_line(char *stock);
-char							*extract_surplus_line(char *stock);
 t_redirection					*ft_lstlast_redirection(t_redirection *lst);
-t_redirection_to_expand			*expand_redirection(t_redirection_to_expand *redirect, t_env *env, t_vars *vars);
-t_redirection_to_expand			*ft_expand_redirections(t_redirection_to_expand **redirection, t_env *env, t_vars *vars);
+t_redirection_to_expand			*expand_redirection(
+									t_redirection_to_expand *redirect,
+									t_env *env, t_vars *vars);
+t_redirection_to_expand			*ft_expand_redirections(
+									t_redirection_to_expand **redirection,
+									t_env *env, t_vars *vars);
 
 #endif
