@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/20 14:12:02 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:56:30 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 				in++;
 			}
 		}
-		if (tmp_char->value && tmp_char->next
+		if (tmp_char->value && tmp_char->next && quote == tmp_char->value
 			&& ((tmp_char->value == '\'' && tmp_char->next->value == '\'')
 				|| (tmp_char->value == '"' && tmp_char->next->value == '"')))
 			tmp_char = tmp_char->next->next;
@@ -327,80 +327,89 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	return (1);
 }
 
-static t_bool	empty_quote_verif(t_char_list *tmp)
-{
-	if (tmp && tmp->value == '"')
-	{
-		if (tmp->next->value == '"' && tmp->next->next == NULL)
-			return (TRUE);
-	}
-	else if (tmp && tmp->value == '\'')
-	{
-		if (tmp->next->value == '\'' && tmp->next->next == NULL)
-			return (TRUE);
-	}
-	return (FALSE);
-}
 
-static void	ft_remove_quotes(t_argument **src)
-{
-	t_char_list	*tmp_char;
-	t_char_list	*char_reset;
-	t_bool		in_simple;
-	t_bool		in_double;
 
-	while (*src != NULL)
-	{
-		if ((*src)->chars && (*src)->chars->value == '"')
-			in_simple = TRUE;
-		else
-			in_simple = FALSE;
-		if ((*src)->chars && (*src)->chars->value == '\'')
-			in_double = TRUE;
-		else
-			in_double = FALSE;
-		if (empty_quote_verif((*src)->chars) == TRUE)
-		{
-			(*src)->chars->value = 0;
-			free((*src)->chars->next);
-			(*src)->chars->next = NULL;
-			*src = (*src)->next;
-			continue ;
-		}
-		if (in_simple == TRUE || in_double == TRUE)
-		{
-			tmp_char = (*src)->chars;
-			(*src)->chars = (*src)->chars->next;
-			free(tmp_char);
-		}
-		char_reset = NULL;
-		tmp_char = (*src)->chars;
-		while (tmp_char != NULL)
-		{
-			if ((tmp_char->value == '"' || tmp_char->value == '\'')
-				&& in_simple == TRUE)
-			{
-				if (char_reset != NULL)
-					char_reset->next = NULL;
-				free(tmp_char);
-				in_simple = FALSE;
-				break ;
-			}
-			else if ((tmp_char->value == '"' || tmp_char->value == '\'')
-				&& in_double == TRUE)
-			{
-				if (char_reset != NULL)
-					char_reset->next = NULL;
-				free(tmp_char);
-				in_double = FALSE;
-				break ;
-			}
-			char_reset = tmp_char;
-			tmp_char = tmp_char->next;
-		}
-		*src = (*src)->next;
-	}
-}
+// static t_bool	empty_quote_verif(t_char_list *tmp)
+// {
+// 	if (tmp && tmp->value == '"')
+// 	{
+// 		if (tmp->next->value == '"' && tmp->next->next == NULL)
+// 			return (TRUE);
+// 	}
+// 	else if (tmp && tmp->value == '\'')
+// 	{
+// 		if (tmp->next->value == '\'' && tmp->next->next == NULL)
+// 			return (TRUE);
+// 	}
+// 	return (FALSE);
+// }
+
+
+
+
+
+
+
+
+// static void	ft_remove_quotes(t_argument **src)
+// {
+	// t_char_list	*tmp_char;
+	// t_char_list	*char_reset;
+	// t_bool		in_simple;
+	// t_bool		in_double;
+// 
+	// while (*src != NULL)
+	// {
+		// if ((*src)->chars && (*src)->chars->value == '"')
+			// in_simple = TRUE;
+		// else
+			// in_simple = FALSE;
+		// if ((*src)->chars && (*src)->chars->value == '\'')
+			// in_double = TRUE;
+		// else
+			// in_double = FALSE;
+		// if (empty_quote_verif((*src)->chars) == TRUE)
+		// {
+			// (*src)->chars->value = 0;
+			// free((*src)->chars->next);
+			// (*src)->chars->next = NULL;
+			// *src = (*src)->next;
+			// continue ;
+		// }
+		// if (in_simple == TRUE || in_double == TRUE)
+		// {
+			// tmp_char = (*src)->chars;
+			// (*src)->chars = (*src)->chars->next;
+			// free(tmp_char);
+		// }
+		// char_reset = NULL;
+		// tmp_char = (*src)->chars;
+		// while (tmp_char != NULL)
+		// {
+			// if ((tmp_char->value == '"' || tmp_char->value == '\'')
+				// && in_simple == TRUE)
+			// {
+				// if (char_reset != NULL)
+					// char_reset->next = NULL;
+				// free(tmp_char);
+				// in_simple = FALSE;
+				// break ;
+			// }
+			// else if ((tmp_char->value == '"' || tmp_char->value == '\'')
+				// && in_double == TRUE)
+			// {
+				// if (char_reset != NULL)
+					// char_reset->next = NULL;
+				// free(tmp_char);
+				// in_double = FALSE;
+				// break ;
+			// }
+			// char_reset = tmp_char;
+			// tmp_char = tmp_char->next;
+		// }
+		// *src = (*src)->next;
+	// }
+// }
 
 t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		t_env *env, t_vars *vars)
@@ -435,8 +444,8 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 		while (tmp != 0)
 			tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
 		tmp_split = splitted_arguments;
-		if (tmp_split->chars)
-			ft_remove_quotes(&tmp_split);
+		// if (tmp_split->chars)
+		// 	ft_remove_quotes(&tmp_split);
 	}
 	if (args_with_expanded_vars)
 		ft_lstclear_argument(&args_with_expanded_vars);

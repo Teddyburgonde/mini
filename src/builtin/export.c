@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/20 13:09:36 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:58:35 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,24 @@ static char	*make_var(char *str)
 	int		i;
 
 	i = 0;
-	result = malloc(sizeof(char)
-			* (ft_strlen(&str[ft_strcspn(str, "=") + 1]) + 2));
+	result = NULL;
+	if (ft_strchr(str, '=') == 0)
+		result = malloc(sizeof(char) * 1);
+	else if (ft_strchr(str, '=') > 0 && ft_strchr(str, '+') == 0)
+		result = malloc(sizeof(char)
+				* (ft_strlen(&str[ft_strcspn(str, "=") + 1]) + 1));
+	else if (ft_strchr(str, '=') > 0 && ft_strchr(str, '+') > 0)
+		result = malloc(sizeof(char)
+				* (ft_strlen(&str[ft_strcspn(str, "=") + 1]) + 2));
 	if (!result || !str)
 		return (NULL);
-	while (str[ft_strcspn(str, "=") + i + 1])
+	if (ft_strchr(str, '=') > 0)
 	{
-		result[i] = str[ft_strcspn(str, "=") + i + 1];
-		i++;
+		while (str[ft_strcspn(str, "=") + i + 1])
+		{
+			result[i] = str[ft_strcspn(str, "=") + i + 1];
+			i++;
+		}
 	}
 	result[i] = 0;
 	return (result);
