@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 20:22:37 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/22 07:32:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum s_bool
 * Global variables
 */
 
-//extern int		g_sig;
+extern int		g_sig;
 
 typedef struct s_vars
 {
