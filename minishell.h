@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 09:44:53 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:22:02 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,16 @@ t_command_parsing_result		*ft_redirections_arguments(char **remaining_line,
 t_redirection_parsing_result	*ft_verif_redirection(char *str,
 									t_redirection_parsing_result *redirection_result);
 t_redirection_parsing_result	*parse_redirection(char *str);
+int								fill_command_paths(t_vars *vars,
+									t_command_to_expand *tmp, t_env *env);
+int								process_command_path(t_vars *vars,
+									t_command_to_expand *tmp, t_env *env, int i);
+int								copy_command_line(char **command_line,
+									t_vars *vars, int i, t_argument *final_parsing);
+int								handle_command_line(t_vars *vars,
+									char **command_line, t_argument *final_parsing, int i);
+char							**copy_double_array(char **src);
+size_t							ft_array_len(char **arr);
 
 /*
 * Env

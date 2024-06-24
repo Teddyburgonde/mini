@@ -68,6 +68,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/parsing_command_utils.c \
 			src/utils/parsing_initialize.c \
 			src/utils/parsing_utils_two.c \
+			src/utils/fill_command_paths_utils.c
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)
