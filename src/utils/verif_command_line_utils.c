@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 11:09:52 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 11:40:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:27:02 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	check_empty_quotes(char *command_line,
 		free(command_line);
 		return (1);
 	}
-	if (parsing_result->commands->arguments != NULL && 
-		(ft_strcmp(parsing_result->commands->arguments->content, "''") == 0
-			|| ft_strcmp(command_line, "\"\"") == 0) 
+	if (parsing_result->commands->arguments != NULL
+		&& (ft_strcmp(parsing_result->commands->arguments->content, "''") == 0
+			|| ft_strcmp(command_line, "\"\"") == 0)
 		&& parsing_result->commands->next == NULL)
 	{
 		write(2, "Command '' not found, but can be installed with !\n", 50);
