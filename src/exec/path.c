@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:48:01 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/18 14:11:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:05:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	**copy_double_array(char **src)
 	{
 		j = 0;
 		tmp = malloc((ft_strlen(src[i]) + 1) * sizeof(char));
-		while(src[i][j])
+		while (src[i][j])
 		{
 			tmp[j] = src[i][j];
 			j++;
@@ -53,8 +53,8 @@ static char	**copy_double_array(char **src)
 	return (dest);
 }
 
-
-static int	fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env)
+static int	fill_command_paths(t_vars *vars,
+		t_command_to_expand *tmp, t_env *env)
 {
 	t_argument				*final_parsing;
 	char					**command_line;
@@ -106,7 +106,6 @@ int	verif_fill_command_paths(t_vars *vars, t_command_to_expand *tmp, t_env *env)
 {
 	if (fill_command_paths(vars, tmp, env) == -1)
 	{
-		
 		if (vars->path)
 		{
 			ft_free(vars->path);

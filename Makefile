@@ -4,8 +4,11 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/prompt/ft_readline.c \
 			src/prompt/setup_command.c \
 			src/prompt/cmd_manager.c \
+			src/prompt/manage_cmd_selector.c \
             src/env/init_env.c \
 			src/env/env_to_char.c \
+			src/env/update_shlvl.c  \
+			src/env/env_command.c \
             src/signal/signal.c \
 			src/builtin/export.c \
 			src/builtin/ft_cd.c \
@@ -46,7 +49,6 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/error_message_for_exit.c \
 			src/utils/fork_processes_utils.c \
 			src/utils/process_utils.c \
-			src/utils/close_fd.c \
 			src/utils/exit_status.c \
 			src/utils/copy_utils.c \
 			src/utils/lst_clear_utils.c \
@@ -58,6 +60,14 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/ft_strjoin_quoted_arg_utils.c  \
 			src/utils/verif_command_line_utils.c \
 			src/utils/skips_utils.c \
+			src/utils/close_fd.c \
+			src/utils/close_pipe.c \
+			src/utils/env_utils.c \
+			src/utils/ft_cmd_manager_utils.c  \
+			src/utils/env_arg_utils.c \
+			src/utils/parsing_command_utils.c \
+			src/utils/parsing_initialize.c \
+			src/utils/parsing_utils_two.c \
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)

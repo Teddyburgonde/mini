@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:00:27 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/21 14:39:39 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/24 04:05:30 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	ft_lstsize_modif(t_argument *argument)
 	counter = 0;
 	while (argument != NULL)
 	{
-		counter++;
 		argument = argument->next;
+		counter++;
 	}
 	return (counter);
 }

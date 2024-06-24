@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 15:15:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 19:07:48 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/23 08:40:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,3 @@ int	main(int ac, char **av, char *envp[])
 	free(vars);
 	return (0);
 }
-

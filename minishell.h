@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 11:18:46 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 09:44:53 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,16 +242,58 @@ void							copy_tab(char *tab, const char *s1,
 									const char *s2, char *reject);
 int								skip_spaces_and_tabs(char *str);
 int								check_spaces_and_tabs(char *command_line,
-									t_command_line_parsing_result *parsing_result,
+									t_command_line_parsing_result* parsing_result,
 									t_vars *vars);
 void							add_history_and_parse(char *command_line,
-									t_command_line_parsing_result	**parsing_result);
-int	handle_parsing_errors(t_command_line_parsing_result	*parsing_result,
+									t_command_line_parsing_result
+									**parsing_result);
+int								handle_parsing_errors(
+									t_command_line_parsing_result
+									*parsing_result,
 									char *command_line, t_vars *vars);
-int								check_pipe_position(char *command_line, t_vars *vars);
-int								check_empty_quotes(char *command_line,
-									t_command_line_parsing_result	*parsing_result,
+int								check_pipe_position(char *command_line,
 									t_vars *vars);
+int								check_empty_quotes(char *command_line,
+									t_command_line_parsing_result 
+									*parsing_result,
+									t_vars *vars);
+int								check_error_redirect_infifle_fd(
+									t_redirection *redirect);
+int								check_error_redirect_outfile_fd(
+									t_redirection *redirect);
+void							close_pipe_odd(t_vars *vars);
+void							close_pipe_even(t_vars *vars);
+char							**sort_env(char **env);
+void							add_quote_after_equal(char *str, char *result);
+char							*setup_full_path(char *str);
+char							**env_to_char_export(t_env *env);
+int								count_hidden_var(t_env *env);
+void							cleanup_vars_path(t_vars *vars);
+void							manage_variable_path(
+									t_env **env, t_vars *vars);
+void							print_env_vars(t_vars *vars, t_redirection *redirect);
+int								verif_arg_env(char **command_line);
+int								pipes_management(char **remaining_line);
+int								verif_result_command_parsing_result(
+									t_command_parsing_result *command_parsing_result);
+t_redirection_parsing_result 	*initialize_redirection_parsing_result(void);
+int								check_remaining_line_length(char *remaining_line, t_command_parsing_result *result);
+void							initialize_allocated_parse_command(t_command_parsing_result	 **result,
+									t_redirection_parsing_result	**redirection_result,
+									t_argument_parsing_result **argument_result);
+t_command_parsing_result		*ft_redirections_arguments(char **remaining_line,
+									t_command_parsing_result *result,
+									t_redirection_parsing_result *redirection_result,
+									t_argument_parsing_result *argument_result);
+t_argument_parsing_result		*parse_quote(const char *remaining_line,
+									t_argument_parsing_result *result);
+t_command_parsing_result		*ft_redirections_arguments(char **remaining_line,
+									t_command_parsing_result *result,
+									t_redirection_parsing_result *redirection_result,
+									t_argument_parsing_result *argument_result);
+t_redirection_parsing_result	*ft_verif_redirection(char *str,
+									t_redirection_parsing_result *redirection_result);
+t_redirection_parsing_result	*parse_redirection(char *str);
 
 /*
 * Env
@@ -260,6 +302,10 @@ int								check_empty_quotes(char *command_line,
 void							init_env(t_env **env, char **envp);
 char							**env_to_char(t_env *env);
 char							**env_to_char_export(t_env *env);
+char							*update_shlvl(int shlvl);
+char							*convert_to_string(int shlvl, int len);
+int								calculate_length(int shlvl);
+int								adjust_shlvl(int shlvl);
 
 /*
 * Signal
@@ -274,6 +320,23 @@ void							run_signals(void);
 */
 
 int								ft_readline(t_env **env, t_vars *vars);
+int								manage_echo_pwd(
+									char **command_line,
+									t_redirection *redirect, t_vars **vars);
+int								manage_cd_unset(char **command_line,
+									t_vars **vars, t_env **env);
+int								manage_export(char **command_line,
+									t_redirection *redirect,
+									t_vars **vars, t_env **env);
+int								manage_exit_env(char **command_line,
+									t_vars **vars, t_redirection *redirect);
+int								cmd_selector(t_env **env,
+									char **command_line, t_vars *vars,
+									t_redirection *redirect);
+void							print_env(char **env, t_vars *vars,
+									t_redirection *redirect);
+void							exec_env(char **command_line,
+									t_vars *vars, t_redirection *redirect);
 
 /*
 * Parsing
@@ -300,7 +363,7 @@ t_command_line_parsing_result	*ft_parse_command_line(char *command_line);
 t_command_parsing_result		*ft_allocated_result(void);
 t_command_parsing_result		*redirections(t_command_parsing_result *result,
 									char *remaining_line,
-									t_redirection_parsing_result 
+									t_redirection_parsing_result
 									*redirection_result);
 t_command_parsing_result		*arguments(t_command_parsing_result *result,
 									t_argument_parsing_result *argument_result,
@@ -309,7 +372,7 @@ t_command_parsing_result		*parse_command(char *command_line);
 t_command_parsing_result		*ft_redirections_arguments(
 									char **remaining_line,
 									t_command_parsing_result *result,
-									t_redirection_parsing_result 
+									t_redirection_parsing_result
 									*redirection_result,
 									t_argument_parsing_result *argument_result);
 t_argument_parsing_result		*is_parsing_arg(const char *remaining_line,
@@ -416,7 +479,8 @@ void							set_interactive_mode(int set);
 
 void							ft_heredoc(t_redirection *redirection,
 									t_redirection_to_expand *all,
-									t_bool save, t_env *env, t_vars *vars);
+									t_bool save, t_env *env,
+									t_vars *vars);
 int								open_files(t_vars *vars,
 									t_redirection_to_expand *redir);
 char							**find_the_accessible_path(char **path,

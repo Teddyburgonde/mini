@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_to_char.c                                      :+:      :+:    :+:   */
+/*   ft_cmd_manager_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 14:44:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/23 03:54:33 by tebandam         ###   ########.fr       */
+/*   Created: 2024/06/23 06:02:12 by tebandam          #+#    #+#             */
+/*   Updated: 2024/06/23 08:39:11 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	**env_to_char(t_env *env)
+void	cleanup_vars_path(t_vars *vars)
 {
-	char	**tmp;
-	int		len;
-	int		i;
-
-	len = ft_lstsize_env(env);
-	len -= count_hidden_var(env);
-	tmp = malloc((len + 1) * sizeof(char *));
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	while (env)
+	if (vars->path)
 	{
-		if (env->hide == FALSE)
-			tmp[i] = env->full_path;
-		else
-			i--;
-		env = env->next;
-		i++;
+		ft_free(vars->path);
+		vars->path = NULL;
 	}
-	tmp[i] = NULL;
-	return (tmp);
+}
+
+void	manage_variable_path(t_env **env, t_vars *vars)
+{
+	if (lst_search_env("$PATH", *env) != NULL)
+		vars->path = ft_split((lst_search_env("$PATH", *env))->value, ':');
 }
