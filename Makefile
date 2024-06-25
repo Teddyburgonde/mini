@@ -58,6 +58,13 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/ft_strjoin_quoted_arg_utils.c  \
 			src/utils/verif_command_line_utils.c \
 			src/utils/skips_utils.c \
+			src/utils/heredoc_utils.c \
+			src/utils/redirections_utils.c \
+			src/utils/ft_itoa.c \
+			src/utils/setup_protect.c \
+			src/utils/expand_heredoc.c \
+			src/utils/strlen_heredoc.c \
+			src/utils/little_utils.c
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)

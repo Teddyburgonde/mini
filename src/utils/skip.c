@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:24:57 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 10:31:20 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:29:15 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ int	skip_dolar_var(char *argument, int index)
 	int	i;
 
 	i = index;
+	i++;
 	while (argument[i] != 0
 		&& argument[i] != ' ' && argument[i] != '\n'
 		&& argument[i] != '\t' && argument[i] != '|'
 		&& argument[i] != '<' && argument[i] != '>'
-		&& argument[i] != '\'' && argument[i] != '"')
+		&& argument[i] != '\'' && argument[i] != '"'
+		&& argument[i] != '$')
 		i++;
 	return (i);
 }

@@ -3,24 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/20 15:30:31 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:26:10 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static void	strlen_expand(char *var_name, t_env *env, int *count, int *j)
+{
+	t_env	*node;
+
+	node = lst_search_env(var_name, env);
+	if (node->value != NULL && node->value[*j] != 0)
+	{
+		while (node->value[*j])
+		{
+			*count += 1;
+			*j += 1;
+		}
+	}
+	*count -= ft_strlen(var_name);
+}
+
+static void	strlen_exit_code(t_vars *vars, int *count)
+{
+	char	*exit_code;
+
+	exit_code = ft_itoa(vars->exit_code);
+	*count = ft_strlen(exit_code) - 2;
+	free(exit_code);
+}
+
+static int expand_len(t_redirection_to_expand *tmp,
+	t_vars *vars, t_env *env, int i)
+{
+	int		j;
+	int		count;
+	char	*var_name;
+
+	j = 0;
+	count = 0;
+	var_name = get_var_name(&tmp->arg[i]);
+	if (lst_search_env(var_name, env))
+		strlen_expand(var_name, env, &count, &j);
+	else if (var_name[0] == '$' && var_name[1] == '?')
+		strlen_exit_code(vars, &count);
+	free(var_name);
+	return (count);
+}
 
 static int	ft_strlen_ultime(t_redirection_to_expand *tmp,
 	t_env *env, t_vars *vars)
 {
 	int		i;
 	int		count;
-	int		j;
-	char	*var_name;
-	char	*exit_code;
-	t_env	*node;
 	t_bool	in;
 
 	if (!tmp->arg)
@@ -35,30 +74,7 @@ static int	ft_strlen_ultime(t_redirection_to_expand *tmp,
 		else if (tmp->arg[i] == '\'' && in == TRUE)
 			in = FALSE;
 		else if (tmp->arg[i] == '$' && in == FALSE)
-		{
-			j = 0;
-			var_name = get_var_name(&tmp->arg[i]);
-			if (lst_search_env(var_name, env))
-			{
-				node = lst_search_env(var_name, env);
-				if (node->value != NULL && node->value[j] != 0)
-				{
-					while (node->value[j])
-					{
-						count++;
-						j++;
-					}
-				}
-				count -= ft_strlen(var_name);
-			}
-			else if (ft_strcmp(var_name, "$?") == 0)
-			{
-				exit_code = ft_itoa(vars->exit_code);
-				count = ft_strlen(exit_code) - 2;
-				free(exit_code);
-			}
-			free(var_name);
-		}
+			count += expand_len(tmp, vars, env, i);
 		i++;
 	}
 	count += i;
@@ -98,12 +114,32 @@ static void	refresh_quotes_status(t_bool *in_quote, char current)
 	}
 }
 
+static int	is_existing_var(t_redirection_to_expand *redirection,
+	t_env *env, int i)
+{
+	char	*var_name;
+
+	var_name = get_var_name(&redirection->arg[i]);
+	if (lst_search_env(var_name, env) || ft_strcmp(var_name, "$?") == 0
+		|| (var_name[0] == '$' && var_name[1] == '?'))
+	{
+		free (var_name);
+		return (TRUE);
+	}
+	else
+	{
+		free (var_name);
+		return (2);
+	}
+	return (0);
+}
+
 static int	need_to_be_expand(t_redirection_to_expand *redirection,
 	t_env *env)
 {
 	int		i;
 	t_bool	in_quote;
-	char	*var_name;
+
 
 	i = 0;
 	in_quote = FALSE;
@@ -112,18 +148,10 @@ static int	need_to_be_expand(t_redirection_to_expand *redirection,
 		refresh_quotes_status(&in_quote, redirection->arg[i]);
 		if (redirection->arg[i] == '$' && in_quote == FALSE)
 		{
-			var_name = get_var_name(&redirection->arg[i]);
-			if (lst_search_env(var_name, env) || ft_strcmp(var_name, "$?") == 0
-				|| (var_name[0] == '$' && var_name[1] == '?'))
-			{
-				free (var_name);
+			if (is_existing_var(redirection, env, i) == TRUE)
 				return (TRUE);
-			}
-			else
-			{
-				free (var_name);
+			else if (is_existing_var(redirection, env, i) == 2)
 				return (2);
-			}
 		}
 		i++;
 	}
@@ -155,7 +183,6 @@ t_redirection_to_expand	*expand_redirection(
 		if (need_to_be_expand(redirect, env) > 0
 			&& redirect->e_type != REDIRECTION_HEREDOC)
 		{
-			// Faire second malloc si non expand
 			tmp->arg = ft_calloc(sizeof(char) * ft_strlen_ultime(
 						redirect, env, vars) + 2, 1);
 			if (!tmp->arg)
@@ -211,12 +238,42 @@ t_redirection_to_expand	*expand_redirection(
 	return (final);
 }
 
+static void	error_message_expand_redir(char *var_name)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(var_name, 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
+	free(var_name);
+}
+
+static int	exit_code_redir(char *var_name, t_env *env)
+{
+	t_env	*var;
+
+	var = NULL;
+	if (var_name[0] != '$' && var_name[1] != '?')
+	{
+		var = lst_search_env(var_name, env);
+		if (var == NULL || var->value == NULL
+			|| ft_strlen(var->value) == 0
+			|| ft_strcspn(var->value, " \n\t") != ft_strlen(var->value))
+		{
+			error_message_expand_redir(var_name);
+			return (1);
+		}
+		else
+			free(var_name);
+	}
+	else
+		free(var_name);
+	return (0);
+}
+
 static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 {
 	int		i;
 	char	*var_name;
 	t_bool	in_quote;
-	t_env	*var;
 
 	i = 0;
 	in_quote = FALSE;
@@ -227,25 +284,22 @@ static int	ft_error_ambiguous(t_redirection_to_expand *tmp, t_env *env)
 			var_name = get_var_name(&tmp->arg[i]);
 		if (in_quote == FALSE && tmp->arg[i] == '$')
 		{
-			if (ft_strcmp(var_name, "$?") != 0)
-			{
-				var = lst_search_env(var_name, env);
-				if (var == NULL || var->value == NULL || ft_strlen(var->value) == 0
-					|| ft_strcspn(var->value, " \n\t") != ft_strlen(var->value))
-				{
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(var_name, 2);
-					ft_putstr_fd(": ambiguous redirect\n", 2);
-					free(var_name);
-					return (1);
-				}
-				else
-					free(var_name);
-			}
-			else
-				free(var_name);
+			if (exit_code_redir(var_name, env) == 1)
+				return (1);
 		}
 		i++;
+	}
+	return (0);
+}
+
+static int	ambiguous_redirection(t_redirection_to_expand *error_ambig,
+	t_env *env, t_redirection_to_expand	*tmp)
+{
+	if (ft_error_ambiguous(error_ambig, env) == 1)
+	{
+		free(tmp->arg);
+		tmp->arg = NULL;
+		return (1);
 	}
 	return (0);
 }
@@ -267,12 +321,8 @@ t_redirection_to_expand	*ft_expand_redirections(t_redirection_to_expand **redire
 		tmp = expand_redirections;
 		while (tmp)
 		{
-			if (ft_error_ambiguous(error_ambig, env) == 1)
-			{
-				free(tmp->arg);
-				tmp->arg = NULL;
-			}
-			else if (tmp->arg[0] == '\'' || tmp->arg[0] == '"')
+			if (ambiguous_redirection(error_ambig, env, tmp) == 0
+				&& (tmp->arg[0] == '\'' || tmp->arg[0] == '"'))
 				tmp->arg = ft_remove_simple_quote(tmp->arg);
 			tmp = tmp->next;
 			error_ambig = error_ambig->next;

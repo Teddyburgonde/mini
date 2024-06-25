@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 11:18:46 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:33:18 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum s_bool
 * Global variables
 */
 
-extern int		g_sig;
+extern int	g_sig;
 
 typedef struct s_vars
 {
@@ -246,7 +246,8 @@ int								check_spaces_and_tabs(char *command_line,
 									t_vars *vars);
 void							add_history_and_parse(char *command_line,
 									t_command_line_parsing_result	**parsing_result);
-int	handle_parsing_errors(t_command_line_parsing_result	*parsing_result,
+int								handle_parsing_errors(
+									t_command_line_parsing_result *parsing_result,
 									char *command_line, t_vars *vars);
 int								check_pipe_position(char *command_line, t_vars *vars);
 int								check_empty_quotes(char *command_line,
@@ -416,7 +417,7 @@ void							set_interactive_mode(int set);
 
 void							ft_heredoc(t_redirection *redirection,
 									t_redirection_to_expand *all,
-									t_bool save, t_env *env, t_vars *vars);
+									t_env *env, t_vars *vars);
 int								open_files(t_vars *vars,
 									t_redirection_to_expand *redir);
 char							**find_the_accessible_path(char **path,
@@ -451,8 +452,9 @@ char							*get_var_name(char *str);
 t_bool							is_builtins_exec(t_vars *vars);
 t_bool							is_builtins_parsing(char **str);
 t_redirection_to_expand			*is_last(t_redirection_to_expand *tmp);
-t_redirection					*stock_redirection(t_command_to_expand *list,
-									t_env *env, t_vars *vars);
+void							stock_redirection(t_command_to_expand *list,
+									t_env *env, t_vars *vars,
+									t_redirection **redirection);
 char							*ft_strjoin_mod(char *s1, char *s2);
 t_redirection					*ft_lstlast_redirection(t_redirection *lst);
 t_redirection_to_expand			*expand_redirection(
@@ -461,5 +463,46 @@ t_redirection_to_expand			*expand_redirection(
 t_redirection_to_expand			*ft_expand_redirections(
 									t_redirection_to_expand **redirection,
 									t_env *env, t_vars *vars);
+void							where_are_heredoc(t_redirection **list,
+									t_bool exist);
+void							prepare_heredoc(t_redirection *redirection,
+									t_redirection_to_expand *tmp_redirection);
+void							heredoc_setup(t_redirection *redirection,
+									t_command_to_expand *tmp_command,
+									t_env *env, t_vars *vars);
+void							complete_heredoc(t_redirection *redirection,
+									t_command_to_expand *tmp_command,
+									t_env *env, t_vars *vars);
+void							outfile_setup(t_redirection *redirection,
+									t_redirection_to_expand *tmp_redirection);
+void							infile_setup(t_redirection *redirection,
+									t_redirection_to_expand *tmp_redirection);
+void							append_setup(t_redirection *redirection,
+									t_redirection_to_expand *tmp_redirection);
+t_redirection					*no_redirection(void);
+t_bool							global_redirections(t_redirection *redirection,
+									t_redirection_to_expand *tmp_redirection,
+									t_vars *vars);
+char							*ft_strdup(char *s);
+void							init(t_bool	*heredoc, int *nb_hd,
+									t_redirection **result,
+									t_redirection **redirection);
+void							redirection_setup(t_redirection **redirection,
+									int nb_hd);
+void							security_clear(t_command_to_expand **list);
+t_bool							is_last_infile(
+									t_redirection_to_expand *tmp_redirection);
+int								ft_strlen_with_expand(char *str, t_env *env,
+									t_vars *vars);
+char							*expand_line(char *str, t_env *env,
+									t_vars *vars);
+void							increment_index(int *i, int *t, char *tmp);
+void							init_expand(int *i, int *j, int *t,
+									char **var_name);
+void							refresh_index(char *str, int *i,
+									int *count, int j);
+t_bool							need_to_be_expand_hd(char *str, t_env *env);
+int								ft_strlen_with_expand(char *str, t_env *env,
+									t_vars *vars);
 
 #endif

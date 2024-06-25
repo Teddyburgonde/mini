@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/20 16:00:57 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:35:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	ft_cmd_manager(t_env **env,
 	{
 		tmp->redirections = ft_expand_redirections(&cmd->commands->redirections,
 				*env, vars);
-		redirection = stock_redirection(cmd->commands, *env, vars);
+		stock_redirection(cmd->commands, *env, vars, &redirection);
 		vars->nb_cmd = ft_lstsize_command(cmd->commands);
 		if (lst_search_env("$PATH", *env) != NULL)
 			vars->path = ft_split((lst_search_env("$PATH", *env))->value, ':');
