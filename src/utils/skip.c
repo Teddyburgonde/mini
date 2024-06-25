@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:24:57 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 10:31:20 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:05:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*skip_one_character(const char *str)
 }
 
 char	*skip_quote(
-		const char *str, char c, t_argument_parsing_result *result)
+		const char *str, char c, t_argument_parsing *result)
 {
 	int	i;
 

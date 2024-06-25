@@ -6,15 +6,15 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 09:23:44 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 09:35:13 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:05:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_redirection_parsing_result	*parse_redirection(char *str)
+t_redirection_parsing	*parse_redirection(char *str)
 {
-	t_redirection_parsing_result	*redirection_result;
+	t_redirection_parsing	*redirection_result;
 
 	redirection_result = initialize_redirection_parsing_result();
 	if (!redirection_result)
@@ -36,8 +36,8 @@ t_redirection_parsing_result	*parse_redirection(char *str)
 	return (redirection_result);
 }
 
-t_redirection_parsing_result	*ft_verif_redirection(char *str,
-	t_redirection_parsing_result *redirection_result)
+t_redirection_parsing	*ft_verif_redirection(char *str,
+	t_redirection_parsing *redirection_result)
 {
 	if (str[0] == '>' && str[1] == '>')
 	{
@@ -66,8 +66,8 @@ t_redirection_parsing_result	*ft_verif_redirection(char *str,
 	return (redirection_result);
 }
 
-t_argument_parsing_result	*parse_quote(const char *remaining_line,
-	t_argument_parsing_result *result)
+t_argument_parsing	*parse_quote(const char *remaining_line,
+	t_argument_parsing *result)
 {
 	if (remaining_line[0] == '\'')
 	{
@@ -93,8 +93,8 @@ t_argument_parsing_result	*parse_quote(const char *remaining_line,
 
 t_command_parsing_result	*ft_redirections_arguments(char **remaining_line,
 	t_command_parsing_result *result,
-	t_redirection_parsing_result *redirection_result,
-	t_argument_parsing_result *argument_result)
+	t_redirection_parsing *redirection_result,
+	t_argument_parsing *argument_result)
 {
 	if ((*remaining_line)[0] == '>' || (*remaining_line)[0] == '<')
 	{

@@ -6,14 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 11:09:52 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 11:27:02 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 13:20:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int	check_spaces_and_tabs(char *command_line,
-	t_command_line_parsing_result *parsing_result, t_vars *vars)
+	t_command_line_parsing *parsing_result, t_vars *vars)
 {
 	if (skip_spaces_and_tabs(command_line) == 0)
 	{
@@ -27,13 +27,13 @@ int	check_spaces_and_tabs(char *command_line,
 }
 
 void	add_history_and_parse(char *command_line,
-	t_command_line_parsing_result	**parsing_result)
+	t_command_line_parsing	**parsing_result)
 {
 	add_history(command_line);
 	*parsing_result = ft_parse_command_line(command_line);
 }
 
-int	handle_parsing_errors(t_command_line_parsing_result	*parsing_result,
+int	handle_parsing_errors(t_command_line_parsing	*parsing_result,
 	char *command_line, t_vars *vars)
 {
 	if (!parsing_result->did_succeed)
@@ -60,7 +60,7 @@ int	check_pipe_position(char *command_line, t_vars *vars)
 }
 
 int	check_empty_quotes(char *command_line,
-	t_command_line_parsing_result	*parsing_result, t_vars *vars)
+	t_command_line_parsing	*parsing_result, t_vars *vars)
 {
 	if (ft_strcmp(command_line, "''") == 0
 		|| ft_strcmp(command_line, "\"\"") == 0)

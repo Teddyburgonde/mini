@@ -6,20 +6,20 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 05:14:37 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 09:45:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:21:51 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	verif_result_command_parsing_result(
-	t_command_parsing_result *command_parsing_result)
+int	verif_command_parsing(
+	t_command_parsing_result *command_parsing)
 {
-	if (command_parsing_result == NULL
-		|| !command_parsing_result->did_succeed)
+	if (command_parsing == NULL
+		|| !command_parsing->did_succeed)
 	{
-		ft_lstclear_commands(&command_parsing_result->command);
-		free(command_parsing_result);
+		ft_lstclear_commands(&command_parsing->command);
+		free(command_parsing);
 		return (1);
 	}
 	return (0);

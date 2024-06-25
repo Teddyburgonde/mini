@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/04/20 16:12:46 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/25 14:05:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_argument_parsing_result	*is_parsing_arg(const char *remaining_line,
-	t_argument_parsing_result *result)
+t_argument_parsing	*is_parsing_arg(const char *remaining_line,
+	t_argument_parsing *result)
 {
 	while (remaining_line[0] != '|' && remaining_line[0] != '<'
 		&& remaining_line[0] != '>' && remaining_line[0] != ' '
@@ -36,12 +36,12 @@ t_argument_parsing_result	*is_parsing_arg(const char *remaining_line,
 	return (result);
 }
 
-t_argument_parsing_result	*parse_argument(const char *command_line)
+t_argument_parsing	*parse_argument(const char *command_line)
 {
 	const char					*remaining_line;
-	t_argument_parsing_result	*result;
+	t_argument_parsing	*result;
 
-	result = malloc(sizeof(t_argument_parsing_result));
+	result = malloc(sizeof(t_argument_parsing));
 	if (!result)
 	{
 		result->did_succeed = FALSE;
@@ -61,7 +61,7 @@ t_argument_parsing_result	*parse_argument(const char *command_line)
 }
 
 t_command_parsing_result	*redirections(t_command_parsing_result *result,
-	char *remaining_line, t_redirection_parsing_result	*redirection_result)
+	char *remaining_line, t_redirection_parsing	*redirection_result)
 {
 	redirection_result = parse_redirection(remaining_line);
 	if (redirection_result->did_succeed != TRUE)
@@ -80,7 +80,7 @@ t_command_parsing_result	*redirections(t_command_parsing_result *result,
 }
 
 t_command_parsing_result	*arguments(t_command_parsing_result *result,
-	t_argument_parsing_result *argument_result, char *remaining_line)
+	t_argument_parsing *argument_result, char *remaining_line)
 {
 	argument_result = parse_argument(remaining_line);
 	if (argument_result->did_succeed != TRUE)

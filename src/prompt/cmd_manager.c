@@ -6,14 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:10:36 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/23 13:02:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 13:20:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int	ft_cmd_manager(t_env **env,
-	t_command_line_parsing_result *cmd, t_vars *vars)
+	t_command_line_parsing *cmd, t_vars *vars)
 {
 	t_command_to_expand				*tmp;
 	t_argument_to_expand			*tmp_arg;

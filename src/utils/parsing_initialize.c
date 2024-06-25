@@ -6,17 +6,17 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 09:38:25 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 09:40:20 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:05:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_redirection_parsing_result	*initialize_redirection_parsing_result(void)
+t_redirection_parsing	*initialize_redirection_parsing_result(void)
 {
-	t_redirection_parsing_result	*redirection_result;
+	t_redirection_parsing	*redirection_result;
 
-	redirection_result = malloc(sizeof(t_redirection_parsing_result));
+	redirection_result = malloc(sizeof(t_redirection_parsing));
 	if (!redirection_result)
 	{
 		redirection_result->did_succeed = FALSE;
@@ -34,8 +34,8 @@ t_redirection_parsing_result	*initialize_redirection_parsing_result(void)
 }
 
 void	initialize_allocated_parse_command(t_command_parsing_result **result,
-	t_redirection_parsing_result	**redirection_result,
-	t_argument_parsing_result **argument_result)
+	t_redirection_parsing	**redirection_result,
+	t_argument_parsing **argument_result)
 {
 	*result = ft_allocated_result();
 	*redirection_result = NULL;
