@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:33:03 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/25 16:26:10 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/26 15:11:00 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,78 +158,122 @@ static int	need_to_be_expand(t_redirection_to_expand *redirection,
 	return (FALSE);
 }
 
+static void	function_one(t_vars *vars, t_redirection_to_expand	*tmp,
+	char *var_name, int *i)
+{
+	int		j;
+	char	*exit_code;
+
+	j = 0;
+	exit_code = ft_itoa(vars->exit_code);
+	while (exit_code[j])
+	{
+		tmp->arg[ft_strlen(tmp->arg)] = exit_code[j];
+		j++;
+	}
+	*i += ft_strlen(var_name) - 1;
+	free(var_name);
+	free(exit_code);
+}
+
+static void	function_two(char *var_name, t_env *env,
+	t_redirection_to_expand	*tmp, int *i)
+{
+	int		j;
+	t_env	*var;
+
+	j = 0;
+	var = lst_search_env(var_name, env);
+	if (var != NULL && var->value != NULL && var->value[j] != 0)
+	{
+		while (var->value[j])
+		{
+			tmp->arg[ft_strlen(tmp->arg)] = var->value[j];
+			j++;
+		}
+	}
+	*i += ft_strlen(var_name) - 1;
+	free(var_name);
+}
+
+static void	setup_expand_redirection(t_redirection_to_expand **tmp,
+	t_redirection_to_expand *redirect, t_env *env, t_vars *vars)
+{
+	*tmp = lst_new_redirection_parsing_result();
+	if (!tmp)
+		return ;
+	if (need_to_be_expand(redirect, env) > 0
+		&& redirect->e_type != REDIRECTION_HEREDOC)
+	{
+		(*tmp)->arg = ft_calloc(sizeof(char) * ft_strlen_ultime(
+					redirect, env, vars) + 2, 1);
+		if (!(*tmp)->arg)
+			return ;
+	}
+}
+
+static t_bool	is_in_quote(char *str, int i)
+{
+	int		j;
+	t_bool	in_quote;
+
+	j = 0;
+	in_quote = FALSE;
+	while (str && str[j])
+	{
+		if (str[j] == '\'' && in_quote == FALSE)
+			in_quote = TRUE;
+		else if (str[j] == '\'' && in_quote == TRUE)
+			in_quote = FALSE;
+		if (j == i)
+			return (in_quote);
+		j++;
+	}
+	return (in_quote);
+}
+
+static int	function_three(t_redirection_to_expand **tmp,
+	t_vars *vars, t_env *env, t_redirection_to_expand *redirect)
+{
+	static int	i = 0;
+	char		*var_name;
+	t_bool		in_quote;
+
+	var_name = NULL;
+	in_quote = FALSE;
+	i = ft_strcspn(&redirect->arg[i], "$");
+	while (redirect->arg[i])
+	{
+		in_quote = is_in_quote(redirect->arg, i);
+		if (in_quote == FALSE && redirect->arg[i] == '$')
+			var_name = get_var_name(&redirect->arg[i]);
+		if (ft_strcmp(var_name, "$?") == 0)
+			function_one(vars, *tmp, var_name, &i);
+		else if (in_quote == FALSE && redirect->arg[i] == '$')
+			function_two(var_name, env, *tmp, &i);
+		else
+			(*tmp)->arg[ft_strlen((*tmp)->arg)] = redirect->arg[i];
+		i++;
+	}
+	return (i);
+}
+
 t_redirection_to_expand	*expand_redirection(
 	t_redirection_to_expand *redirect, t_env *env, t_vars *vars)
 {
 	int						i;
-	int						j;
-	char					*var_name;
-	char					*exit_code;
-	t_bool					in_quote;
 	t_redirection_to_expand	*final;
 	t_redirection_to_expand	*tmp;
-	t_env					*var;
 
-	var_name = NULL;
-	in_quote = FALSE;
 	final = NULL;
 	while (redirect)
 	{
-		in_quote = FALSE;
 		i = 0;
-		tmp = lst_new_redirection_parsing_result();
-		if (!tmp)
-			return (NULL);
-		if (need_to_be_expand(redirect, env) > 0
-			&& redirect->e_type != REDIRECTION_HEREDOC)
-		{
-			tmp->arg = ft_calloc(sizeof(char) * ft_strlen_ultime(
-						redirect, env, vars) + 2, 1);
-			if (!tmp->arg)
-				return (NULL);
-		}
+		setup_expand_redirection(&tmp, redirect, env, vars);
 		tmp->e_type = redirect->e_type;
 		if (need_to_be_expand(redirect, env) > 0
 			&& tmp->e_type != REDIRECTION_HEREDOC)
-		{
-			while (redirect->arg[i])
-			{
-				refresh_quotes_status(&in_quote, redirect->arg[i]);
-				if (in_quote == FALSE && redirect->arg[i] == '$')
-					var_name = get_var_name(&redirect->arg[i]);
-				if (ft_strcmp(var_name, "$?") == 0)
-				{
-					j = 0;
-					exit_code = ft_itoa(vars->exit_code);
-					while (exit_code[j])
-					{
-						tmp->arg[ft_strlen(tmp->arg)] = exit_code[j];
-						j++;
-					}
-					i += ft_strlen(var_name) - 1;
-					free(var_name);
-					free(exit_code);
-				}
-				else if (in_quote == FALSE && redirect->arg[i] == '$')
-				{
-					j = 0;
-					var = lst_search_env(var_name, env);
-					if (var != NULL && var->value != NULL && var->value[j] != 0)
-					{
-						while (var->value[j])
-						{
-							tmp->arg[ft_strlen(tmp->arg)] = var->value[j];
-							j++;
-						}
-					}
-					i += ft_strlen(var_name) - 1;
-					free(var_name);
-				}
-				else
-					tmp->arg[ft_strlen(tmp->arg)] = redirect->arg[i];
-				i++;
-			}
-		}
+			i = function_three(&tmp, vars, env, redirect);
 		else
 			tmp->arg = copy_without_quote(redirect->arg);
 		ft_redirection_to_expand_addback(&final, tmp);

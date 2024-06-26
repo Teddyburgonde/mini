@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/25 14:47:12 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/26 15:25:06 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,35 @@ char	*get_var_name(char *str)
 	return (var_name);
 }
 
+static void	*function_four(const char *argument, int *i, t_char_list **chars)
+{
+	t_char_list	*tmp;
+
+	tmp = NULL;
+	tmp = lst_new_char_list();
+	if (!tmp)
+		return (NULL);
+	tmp->value = argument[*i];
+	ft_lstadd_back_char_list(chars, tmp);
+	*i += 1;
+	while (argument[*i] != '\'')
+	{
+		tmp = lst_new_char_list();
+		if (!tmp)
+			return (NULL);
+		tmp->value = argument[*i];
+		ft_lstadd_back_char_list(chars, tmp);
+		*i += 1;
+	}
+	tmp = lst_new_char_list();
+	if (!tmp)
+		return (NULL);
+	tmp->value = argument[*i];
+	ft_lstadd_back_char_list(chars, tmp);
+	*i += 1;
+	return ((void *)1);
+}
+
 static t_argument	*ft_expand_vars_in_argument(
 		const char *argument, t_env *env, t_vars *vars)
 {
@@ -60,27 +89,8 @@ static t_argument	*ft_expand_vars_in_argument(
 		s = 0;
 		if (argument[i] == '\'' && in_quote == FALSE)
 		{
-			tmp = lst_new_char_list();
-			if (!tmp)
+			if (function_four(argument, &i, &arg->chars) == NULL)
 				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
-			i++;
-			while (argument[i] != '\'')
-			{
-				tmp = lst_new_char_list();
-				if (!tmp)
-					return (NULL);
-				tmp->value = argument[i];
-				ft_lstadd_back_char_list(&arg->chars, tmp);
-				i++;
-			}
-			tmp = lst_new_char_list();
-			if (!tmp)
-				return (NULL);
-			tmp->value = argument[i];
-			ft_lstadd_back_char_list(&arg->chars, tmp);
-			i++;
 		}
 		else if (argument[i] == '"' || (in_quote == TRUE && argument[i] != '$'))
 		{
@@ -118,7 +128,6 @@ static t_argument	*ft_expand_vars_in_argument(
 		}
 		else if (argument[i] == '$')
 		{
-			// I added argument[i + 1] != '?'to get code error
 			var_name = get_var_name((char *)&argument[i]);
 			if (ft_strcmp(var_name, "$?") == 0
 				|| (var_name[0] == '$' && var_name[1] == '?'))
@@ -175,7 +184,6 @@ static t_argument	*ft_expand_vars_in_argument(
 		{
 			while (argument[i])
 			{
-				// I added argument[i + 1] != '?' to get code error
 				if (argument[i] == '$')
 					break ;
 				tmp = lst_new_char_list();
@@ -210,139 +218,198 @@ static t_argument	*ft_get_last_pos(t_argument *lst)
 	return (NULL);
 }
 
-static int	ft_split_argument(t_argument *argument_to_split,
-	t_argument **args)
+static void	rest_argument(t_char_list	**tmp_char,
+	t_char_list **splitted_chars)
 {
-	int			in;
-	char		quote;
 	t_char_list	*arg;
-	t_char_list	*tmp_char;
-	t_argument	*tmp;
-	t_argument	*splitted_arguments;
-	t_bool		in_quote;
-	t_bool		quote_in_var;
 
-	quote = 0;
-	splitted_arguments = lst_new_argument();
-	if (!splitted_arguments)
-		return (0);
-	in = 0;
 	arg = NULL;
-	quote_in_var = FALSE;
-	tmp = argument_to_split;
-	tmp = ft_get_last_pos(tmp);
-	if (tmp == NULL)
-		tmp = argument_to_split;
-	if (tmp->chars->value == '"'
-		|| tmp->chars->value == '\'')
+	while (*tmp_char && (*tmp_char)->value != ' '
+		&& (*tmp_char)->value != '\t' && (*tmp_char)->value != '\n')
 	{
-		quote = tmp->chars->value;
+		arg = lst_new_char_list();
+		if (!arg)
+			return ;
+		arg->value = (*tmp_char)->value;
+		arg->was_in_a_variable = (*tmp_char)->was_in_a_variable;
+		arg->next = NULL;
+		ft_lstadd_back_char_list(splitted_chars, arg);
+		(*tmp_char)->last_pos = FALSE;
+		*tmp_char = (*tmp_char)->next;
+	}
+}
+
+static void	fill_in_quote_arg(t_char_list **tmp_char,
+	t_char_list **splitted_chars, char quote)
+{
+	t_char_list	*arg;
+
+	arg = NULL;
+	if (tmp_char && (*tmp_char)->value != quote)
+	{
+		arg = lst_new_char_list();
+		if (!arg)
+			return ;
+		arg->value = (*tmp_char)->value;
+		arg->was_in_a_variable = (*tmp_char)->was_in_a_variable;
+		ft_lstadd_back_char_list(splitted_chars, arg);
+		(*tmp_char)->last_pos = FALSE;
+		*tmp_char = (*tmp_char)->next;
+	}
+	else if (tmp_char)
+		*tmp_char = (*tmp_char)->next;
+}
+
+static t_bool	quote_function(t_char_list **tmp_char,
+	char *quote, t_bool in_quote)
+{
+	static int	in = 0;
+
+	if (!*quote) // A voir
+		in = 0;
+	if ((*tmp_char)->value == '\''
+		|| (*tmp_char)->value == '"')
+	{
+		if (in == 1 && (*tmp_char)->value == *quote)
+			in_quote = FALSE;
+		else if (in == 0)
+		{
+			*quote = (*tmp_char)->value;
+			in++;
+		}
+	}
+	if ((*tmp_char)->value && (*tmp_char)->next && *quote == (*tmp_char)->value
+		&& (((*tmp_char)->value == '\'' && (*tmp_char)->next->value == '\'')
+			|| ((*tmp_char)->value == '"' && (*tmp_char)->next->value == '"')))
+		*tmp_char = (*tmp_char)->next->next;
+	return (in_quote);
+}
+
+static void	fill_no_quote_arg(t_char_list **tmp_char,
+	t_char_list **splitted_chars, char quote)
+{
+	t_char_list	*arg;
+
+	arg = NULL;
+	if (tmp_char && (*tmp_char)->value != quote)
+	{
+		arg = lst_new_char_list();
+		if (!arg)
+			return ;
+		arg->value = (*tmp_char)->value;
+		arg->was_in_a_variable = (*tmp_char)->was_in_a_variable;
+		ft_lstadd_back_char_list(splitted_chars, arg);
+		(*tmp_char)->last_pos = FALSE;
+		*tmp_char = (*tmp_char)->next;
+	}
+}
+
+static int	function_verif_quote(t_char_list **tmp_char, char *quote)
+{
+	static t_bool	quote_in_var = FALSE;
+
+	if (!*quote) // quote est pas utiliser a verif
+		quote_in_var = FALSE;
+	if (((*tmp_char)->value == '\'' || (*tmp_char)->value == '"')
+		&& quote_in_var == FALSE)
+	{
+		*quote = (*tmp_char)->value;
+		quote_in_var = TRUE;
+	}
+	else if (((*tmp_char)->value == '\'' || (*tmp_char)->value == '"')
+		&& quote_in_var == TRUE)
+		quote_in_var = FALSE;
+	if (quote_in_var == FALSE
+		&& ((*tmp_char)->value == ' '
+			|| (*tmp_char)->value == '\t'
+			|| (*tmp_char)->value == '\n'))
+		return (1);
+	if ((*tmp_char)->value == '\'' || (*tmp_char)->value == '"')
+		*tmp_char = (*tmp_char)->next;
+	return (0);
+}
+
+static int	set_last_point(t_argument **tmp, t_char_list **tmp_char)
+{
+	if (*tmp_char == NULL)
+	{
+		*tmp = (*tmp)->next;
+		if (*tmp != NULL)
+			*tmp_char = (*tmp)->chars;
+	}
+	if (*tmp == NULL)
+		return (0);
+	(*tmp_char)->last_pos = TRUE;
+	return (1);
+}
+
+static t_bool	init_function(char *quote, t_argument **tmp,
+	t_argument	**splitted_arguments, t_argument *argument_to_split)
+{
+	t_bool	in_quote;
+
+	in_quote = FALSE;
+	*quote = 0;
+	*splitted_arguments = lst_new_argument();
+	if (!*splitted_arguments)
+		return (0);
+	*tmp = argument_to_split;
+	*tmp = ft_get_last_pos(*tmp);
+	if (*tmp == NULL)
+		*tmp = argument_to_split;
+	if ((*tmp)->chars->value == '"'
+		|| (*tmp)->chars->value == '\'')
+	{
+		*quote = (*tmp)->chars->value;
 		in_quote = TRUE;
 	}
 	else
 		in_quote = FALSE;
-	tmp_char = tmp->chars;
-	tmp_char->last_pos = FALSE;
+	return (in_quote);
+}
+
+static void	set_var(t_argument *tmp, t_char_list **tmp_char)
+{
+	*tmp_char = tmp->chars;
+	(*tmp_char)->last_pos = FALSE;
+}
+
+static int	ft_split_argument(t_argument *argument_to_split,
+	t_argument **args)
+{
+	char		quote;
+	t_char_list	*tmp_char;
+	t_argument	*tmp;
+	t_argument	*splitted_arguments;
+	t_bool		in_quote;
+
+	in_quote = init_function(&quote, &tmp, &splitted_arguments,
+			argument_to_split);
+	set_var(tmp, &tmp_char);
 	while (tmp_char && in_quote == FALSE)
 	{
-		if ((tmp_char->value == '\'' || tmp_char->value == '"')
-			&& quote_in_var == FALSE)
-		{
-			quote = tmp_char->value;
-			quote_in_var = TRUE;
-		}
-		else if ((tmp_char->value == '\'' || tmp_char->value == '"')
-			&& quote_in_var == TRUE)
-			quote_in_var = FALSE;
-		if (quote_in_var == FALSE
-			&& (tmp_char->value == ' '
-				|| tmp_char->value == '\t'
-				|| tmp_char->value == '\n'))
+		if (function_verif_quote(&tmp_char, &quote) == 1)
 			break ;
-		if (tmp_char->value == '\'' || tmp_char->value == '"')
-			tmp_char = tmp_char->next;
-		if (tmp_char && tmp_char->value != quote)
-		{
-			arg = lst_new_char_list();
-			if (!arg)
-				return (0);
-			arg->value = tmp_char->value;
-			arg->was_in_a_variable = tmp_char->was_in_a_variable;
-			ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-			tmp_char->last_pos = FALSE;
-			tmp_char = tmp_char->next;
-		}
+		fill_no_quote_arg(&tmp_char, &splitted_arguments->chars, quote);
 	}
 	while (tmp_char && in_quote == TRUE)
 	{
-		if (tmp_char->value == '\''
-			|| tmp_char->value == '"')
-		{
-			if (in == 1 && tmp_char->value == quote)
-				in_quote = FALSE;
-			else if (in == 0)
-			{
-				quote = tmp_char->value;
-				in++;
-			}
-		}
-		if (tmp_char->value && tmp_char->next && quote == tmp_char->value
-			&& ((tmp_char->value == '\'' && tmp_char->next->value == '\'')
-				|| (tmp_char->value == '"' && tmp_char->next->value == '"')))
-			tmp_char = tmp_char->next->next;
-		if (tmp_char && tmp_char->value != quote)
-		{
-			arg = lst_new_char_list();
-			if (!arg)
-				return (0);
-			arg->value = tmp_char->value;
-			arg->was_in_a_variable = tmp_char->was_in_a_variable;
-			ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-			tmp_char->last_pos = FALSE;
-			tmp_char = tmp_char->next;
-		}
-		else if (tmp_char)
-			tmp_char = tmp_char->next;
+		in_quote = quote_function(&tmp_char, &quote, in_quote);
+		fill_in_quote_arg(&tmp_char, &splitted_arguments->chars, quote);
 	}
-	while (tmp_char && tmp_char->value != ' '
-		&& tmp_char->value != '\t' && tmp_char->value != '\n')
-	{
-		arg = lst_new_char_list();
-		if (!arg)
-			return (0);
-		arg->value = tmp_char->value;
-		arg->was_in_a_variable = tmp_char->was_in_a_variable;
-		arg->next = NULL;
-		ft_lstadd_back_char_list(&splitted_arguments->chars, arg);
-		tmp_char->last_pos = FALSE;
-		tmp_char = tmp_char->next;
-	}
+	rest_argument(&tmp_char, &splitted_arguments->chars);
 	ft_lstadd_back_argument(args, splitted_arguments);
-	if (tmp_char == NULL)
-	{
-		tmp = tmp->next;
-		if (tmp != NULL)
-			tmp_char = tmp->chars;
-	}
-	if (tmp == NULL)
+	if (set_last_point(&tmp, &tmp_char) == 0)
 		return (0);
-	tmp_char->last_pos = TRUE;
 	return (1);
 }
 
-t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
-		t_env *env, t_vars *vars)
+static void	function_one(t_argument_to_expand *tmp_to_expand, t_env *env,
+	t_vars *vars, t_argument **args_with_expanded_vars)
 {
-	t_argument				*argument_with_expanded_vars;
-	t_argument				*args_with_expanded_vars;
-	t_argument				*splitted_arguments;
-	t_argument				*tmp_split;
-	t_argument_to_expand	*tmp_to_expand;
-	int						tmp;
+	t_argument	*argument_with_expanded_vars;
 
-	tmp = 1;
-	tmp_to_expand = (t_argument_to_expand *)argument;
-	args_with_expanded_vars = NULL;
+	argument_with_expanded_vars = NULL;
 	while (tmp_to_expand != NULL)
 	{
 		argument_with_expanded_vars = ft_expand_vars_in_argument(
@@ -353,10 +420,25 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 			argument_with_expanded_vars = NULL;
 			break ;
 		}
-		ft_lstadd_back_argument(&args_with_expanded_vars,
+		ft_lstadd_back_argument(args_with_expanded_vars,
 			argument_with_expanded_vars);
 		tmp_to_expand = tmp_to_expand->next;
 	}
+}
+
+t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
+		t_env *env, t_vars *vars)
+{
+	t_argument				*args_with_expanded_vars;
+	t_argument				*splitted_arguments;
+	t_argument				*tmp_split;
+	t_argument_to_expand	*tmp_to_expand;
+	int						tmp;
+
+	tmp = 1;
+	tmp_to_expand = (t_argument_to_expand *)argument;
+	args_with_expanded_vars = NULL;
+	function_one(tmp_to_expand, env, vars, &args_with_expanded_vars);
 	splitted_arguments = NULL;
 	if (args_with_expanded_vars != NULL)
 	{
