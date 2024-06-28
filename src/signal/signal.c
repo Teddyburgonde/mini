@@ -6,11 +6,18 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 00:07:22 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/23 08:41:15 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/28 22:03:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static void	ft_ctrl_c_for_child(int signal)
+{
+	(void)signal;
+	printf("\n");	
+}
+
 
 void	ft_ctrl_c(int signal)
 {
@@ -20,14 +27,6 @@ void	ft_ctrl_c(int signal)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
-
-// void	ctrl_d(int signal)
-// {
-
-// 	g_sig = signal;
-// 	ft_putstr_fd("exit\n", 1);
-// 	exit(g_sig);
-// }
 
 void	set_interactive_mode(int set)
 {
@@ -39,7 +38,7 @@ void	set_interactive_mode(int set)
 	}
 	if (set == 2)
 	{
-		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, &ft_ctrl_c_for_child);
 		signal(SIGQUIT, SIG_IGN);
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/28 19:50:32 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/28 22:00:01 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ int	ft_readline(t_env **env, t_vars *vars)
 		if (command_line)
 			free(command_line);
 		command_line = NULL;
+		set_interactive_mode(1);
 		command_line = readline("minishell ~ ");
+		set_interactive_mode(2);
 		if (command_line == NULL)
 		{
 			free(command_line);
