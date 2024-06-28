@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 13:20:03 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:50:32 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ int	ft_readline(t_env **env, t_vars *vars)
 		}
 		command_line = verif_command_line(command_line, env, vars);
 	}
-	printf("%d\n", vars->exit_code);
 	return (0);
 }
