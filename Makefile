@@ -46,6 +46,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/ft_strncmp.c \
 			src/utils/ft_strlcpy.c \
 			src/utils/builtins_utils.c \
+			src/utils/builtins_utils_two.c \
 			src/utils/error_message_for_exit.c \
 			src/utils/fork_processes_utils.c \
 			src/utils/process_utils.c \

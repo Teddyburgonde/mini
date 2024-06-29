@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 14:05:59 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 06:43:38 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_argument_parsing	*is_parsing_arg(const char *remaining_line,
 t_argument_parsing	*parse_argument(const char *command_line)
 {
 	const char					*remaining_line;
-	t_argument_parsing	*result;
+	t_argument_parsing			*result;
 
 	result = malloc(sizeof(t_argument_parsing));
 	if (!result)

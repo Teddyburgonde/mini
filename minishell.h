@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/28 21:43:29 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 06:55:53 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,8 +344,9 @@ int								manage_cd_unset(char **command_line,
 int								manage_export(char **command_line,
 									t_redirection *redirect,
 									t_vars **vars, t_env **env);
-int								manage_exit_env(char **command_line,
+int								manage_env(char **command_line,
 									t_vars **vars, t_redirection *redirect);
+int								manage_exit(char **command_line, t_vars **vars);
 int								cmd_selector(t_env **env,
 									char **command_line, t_vars *vars,
 									t_redirection *redirect);
