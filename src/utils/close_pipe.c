@@ -1,27 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_message_for_exit.c                           :+:      :+:    :+:   */
+/*   close_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 17:39:20 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/28 21:02:22 by tebandam         ###   ########.fr       */
+/*   Created: 2024/06/22 14:47:28 by tebandam          #+#    #+#             */
+/*   Updated: 2024/06/22 17:59:43 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_exit_message_0(void)
+void	close_pipe_odd(t_vars *vars)
 {
-	printf("exit\n");
-	exit (0);
+	if (vars->pipe_1[1] != -1)
+	{
+		close(vars->pipe_1[1]);
+		vars->pipe_1[1] = -1;
+	}
+	if (vars->pipe_2[0] != -1)
+	{
+		close(vars->pipe_2[0]);
+		vars->pipe_2[0] = -1;
+	}
 }
 
-void	ft_exit_message_argument_required(char *command)
+void	close_pipe_even(t_vars *vars)
 {
-	ft_putstr_fd("exit\nbash: exit: ", 2);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(2);
+	if (vars->pipe_1[0] != -1)
+	{
+		close(vars->pipe_1[0]);
+		vars->pipe_1[0] = -1;
+	}
+	if (vars->pipe_2[1] != -1)
+	{
+		close(vars->pipe_2[1]);
+		vars->pipe_2[1] = -1;
+	}
 }

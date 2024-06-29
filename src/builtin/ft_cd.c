@@ -6,12 +6,11 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 16:43:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:15:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdlib.h>
 
 int	check_error_ft_cd_home(char **command)
 {
@@ -22,13 +21,13 @@ int	check_error_ft_cd_home(char **command)
 	{
 		if (home == NULL)
 		{
-			perror("The HOME environment variable is not defined.\n");
-			return (EXIT_FAILURE);
+			ft_putstr_fd("The HOME environment variable is not defined.\n", 2);
+			return (1);
 		}
 		if (chdir(home) != 0)
 		{
-			perror("Error when changing directory.\n");
-			return (EXIT_FAILURE);
+			ft_putstr_fd("Error when changing directory.\n", 2);
+			return (1);
 		}
 	}
 	return (0);
@@ -36,17 +35,14 @@ int	check_error_ft_cd_home(char **command)
 
 int	check_error_ft_cd(char **command)
 {
-	const char	*home;
-
-	home = NULL;
 	if (check_error_ft_cd_home(command) == 1)
-		return (EXIT_FAILURE);
-	if (command[2] != NULL)
+		return (1);
+	if (command[1] != NULL && command[2] != NULL)
 	{
 		write (2, " too many arguments\n", 20);
-		return (EXIT_FAILURE);
+		return (1);
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 t_env	*find_env_by_var_name(t_env *env, const char *var_name)
@@ -90,7 +86,8 @@ int	ft_cd(char **command, t_env **env)
 	current = *env;
 	current = find_env_by_var_name(*env, "PWD");
 	stock = command[1];
-	stock = ft_chdid_and_verif(stock);
+	if (command[1])
+		stock = ft_chdid_and_verif(stock);
 	free(current->full_path);
 	path_current = getcwd(NULL, 0);
 	current->full_path = ft_strjoin("PWD=", path_current);

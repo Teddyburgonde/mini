@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:24:05 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/21 11:58:35 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/27 09:47:31 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,9 @@ static int	verif_export(char *str)
 
 	i = 0;
 	append = TRUE;
-	if (str[0] == '_' || ft_isdigit(str[0]) || str[0] == '=')
+	if (str[0] == '_' && str[1] == '\0')
+		return (0);
+	if (ft_isdigit(str[0]) || str[0] == '=')
 	{
 		ft_putstr_fd("minishell: export: `", 2);
 		write (2, str, ft_strlen(str));

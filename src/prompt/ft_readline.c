@@ -6,13 +6,13 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 11:28:55 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:37:00 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	*process_successful_command(t_command_line_parsing_result
+static char	*process_successful_command(t_command_line_parsing
 *parsing_result, t_env **env, char *command_line, t_vars *vars)
 {
 	ft_cmd_manager(env, parsing_result, vars);
@@ -27,7 +27,7 @@ static char	*process_successful_command(t_command_line_parsing_result
 static char	*verif_command_line(char *command_line
 	, t_env **env, t_vars *vars)
 {
-	t_command_line_parsing_result	*parsing_result;
+	t_command_line_parsing	*parsing_result;
 
 	if (command_line != NULL && command_line[0] != '\0')
 	{
@@ -57,7 +57,9 @@ int	ft_readline(t_env **env, t_vars *vars)
 		if (command_line)
 			free(command_line);
 		command_line = NULL;
+		set_interactive_mode(1);
 		command_line = readline("minishell ~ ");
+		set_interactive_mode(2);
 		if (command_line == NULL)
 		{
 			free(command_line);
@@ -65,6 +67,5 @@ int	ft_readline(t_env **env, t_vars *vars)
 		}
 		command_line = verif_command_line(command_line, env, vars);
 	}
-	printf("%d\n", vars->exit_code);
 	return (0);
 }

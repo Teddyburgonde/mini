@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 13:47:03 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 09:07:25 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ int	access_dir(char **command_line, DIR *dir, t_vars *vars)
 			ft_putstr_fd(" command not found\n", 2);
 			vars->exit_code = 127;
 		}
+		else if (strncmp(command_line[0], "/nfs", 4) == 0)
+		{
+			ft_putstr_fd(" Is a directory\n", 2);
+			vars->exit_code = 126;
+		}
 	}
 	return (vars->exit_code);
 }
@@ -64,8 +69,6 @@ char	**find_the_accessible_path(char **path,
 			vars->exit_code = access_dir(command_line, dir, vars);
 			closedir(dir);
 		}
-		else
-			vars->exit_code = 126;
 		return (command_line);
 	}
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);

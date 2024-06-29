@@ -35,7 +35,7 @@ char	*skip_one_character(const char *str)
 }
 
 char	*skip_quote(
-		const char *str, char c, t_argument_parsing_result *result)
+		const char *str, char c, t_argument_parsing *result)
 {
 	int	i;
 
