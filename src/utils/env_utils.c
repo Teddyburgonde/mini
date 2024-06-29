@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:39:25 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/22 18:47:48 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:18:22 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ char	*setup_full_path(char *str)
 	add_quote_after_equal(str, result);
 	if (ft_strchr(str, '=') != 0)
 	{
-		result[len - 3] = '"';
-		result[len - 2] = '\0';
+		result[len - 2] = '"';
+		result[len - 1] = '\0';
 	}
 	else
-		result[len - 2] = '\0';
+		result[len - 1] = '\0';
 	return (result);
 }
 
