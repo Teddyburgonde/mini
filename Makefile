@@ -67,7 +67,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/setup_protect.c \
 			src/utils/expand_heredoc.c \
 			src/utils/strlen_heredoc.c \
-			src/utils/little_utils.c
+			src/utils/little_utils.c \
 			src/utils/close_fd.c \
 			src/utils/close_pipe.c \
 			src/utils/env_utils.c \
