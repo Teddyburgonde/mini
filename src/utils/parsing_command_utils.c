@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_command_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 05:14:37 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 14:21:51 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:26:33 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
