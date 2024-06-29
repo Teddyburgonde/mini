@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:11:14 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/21 13:48:04 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:08:26 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ static void	fill_tmp_content(char **tmp_content, t_redirection *redirection,
 	if (*tmp_content == NULL)
 	{
 		free(*tmp_content);
-		ft_putstr_fd("bash: warning: here-document at line 5 delimited by end-of-file (wanted `:')", 2);
+		ft_putstr_fd("bash: warning: here-document at line 5 delimited by end-of-file (wanted `:')\n", 2);
 		return ;
 	}
 	if (ft_strcmp(*tmp_content, tmp_redirection->limiter) == 0)
@@ -245,7 +245,7 @@ void	ft_heredoc(t_redirection *redirection,
 					if (tmp_content == NULL)
 					{
 						free(tmp_content);
-						ft_putstr_fd("bash: warning: here-document at line 5 delimited by end-of-file (wanted `:')", 2);
+						ft_putstr_fd("bash: warning: here-document at line 5 delimited by end-of-file (wanted `:')\n", 2);
 						break ;
 					}
 				}
