@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:11:08 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 10:10:28 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 09:07:25 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ char	**find_the_accessible_path(char **path,
 			vars->exit_code = access_dir(command_line, dir, vars);
 			closedir(dir);
 		}
-		else
-			vars->exit_code = 126;
 		return (command_line);
 	}
 	vars->exit_code = build_path(path, &bin_path, &is_valid_cmd, command_line);
