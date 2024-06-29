@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:21:16 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 07:56:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:15:36 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	check_error_ft_cd_home(char **command)
 	{
 		if (home == NULL)
 		{
-			perror("The HOME environment variable is not defined.\n");
-			return (EXIT_FAILURE);
+			ft_putstr_fd("The HOME environment variable is not defined.\n", 2);
+			return (1);
 		}
 		if (chdir(home) != 0)
 		{
-			perror("Error when changing directory.\n");
-			return (EXIT_FAILURE);
+			ft_putstr_fd("Error when changing directory.\n", 2);
+			return (1);
 		}
 	}
 	return (0);
@@ -36,7 +36,7 @@ int	check_error_ft_cd_home(char **command)
 int	check_error_ft_cd(char **command)
 {
 	if (check_error_ft_cd_home(command) == 1)
-		return (EXIT_FAILURE);
+		return (1);
 	if (command[1] != NULL && command[2] != NULL)
 	{
 		write (2, " too many arguments\n", 20);
