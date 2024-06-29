@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 00:07:22 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/28 22:15:23 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:52:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	ft_sigint(int signal)
 {
 	(void)signal;
-	printf("\n");	
+	printf("\n");
 }
 
 static void	ft_sigquit(int signal)
@@ -39,6 +39,7 @@ void	set_interactive_mode(int set)
 	{
 		signal(SIGINT, &ft_ctrl_c);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGTSTP, SIG_IGN);
 		return ;
 	}
 	if (set == 2)
