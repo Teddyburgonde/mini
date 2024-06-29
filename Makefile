@@ -9,6 +9,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/env/env_to_char.c \
 			src/env/update_shlvl.c  \
 			src/env/env_command.c \
+			src/env/manage_env.c \
             src/signal/signal.c \
 			src/builtin/export.c \
 			src/builtin/ft_cd.c \
@@ -84,7 +85,8 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/redirection_expand_utils.c \
 			src/utils/redirection_expand_utils_two.c \
 			src/utils/get_redirection_list.c \
-			src/utils/quote_utils.c
+			src/utils/quote_utils.c \
+			src/utils/export_utils.c \
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)

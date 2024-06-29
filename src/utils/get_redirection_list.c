@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 18:41:04 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 18:51:24 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:35:55 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int	need_to_be_expand(t_redirection_to_expand *redirection,
 {
 	int		i;
 	t_bool	in_quote;
-
 
 	i = 0;
 	in_quote = FALSE;

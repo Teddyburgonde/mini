@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/29 20:21:39 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 21:21:21 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	ft_expand_arguments(t_argument_to_expand *tmp_to_expand, t_env *env,
 	argument_with_expanded_vars = NULL;
 	while (tmp_to_expand != NULL)
 	{
-		printf("content: %s\n", tmp_to_expand->content);
 		argument_with_expanded_vars = ft_expand_vars_in_argument(
 				tmp_to_expand->content, env, vars);
 		if (argument_with_expanded_vars->chars == NULL)
@@ -67,7 +66,6 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	t_argument_to_expand	*tmp_to_expand;
 	int						tmp;
 
-	printf("expansion variable classique: \n");
 	tmp = 1;
 	tmp_to_expand = (t_argument_to_expand *)argument;
 	args_with_expanded_vars = NULL;

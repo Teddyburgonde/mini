@@ -6,14 +6,14 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 18:30:36 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 18:50:38 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:39:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-
-static void	redirection_expand_exit_code(t_vars *vars, t_redirection_to_expand	*tmp,
+static void	redirection_expand_exit_code(t_vars *vars,
+		t_redirection_to_expand	*tmp,
 	char *var_name, int *i)
 {
 	int		j;
@@ -77,4 +77,3 @@ int	expand_redirection(t_redirection_to_expand **tmp,
 	}
 	return (i);
 }
-

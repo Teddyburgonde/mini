@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:40:13 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 15:40:44 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:38:19 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	strlen_exit_code(t_vars *vars, int *count)
 	free(exit_code);
 }
 
-int expand_len(t_redirection_to_expand *tmp,
+int	expand_len(t_redirection_to_expand *tmp,
 	t_vars *vars, t_env *env, int i)
 {
 	int		j;
@@ -89,7 +89,6 @@ char	*ft_remove_simple_quote(char *src)
 
 	i = 1;
 	j = 0;
-
 	dest = malloc(sizeof(char *) + ft_strlen(src) - 1);
 	while (src[i])
 	{
