@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:43:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 07:07:33 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 07:24:16 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	cmd_selector(t_env **env, char **command_line,
 		return (0);
 	if (manage_env(command_line, &vars, redirect) == 0)
 		return (0);
-	if (vars->nb_cmd <= 1 && manage_exit(command_line, &vars) == 0)
+	if (vars->nb_cmd == 1 && manage_exit(command_line, &vars) == 0)
 		return (0);
 	return (1);
 }
