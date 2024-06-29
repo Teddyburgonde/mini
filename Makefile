@@ -19,6 +19,10 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/parsing/parsing.c \
 			src/parsing/parsing_expand.c \
 			src/parsing/redirection_expand.c \
+			src/parsing/parsing_expand_argument.c \
+			src/parsing/parsing_expand_in_argument.c \
+			src/parsing/parsing_split_argument.c \
+			src/parsing/parsing_split_argument_utils.c \
 			src/exec/check.c \
 			src/exec/redirection.c \
 			src/exec/fork.c \
@@ -76,7 +80,11 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/parsing_command_utils.c \
 			src/utils/parsing_initialize.c \
 			src/utils/parsing_utils_two.c \
-			src/utils/fill_command_paths_utils.c
+			src/utils/fill_command_paths_utils.c \
+			src/utils/redirection_expand_utils.c \
+			src/utils/redirection_expand_utils_two.c \
+			src/utils/get_redirection_list.c \
+			src/utils/quote_utils.c
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)

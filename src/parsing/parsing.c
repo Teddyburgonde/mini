@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:31:02 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 14:20:48 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:18:03 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_command_parsing_result	*parse_command(char *command_line)
 {
 	t_command_parsing_result		*result;
-	t_redirection_parsing	*redirection_result;
-	t_argument_parsing		*argument_result;
+	t_redirection_parsing			*redirection_result;
+	t_argument_parsing				*argument_result;
 	char							*remaining_line;
 
 	initialize_allocated_parse_command(&result,
@@ -70,14 +70,14 @@ t_command_line_parsing	*parsing_command(
 t_command_line_parsing	*ft_parse_command_line(char *command_line)
 {
 	char							*remaining_line;
-	t_command_line_parsing	*result;
+	t_command_line_parsing			*result;
 	t_command_parsing_result		*command_parsing;
 
 	result = malloc(sizeof(t_command_line_parsing));
 	if (!result)
 		return (NULL);
 	result->commands = NULL;
-	command_parsing= NULL;
+	command_parsing = NULL;
 	remaining_line = skip_spaces(command_line);
 	if (ft_strlen(remaining_line) == 0)
 	{
