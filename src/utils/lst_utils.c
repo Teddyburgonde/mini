@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:01:08 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/21 14:10:48 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:31:32 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void	close_file_descriptors(t_redirection *node)
 
 static void	free_node_resources(t_redirection *node)
 {
+	if (node->name_outfile)
+		free(node->name_outfile);
+	if (node->name_infile)
+		free(node->name_infile);
 	if (node->e_position == HERE)
 		unlink(node->file_heredoc);
 	if (node->limiter)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 10:20:30 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/20 10:24:17 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:14:30 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,23 @@ char	*copy_without_quote(char *s)
 	}
 	tmp[i] = 0;
 	return (tmp);
+}
+
+char	*ft_strdup(char *s)
+{
+	char		*tab;
+	int			i;
+
+	i = 0;
+	tab = malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (tab)
+	{
+		while (s[i])
+		{
+			tab[i] = s[i];
+			i++;
+		}
+		tab[i] = '\0';
+	}
+	return ((char *)tab);
 }

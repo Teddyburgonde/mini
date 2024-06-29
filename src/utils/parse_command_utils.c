@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 15:59:29 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 06:43:38 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/28 11:03:01 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_argument_parsing	*is_parsing_arg(const char *remaining_line,
 		}
 		result->argument->content = ft_strjoin_arg(
 				result->argument->content, remaining_line);
-		remaining_line = ft_skip_arg(remaining_line, "<>\'\"| \n\t");
+		remaining_line = ft_skip_arg(remaining_line, "<>| \n\t");
 	}
 	result->remaining_line = remaining_line;
 	return (result);
