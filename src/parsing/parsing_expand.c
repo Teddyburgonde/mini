@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:15:04 by rgobet            #+#    #+#             */
 /*   Updated: 2024/06/30 11:42:28 by rgobet           ###   ########.fr       */
@@ -35,7 +35,7 @@ char	*get_var_name(char *str)
 	return (var_name);
 }
 
-static void	*function_four(const char *argument, int *i, t_char_list **chars)
+static void	*expand_argument_single_quote(const char *argument, int *i, t_char_list **chars)
 {
 	t_char_list	*tmp;
 
@@ -64,7 +64,7 @@ static void	*function_four(const char *argument, int *i, t_char_list **chars)
 	return ((void *)1);
 }
 
-static void	*function_six(const char *argument, int *i,
+static void	*add_char_in_double_quotes(const char *argument, int *i,
 	t_char_list **chars)
 {
 	t_char_list	*tmp;
@@ -84,7 +84,7 @@ static void	*function_six(const char *argument, int *i,
 	return ((void *)1);
 }
 
-static void	*function_five(const char *argument, int *i,
+static void	*expand_argument_double_quote(const char *argument, int *i,
 	t_bool in_quote, t_char_list **chars)
 {
 	t_char_list	*tmp;
@@ -99,7 +99,7 @@ static void	*function_five(const char *argument, int *i,
 		ft_lstadd_back_char_list(chars, tmp);
 		*i += 1;
 	}
-	if (function_six(argument, i, chars) == NULL)
+	if (add_char_in_double_quotes(argument, i, chars) == NULL)
 		return (NULL);
 	if (argument[*i] == '"')
 	{
@@ -167,7 +167,7 @@ static int	expand_arg(char *argument, t_env *env, t_char_list **chars, int i)
 	return (i);
 }
 
-static int function_seven(char *argument, t_char_list **chars, int i)
+static int invalid_var_name(char *argument, t_char_list **chars, int i)
 {
 	t_char_list	*tmp;
 
@@ -182,8 +182,6 @@ static int function_seven(char *argument, t_char_list **chars, int i)
 	return (i);
 }
 
-// Faire un truc pour verif si tes dans des quotes ou non
-// Cette fonction existe dans redirection_expand.c
 static t_bool	is_in_quote(char *str, int i)
 {
 	int		j;
@@ -527,7 +525,7 @@ static int	ft_split_argument(t_argument *argument_to_split,
 	return (1);
 }
 
-static void	function_one(t_argument_to_expand *tmp_to_expand, t_env *env,
+static void	ft_expand_arguments(t_argument_to_expand *tmp_to_expand, t_env *env,
 	t_vars *vars, t_argument **args_with_expanded_vars)
 {
 	t_argument	*argument_with_expanded_vars;
@@ -561,15 +559,14 @@ t_argument	*ft_expand_argument(const t_argument_to_expand *argument,
 	tmp = 1;
 	tmp_to_expand = (t_argument_to_expand *)argument;
 	args_with_expanded_vars = NULL;
-	function_one(tmp_to_expand, env, vars, &args_with_expanded_vars);
+	ft_expand_arguments(tmp_to_expand, env, vars, &args_with_expanded_vars);
 	splitted_arguments = NULL;
 	if (args_with_expanded_vars != NULL)
 	{
 		while (tmp != 0)
-			tmp = ft_split_argument(args_with_expanded_vars, &splitted_arguments);
+			tmp = ft_split_argument(args_with_expanded_vars,
+					&splitted_arguments);
 		tmp_split = splitted_arguments;
-		// if (tmp_split->chars)
-		// 	ft_remove_quotes(&tmp_split);
 	}
 	if (args_with_expanded_vars)
 		ft_lstclear_argument(&args_with_expanded_vars);

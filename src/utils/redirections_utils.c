@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 15:07:02 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/25 13:39:07 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/29 20:39:59 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ t_bool	global_redirections(t_redirection *redirection,
 		if (is_last_infile(tmp_redirection) == TRUE)
 			prepare_heredoc(redirection, tmp_redirection);
 		if (redirection->infile_fd != -1)
-		{
-			// write(2, "PUTEUH\n", 7);
 			vars->exit_code = 1;
-		}
 		return (TRUE);
 	}
 	return (FALSE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/25 15:33:18 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/30 05:49:33 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,30 @@ int								handle_command_line(t_vars *vars,
 char							**copy_double_array(char **src);
 size_t							ft_array_len(char **arr);
 
+void							strlen_expand(char *var_name,
+									t_env *env, int *count, int *j);
+void							strlen_exit_code(t_vars *vars, int *count);
+int								expand_len(t_redirection_to_expand *tmp,
+									t_vars *vars, t_env *env, int i);
+int								ft_strlen_ultime(t_redirection_to_expand *tmp,
+									t_env *env, t_vars *vars);
+char							*ft_remove_simple_quote(char *src);
+int								expand_redirection(
+									t_redirection_to_expand **tmp,
+									t_vars *vars, t_env *env,
+									t_redirection_to_expand *redirect);
+t_redirection_to_expand			*get_redirection_list(
+									t_redirection_to_expand *redirect,
+									t_env *env, t_vars *vars);
+t_bool							is_in_quote(char *str, int i);
+void							refresh_quotes_status(t_bool *in_quote,
+									char current);
+char							*ft_substr(char const *s, unsigned int start, size_t len);
+char							*make_var(char *str);
+int								verif_export(char *str);
+void							update_env_var(t_env *tmp_env, char *cmd, char *value);
+void							hide_and_update_env_var(t_env *tmp_env, char *cmd);	
+
 /*
 * Env
 */
@@ -322,6 +346,11 @@ char							*update_shlvl(int shlvl);
 char							*convert_to_string(int shlvl, int len);
 int								calculate_length(int shlvl);
 int								adjust_shlvl(int shlvl);
+void							add_modified_env_var(t_env **env, char *cmd,
+									char *var_name, char *value);
+void							add_new_env_var(t_env **env, char *cmd,
+									char *var_name, char *value, int hide);
+char							*remove_plus(char *str);
 
 /*
 * Signal
@@ -398,6 +427,24 @@ t_redirection_parsing			*parse_redirection(char *str);
 t_argument						*ft_expand_argument(
 									const t_argument_to_expand	*argument,
 									t_env *env, t_vars *vars);
+t_argument						*ft_expand_vars_in_argument(
+									const char *argument,
+									t_env *env, t_vars *vars);
+int								expand_argument(char *argument,
+									t_env *env, t_vars *vars,
+									t_char_list **chars);
+t_bool							init_function(char *quote, t_argument **tmp,
+									t_argument	**splitted_arguments,
+									t_argument *argument_to_split);
+int								function_verif_quote(t_char_list **tmp_char,
+									char *quote,
+									t_bool *quote_in_var);
+void							fill_no_quote_arg(t_char_list **tmp_char,
+									t_char_list **splitted_chars, char quote);
+t_bool							quote_function(t_char_list **tmp_char,
+									char *quote, t_bool in_quote);
+int								ft_split_argument(t_argument *argument_to_split,
+									t_argument **args);
 
 /*
 * Setup command
@@ -534,7 +581,7 @@ void							stock_redirection(t_command_to_expand *list,
 									t_redirection **redirection);
 char							*ft_strjoin_mod(char *s1, char *s2);
 t_redirection					*ft_lstlast_redirection(t_redirection *lst);
-t_redirection_to_expand			*expand_redirection(
+t_redirection_to_expand			*get_redirection_list(
 									t_redirection_to_expand *redirect,
 									t_env *env, t_vars *vars);
 t_redirection_to_expand			*ft_expand_redirections(

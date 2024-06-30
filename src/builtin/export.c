@@ -41,8 +41,6 @@ static char	*make_var_name(char *str)
 	return (result);
 }
 
-// A modif si pas de value invalid write
-
 static char	*make_var(char *str)
 {
 	char	*result;
@@ -307,6 +305,7 @@ static void	handle_export_status_2(t_env **env, t_env *tmp_env, char *cmd, char 
 	else
 		hide_and_update_env_var(tmp_env, cmd);
 }
+
 int	export(t_env **env, char **cmd)
 {
 	t_env	*tmp_env;

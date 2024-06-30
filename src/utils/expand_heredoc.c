@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:16:27 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/25 15:23:30 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/29 20:35:25 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,3 @@ char	*expand_line(char *str, t_env *env, t_vars *vars)
 	free(tmp);
 	return (str);
 }
-
