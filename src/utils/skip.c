@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:24:57 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 14:29:15 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/29 15:59:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*skip_quote(
 	int	i;
 
 	i = 0;
-	if (i == 0 && str[i] == c)
+	if (str[i] == c)
 		i++;
 	while (str[i] && str[i] != c)
 		i++;

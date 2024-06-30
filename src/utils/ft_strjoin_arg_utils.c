@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 15:07:39 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/28 11:05:53 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/30 10:57:31 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*allocate_and_prepare_tab(const char *s1, const char *s2)
 	if (s1)
 		len1 = ft_strlen(s1);
 	if (s2)
-		len2 = ft_strcspn(s2, "<>| \n\t");
+		len2 = ft_strcspn(s2, "<>|'\" \n\t");
 	tab = malloc((1 + len1 + len2) * sizeof(char));
 	return (tab);
 }
@@ -39,13 +39,13 @@ void	copy_and_concatenante(char *tab, const char *s1, const char *s2)
 	{
 		while (s1[i])
 		{
-			tab[1] = s1[i];
+			tab[i] = s1[i];
 			i++;
 		}
 	}
 	if (s2)
 	{
-		while (ft_strcspn(s2, "<>| \n\t") > j)
+		while (ft_strcspn(s2, "<>|'\" \n\t") > j)
 		{
 			tab[i] = s2[j];
 			i++;
