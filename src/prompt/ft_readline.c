@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 11:20:34 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 08:37:00 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:12:33 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	ft_readline(t_env **env, t_vars *vars)
 		set_interactive_mode(2);
 		if (command_line == NULL)
 		{
+			write(2, "exit\n", 5);
 			free(command_line);
 			break ;
 		}
