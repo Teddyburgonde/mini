@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 05:44:21 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/30 05:49:01 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:36:22 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	update_env_var(t_env *tmp_env, char *cmd, char *value)
 	free(tmp_env->full_path);
 	tmp_env->full_path = copy(cmd);
 }
+
 
 int	verif_export(char *str)
 {

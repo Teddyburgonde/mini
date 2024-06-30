@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 20:01:11 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 20:19:49 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:25:28 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ t_bool	quote_function(t_char_list **tmp_char,
 		|| (*tmp_char)->value == '"')
 	{
 		if (in == 1 && (*tmp_char)->value == *quote)
+		{
 			in_quote = FALSE;
+			in = 0;
+		}
 		else if (in == 0)
 		{
 			*quote = (*tmp_char)->value;
@@ -64,6 +67,7 @@ int	function_verif_quote(t_char_list **tmp_char, char *quote,
 	{
 		*quote = (*tmp_char)->value;
 		*quote_in_var = TRUE;
+		return (1);
 	}
 	else if (((*tmp_char)->value == '\'' || (*tmp_char)->value == '"')
 		&& *quote_in_var == TRUE)

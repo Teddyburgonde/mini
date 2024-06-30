@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:20:40 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 20:20:47 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:20:27 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,8 @@ t_argument	*ft_expand_vars_in_argument(
 					env, vars, &arg->chars);
 		else
 			simple_arg((char *)argument, &i, &arg->chars);
-		if (argument[i] != 0 && argument[i] != '$' && argument[i - 1] != '$')
+		if (argument[i] != 0 && argument[i] != '$' && argument[i - 1] != '$'
+			&& need_to_increment((char *)argument, i) == FALSE)
 			i++;
 	}
 	return (arg);

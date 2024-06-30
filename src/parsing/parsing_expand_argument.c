@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:23:23 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 20:22:37 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:40:57 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,33 @@ int	expand_argument(char *argument, t_env *env, t_vars *vars,
 	if (var_name)
 		free(var_name);
 	return (i);
+}
+
+t_bool	need_to_increment(char *argument, int i)
+{
+	t_bool	simple_quote;
+	t_bool	last_expand;
+	int		j;
+
+	j = 0;
+	simple_quote = FALSE;
+	while (argument && argument[j] && j < i)
+	{
+		last_expand = FALSE;
+		if (simple_quote == FALSE && argument[j] == '\'')
+			simple_quote = TRUE;
+		else if (simple_quote == FALSE && argument[j] == '\'')
+			simple_quote = FALSE;
+		if (argument[j] == '$' && simple_quote == FALSE)
+		{
+			if (argument[j] == '$' && argument[j] == '?')
+			{
+				last_expand = FALSE;
+				j += 2;
+			}
+			last_expand = FALSE;
+		}
+		j++;
+	}
+	return (TRUE);
 }
