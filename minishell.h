@@ -6,7 +6,7 @@
 /*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:05:59 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/29 21:06:11 by tebandam         ###   ########.fr       */
+/*   Updated: 2024/06/30 05:49:33 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,7 +330,10 @@ t_bool							is_in_quote(char *str, int i);
 void							refresh_quotes_status(t_bool *in_quote,
 									char current);
 char							*ft_substr(char const *s, unsigned int start, size_t len);
-char							*make_var(char *str);					
+char							*make_var(char *str);
+int								verif_export(char *str);
+void							update_env_var(t_env *tmp_env, char *cmd, char *value);
+void							hide_and_update_env_var(t_env *tmp_env, char *cmd);	
 
 /*
 * Env

@@ -87,6 +87,7 @@ MY_SOURCES= src/prompt/minishell.c \
 			src/utils/get_redirection_list.c \
 			src/utils/quote_utils.c \
 			src/utils/export_utils.c \
+			src/utils/env_utils_two.c \
 
 
 MY_OBJECTS=$(MY_SOURCES:.c=.o)
