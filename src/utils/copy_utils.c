@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 10:20:30 by tebandam          #+#    #+#             */
-/*   Updated: 2024/06/24 15:14:30 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/29 16:47:44 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_strdup(char *s)
 	tab = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (tab)
 	{
-		while (s[i])
+		while (s && s[i])
 		{
 			tab[i] = s[i];
 			i++;

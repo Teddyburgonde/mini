@@ -6,7 +6,7 @@
 /*   By: rgobet <rgobet@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:59:39 by rgobet            #+#    #+#             */
-/*   Updated: 2024/06/25 13:27:24 by rgobet           ###   ########.fr       */
+/*   Updated: 2024/06/30 14:40:39 by rgobet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,34 @@ void	prepare_heredoc(t_redirection *redirection,
 			O_WRONLY | O_TRUNC | O_CREAT, 0644);
 }
 
+static void	quit(int sig_num)
+{
+	exit(sig_num + 128);
+}
+
 void	heredoc_setup(t_redirection *redirection,
 	t_command_to_expand *tmp_command, t_env *env, t_vars *vars)
 {
-	ft_heredoc(redirection,
-		tmp_command->redirections, env, vars);
+	pid_t	child;
+	int		wstatus;
+
+	child = fork();
+	if (child == 0)
+	{
+		signal(SIGINT, quit);
+		ft_heredoc(redirection,
+			tmp_command->redirections, env, vars);
+	}
+	else
+	{
+		wait(&wstatus);
+		if (WIFSIGNALED(wstatus))
+			vars->exit_code = WTERMSIG(wstatus) + 128;
+		else
+			vars->exit_code = WEXITSTATUS(wstatus);
+		if (vars->exit_code == 130)
+			g_sig = SIGINT;
+	}
 	close(redirection->infile_fd);
 	redirection->infile_fd = -1;
 	redirection->infile_fd = open(
